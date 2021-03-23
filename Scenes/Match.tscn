@@ -1,0 +1,9 @@
+[gd_scene format=2]
+
+[node name="Match" type="Node2D"]
+
+[node name="Ghost_Spawn" type="Node2D" parent="."]
+position = Vector2( 512, 64 )
+
+[node name="Maria_Spawn" type="Node2D" parent="."]
+position = Vector2( 512, 512 )
