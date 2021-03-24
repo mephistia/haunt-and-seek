@@ -5,9 +5,12 @@ var peers = []
 var levelPackedScene = preload("res://Scenes/Match.tscn")
 var levelInstance
 
+const MAX_PLAYERS = 2
+
 signal levelLoaded
 
-var playerScene = preload("res://Scenes/Player.tscn")
+var ghostScene = preload("res://Scenes/Ghost.tscn")
+var mariaScene = preload("res://Scenes/Maria.tscn")
 
 func _ready():
 	networkPeer.connect("peer_connected", self, "_peer_connected")
@@ -16,10 +19,10 @@ func _ready():
 	networkPeer.connect("server_disconnected", self, "_server_disconnected")
 	get_tree().connect("connection_failed", self, "_connection_failed")
 
-func create_server(port):
+func create_server(port, stateGhostCheck): # Verificar como usar o stateGhostCheck para criar o player
 	self.connect("levelLoaded", self, "server_setup_after_load")
 	get_tree().change_scene_to(levelPackedScene)
-	networkPeer.create_server(port, 2)
+	networkPeer.create_server(port, MAX_PLAYERS)
 	
 func server_setup_after_load():
 	levelInstance = get_tree().current_scene
@@ -56,16 +59,20 @@ func _server_disconnected():
 
 func create_player(peerId):
 	var spawn
+	var newPlayer
+	
+	# Mudar para de acordo com a seleção
+	
 	if(peerId == 1):
 		spawn = levelInstance.get_node("Ghost_Spawn")
+		newPlayer = ghostScene.instance()
 	else:
 		spawn = levelInstance.get_node("Maria_Spawn")
+		newPlayer = mariaScene.instance()
 	
-	var newPlayer = playerScene.instance();
 	newPlayer.set_network_master(peerId)
 	newPlayer.name = String(peerId)
 	newPlayer.position = spawn.position
-	newPlayer.rotation = spawn.rotation
 	levelInstance.add_child(newPlayer)
 
 func destroy_player(peerId):
