@@ -4,6 +4,7 @@ var networkPeer = NetworkedMultiplayerENet.new()
 var peers = []
 var levelPackedScene = preload("res://Scenes/Match.tscn")
 var levelInstance
+var hostIsGhost = false
 
 const MAX_PLAYERS = 2
 
@@ -20,15 +21,15 @@ func _ready():
 	get_tree().connect("connection_failed", self, "_connection_failed")
 
 func create_server(port, stateGhostCheck): # Verificar como usar o stateGhostCheck para criar o player
-	self.connect("levelLoaded", self, "server_setup_after_load")
+	self.connect("levelLoaded", self, "server_setup_after_load", [stateGhostCheck])
 	get_tree().change_scene_to(levelPackedScene)
 	networkPeer.create_server(port, MAX_PLAYERS)
 	
-func server_setup_after_load():
+func server_setup_after_load(stateGhostCheck):
 	levelInstance = get_tree().current_scene
 	get_tree().network_peer = networkPeer
 	peers.append(1)
-	create_player(1)
+	create_player(1, stateGhostCheck)
 
 func create_client(address, port):
 	self.connect("levelLoaded", self, "client_setup_after_load")
@@ -57,18 +58,28 @@ func _server_disconnected():
 	peers.clear()
 	get_tree().change_scene("res://Menu.tscn")
 
-func create_player(peerId):
+func create_player(peerId, isGhost = false):
 	var spawn
 	var newPlayer
 	
-	# Mudar para de acordo com a seleção
-	
+	# Mudar para de acordo com a seleção	
 	if(peerId == 1):
-		spawn = levelInstance.get_node("Ghost_Spawn")
-		newPlayer = ghostScene.instance()
+		if (isGhost):
+			hostIsGhost = true
+			spawn = levelInstance.get_node("Ghost_Spawn")
+			newPlayer = ghostScene.instance()
+		else:
+			hostIsGhost = false
+			spawn = levelInstance.get_node("Maria_Spawn")
+			newPlayer = mariaScene.instance()
+			
 	else:
-		spawn = levelInstance.get_node("Maria_Spawn")
-		newPlayer = mariaScene.instance()
+		if (hostIsGhost):
+			spawn = levelInstance.get_node("Maria_Spawn")
+			newPlayer = mariaScene.instance()
+		else:
+			spawn = levelInstance.get_node("Ghost_Spawn")
+			newPlayer = ghostScene.instance()
 	
 	newPlayer.set_network_master(peerId)
 	newPlayer.name = String(peerId)

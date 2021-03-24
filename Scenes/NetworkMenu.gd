@@ -11,9 +11,10 @@ var stateGhostChecked
 func _ready():
 	Host.connect("button_down", self, "host_pressed")
 	Join.connect("button_down", self, "join_pressed")
-	stateGhostChecked = GhostCheck.pressed
+
 
 func host_pressed():
+	stateGhostChecked = GhostCheck.is_pressed()
 	NetworkSingleton.create_server(Port, stateGhostChecked) # Passa a seleção de personagem (bool se selecionou fantasma)
 
 func join_pressed():
