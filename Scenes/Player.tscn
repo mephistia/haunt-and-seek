@@ -1,0 +1,55 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://assets/characters/maria.png" type="Texture" id=1]
+[ext_resource path="res://assets/characters/ghost.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/Player.gd" type="Script" id=3]
+[ext_resource path="res://assets/fonts/Gamer.ttf" type="DynamicFontData" id=4]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "ghost",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 1 ) ],
+"loop": true,
+"name": "maria",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 5, 8 )
+
+[sub_resource type="DynamicFont" id=3]
+outline_size = 1
+outline_color = Color( 0.0705882, 0.0666667, 0.0666667, 1 )
+use_mipmaps = true
+font_data = ExtResource( 4 )
+
+[node name="Player" type="Area2D"]
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 1 )
+animation = "maria"
+centered = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 8, 8 )
+shape = SubResource( 2 )
+
+[node name="PlayerName" type="Label" parent="."]
+margin_left = -24.0
+margin_top = -16.0
+margin_right = 40.0
+custom_fonts/font = SubResource( 3 )
+text = "Player"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
