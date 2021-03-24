@@ -51,6 +51,6 @@ func on_process(delta):
 		_synchronize()
 
 func _synchronize():
-	rset("position", position) # Atualizar o valor da config
+	rset_unreliable("position", position) # Atualizar o valor da config
 	rset("sprite", $AnimatedSprite)
 
