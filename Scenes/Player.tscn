@@ -19,7 +19,7 @@ animations = [ {
 } ]
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 5, 8 )
+extents = Vector2( 8, 12 )
 
 [sub_resource type="DynamicFont" id=3]
 outline_size = 1
@@ -29,23 +29,21 @@ font_data = ExtResource( 4 )
 
 [node name="Player" type="Area2D"]
 script = ExtResource( 3 )
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+scale = Vector2( 1.5, 1.5 )
 frames = SubResource( 1 )
 animation = "maria"
 centered = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 8, 8 )
+position = Vector2( 12, 12 )
 shape = SubResource( 2 )
 
 [node name="PlayerName" type="Label" parent="."]
-margin_left = -24.0
+margin_left = -20.0
 margin_top = -16.0
-margin_right = 40.0
+margin_right = 44.0
 custom_fonts/font = SubResource( 3 )
 text = "Player"
 align = 1

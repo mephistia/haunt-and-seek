@@ -2,8 +2,8 @@ extends "res://Scenes/Player.gd"
 
 
 func _ready():
-	$AnimatedSprite.animation = "maria"
-	player_name = 'Maria' # Mudar para nome digitado
+	$AnimatedSprite.animation = "ghost"
+	speed = 75
 	.on_ready() # Chamar função pai ("super")
 
-
+	

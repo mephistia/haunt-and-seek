@@ -2,11 +2,12 @@ extends Area2D
 
 export var speed = 100
 
-var player_name = 'Player'
 var screen_size
 
 export var items = []
 
+func set_player_name(newName):
+	$PlayerName.text = newName
 
 func _ready():
 	on_ready()
@@ -16,7 +17,7 @@ func on_ready():
 	# Seta a config como de puppet (client), com nome customizável
 	rset_config("position", MultiplayerAPI.RPC_MODE_PUPPET)
 	rset_config("sprite", MultiplayerAPI.RPC_MODE_PUPPET)
-	$PlayerName.text = player_name
+
 	
 func _process(delta):
 	on_process(delta)
