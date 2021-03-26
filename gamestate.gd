@@ -95,15 +95,19 @@ remote func pre_start_game(spawn_points):
 				if is_ghost:
 					player = ghost.instance()
 					player.position = world.get_node("Ghost_Spawn").position
+					player.set_name("Ghost") 
 				elif is_ghost == false:
 					player = maria.instance()
 					player.position = world.get_node("Maria_Spawn").position
+					player.set_name("Maria") 
 			else:
 				var hostPlayerName = world.get_node("Players").get_child(0).name	
 				if hostPlayerName == "Maria":
 					player = ghost.instance()
+					player.set_name("Ghost") 
 				else:
 					player = maria.instance()
+					player.set_name("Maria") 
 			# If node for this peer id, set name.
 			player.set_player_name(player_name)
 			
@@ -111,7 +115,6 @@ remote func pre_start_game(spawn_points):
 			# Otherwise set name from peer.
 			player.set_player_name(players[p_id])
 
-		player.set_name(str(p_id)) # Use unique ID as node name.
 		player.set_network_master(p_id) #set unique id as master.
 		world.get_node("Players").add_child(player)
 
