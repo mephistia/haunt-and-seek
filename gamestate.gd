@@ -5,10 +5,15 @@ extends Node
 # https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers
 const DEFAULT_PORT = 5252
 
+
 # Max number of players.
 const MAX_PEERS = 2
 
 var peer = null
+
+var upnp = UPNP.new()
+
+export var my_ip = 0
 
 # Name for my player.
 var player_name = "Player"
@@ -90,15 +95,14 @@ remote func pre_start_game(spawn_points):
 
 		if p_id == get_tree().get_network_unique_id():	
 			# If it's this peer
-			print("ID: " + str(p_id))
+			print("Meu ID: " + str(p_id))
 			if p_id == 1:
 				if is_ghost:
 					player = instantiate_ghost(world)
-				elif is_ghost == false:
+				else:
 					player = instantiate_maria(world) 
 			else:
-				var hostPlayerName = world.get_node("Players").get_child(0).name	
-				if hostPlayerName == "Maria":
+				if world.get_node_or_null("Players/Maria") != null:
 					player = instantiate_ghost(world)
 				else:
 					player = instantiate_maria(world)
@@ -106,6 +110,7 @@ remote func pre_start_game(spawn_points):
 			player.set_player_name(player_name)
 			
 		else:
+			print("Outro ID: " + p_id)
 			# se existe fantasma
 			if world.get_node_or_null("Players/Ghost") != null:
 				player = instantiate_maria(world)
@@ -116,6 +121,7 @@ remote func pre_start_game(spawn_points):
 
 		player.set_network_master(p_id) #set unique id as master.
 		world.get_node("Players").add_child(player)
+		print("Adicionado jogador " + player.name)
 
 	if not get_tree().is_network_server():
 		# Tell server we are ready to start.
@@ -129,16 +135,14 @@ remote func post_start_game():
 
 func instantiate_maria(world):
 	var maria = load("res://Scenes/Maria.tscn")
-	var new_player
-	new_player = maria.instance()
+	var new_player = maria.instance()
 	new_player.position = world.get_node("Maria_Spawn").position
 	new_player.set_name("Maria") 
 	return new_player
 	
 func instantiate_ghost(world):
 	var ghost = load("res://Scenes/Ghost.tscn")
-	var new_player
-	new_player = ghost.instance()
+	var new_player = ghost.instance()
 	new_player.position = world.get_node("Ghost_Spawn").position
 	new_player.set_name("Ghost") 
 	return new_player
@@ -159,16 +163,32 @@ func host_game(new_player_name, np_is_ghost):
 	player_name = new_player_name
 	is_ghost = np_is_ghost
 	peer = NetworkedMultiplayerENet.new()
-	peer.create_server(DEFAULT_PORT, MAX_PEERS)
-	get_tree().set_network_peer(peer)
+	var result_upnp = open_port(DEFAULT_PORT)
+	if result_upnp != 0:
+		print("ERROR ON UPNP CONNECTION: " + result_upnp)
+	else:
+		print("PORT OPENED")
+		peer.create_server(DEFAULT_PORT, MAX_PEERS)
+		get_tree().set_network_peer(peer)
 
 
 func join_game(ip, new_player_name):
 	player_name = new_player_name
 	peer = NetworkedMultiplayerENet.new()
-	peer.create_client(ip, DEFAULT_PORT)
-	get_tree().set_network_peer(peer)
+	var result_upnp = open_port(DEFAULT_PORT)
+	if result_upnp != 0:
+		print("ERROR ON UPNP CONNECTION: " + result_upnp)
+	else:
+		print("PORT OPENED")
+		peer.create_client(ip, DEFAULT_PORT)
+		get_tree().set_network_peer(peer)
 
+func open_port(port):
+	upnp.discover(2000, 2, "InternetGatewayDevice")
+	var result = upnp.add_port_mapping(port)
+	print(upnp.query_external_address())
+	my_ip = upnp.query_external_address()
+	return result
 
 func get_player_list():
 	return players.values()
@@ -183,7 +203,7 @@ func begin_game():
 
 	# Create a dictionary with peer id and respective spawn points, could be improved by randomizing.
 	var spawn_points = {}
-	spawn_points[1] = 0 # Server in spawn point 0.
+	spawn_points[1] = 0 # Server in spawn point 1
 	var spawn_point_idx = 1
 	for p in players:
 		spawn_points[p] = spawn_point_idx
@@ -210,3 +230,12 @@ func _ready():
 	get_tree().connect("connected_to_server", self, "_connected_ok")
 	get_tree().connect("connection_failed", self, "_connected_fail")
 	get_tree().connect("server_disconnected", self, "_server_disconnected")
+	get_tree().set_auto_accept_quit(false)
+	
+func _notification(what):
+	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
+		upnp.delete_port_mapping(DEFAULT_PORT)
+		print("Bye!")
+		get_tree().quit() # default behavior
+	
+

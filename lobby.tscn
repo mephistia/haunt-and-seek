@@ -73,28 +73,40 @@ __meta__ = {
 }
 
 [node name="PortForward" type="Label" parent="Players"]
+anchor_top = -0.00215297
+anchor_bottom = -0.00215297
 margin_left = -124.0
 margin_top = 375.0
 margin_right = 128.0
 margin_bottom = 429.0
 custom_constants/line_spacing = 6
-text = "If you want non-LAN clients to connect,
-make sure the port 10567 in UDP
+text = "Para permitir conexões fora da LAN, 
+If you want non-LAN clients to connect,
+make sure the port 5252 in UDP
 is forwarded on your router."
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="FindPublicIP" type="LinkButton" parent="Players"]
-margin_left = 168.0
-margin_top = 393.5
-margin_right = 341.0
-margin_bottom = 407.5
-text = "Find your public IP address"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="FindPublicIP" type="LineEdit" parent="Players"]
+margin_left = 123.0
+margin_top = 279.0
+margin_right = 189.0
+margin_bottom = 302.0
+hint_tooltip = "Envie este IP para o outro jogador"
+mouse_filter = 1
+text = "192.168.0.1"
+editable = false
+expand_to_text_length = true
+
+[node name="IPIndication" type="Label" parent="Players"]
+margin_left = 75.0
+margin_top = 279.0
+margin_right = 115.0
+margin_bottom = 303.0
+text = "Seu IP é:"
+valign = 1
 
 [node name="Connect" type="Panel" parent="."]
 anchor_left = 0.5
@@ -186,9 +198,9 @@ __meta__ = {
 }
 
 [node name="GhostCheck" type="CheckBox" parent="Connect"]
-margin_left = 17.0
+margin_left = 20.0
 margin_top = 88.0
-margin_right = 106.0
+margin_right = 109.0
 margin_bottom = 112.0
 custom_fonts/font = SubResource( 1 )
 pressed = true
@@ -218,6 +230,5 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 [connection signal="pressed" from="Players/Start" to="." method="_on_start_pressed"]
-[connection signal="pressed" from="Players/FindPublicIP" to="." method="_on_find_public_ip_pressed"]
 [connection signal="pressed" from="Connect/Host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="Connect/Join" to="." method="_on_join_pressed"]
