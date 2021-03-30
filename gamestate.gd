@@ -93,25 +93,24 @@ remote func pre_start_game(spawn_points):
 			print("ID: " + str(p_id))
 			if p_id == 1:
 				if is_ghost:
-					player = ghost.instance()
-					player.position = world.get_node("Ghost_Spawn").position
-					player.set_name("Ghost") 
+					player = instantiate_ghost(world)
 				elif is_ghost == false:
-					player = maria.instance()
-					player.position = world.get_node("Maria_Spawn").position
-					player.set_name("Maria") 
+					player = instantiate_maria(world) 
 			else:
 				var hostPlayerName = world.get_node("Players").get_child(0).name	
 				if hostPlayerName == "Maria":
-					player = ghost.instance()
-					player.set_name("Ghost") 
+					player = instantiate_ghost(world)
 				else:
-					player = maria.instance()
-					player.set_name("Maria") 
+					player = instantiate_maria(world)
 			# If node for this peer id, set name.
 			player.set_player_name(player_name)
 			
 		else:
+			# se existe fantasma
+			if world.get_node_or_null("Players/Ghost") != null:
+				player = instantiate_maria(world)
+			else:
+				player = instantiate_ghost(world)
 			# Otherwise set name from peer.
 			player.set_player_name(players[p_id])
 
@@ -128,6 +127,21 @@ remote func pre_start_game(spawn_points):
 remote func post_start_game():
 	get_tree().set_pause(false) # Unpause and unleash the game!
 
+func instantiate_maria(world):
+	var maria = load("res://Scenes/Maria.tscn")
+	var new_player
+	new_player = maria.instance()
+	new_player.position = world.get_node("Maria_Spawn").position
+	new_player.set_name("Maria") 
+	return new_player
+	
+func instantiate_ghost(world):
+	var ghost = load("res://Scenes/Ghost.tscn")
+	var new_player
+	new_player = ghost.instance()
+	new_player.position = world.get_node("Ghost_Spawn").position
+	new_player.set_name("Ghost") 
+	return new_player
 
 remote func ready_to_start(id):
 	assert(get_tree().is_network_server())
