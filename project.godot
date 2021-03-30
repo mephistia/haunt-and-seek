@@ -16,19 +16,19 @@ _global_script_class_icons={
 [application]
 
 config/name="Haunt&Seek"
-run/main_scene="res://Scenes/Menu.tscn"
+run/main_scene="res://lobby.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
-NetworkSingleton="*res://NetworkSingleton.gd"
+gamestate="*res://gamestate.gd"
 
 [display]
 
-window/size/width=384
-window/size/height=216
-window/size/test_width=1152
-window/size/test_height=648
+window/size/width=640
+window/size/height=360
+window/size/test_width=1280
+window/size/test_height=720
 window/dpi/allow_hidpi=true
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
@@ -54,6 +54,14 @@ texture={
 "size_limit": 0,
 "stream": false,
 "svg/scale": 1.0
+}
+
+[input]
+
+click={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
+ ]
 }
 
 [rendering]
