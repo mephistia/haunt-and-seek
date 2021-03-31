@@ -1,5 +1,7 @@
 extends Control
 
+var is_ghost = false
+
 func _ready():
 	# Called every time the node is added to the scene.
 	gamestate.connect("connection_failed", self, "_on_connection_failed")
@@ -20,13 +22,13 @@ func _on_host_pressed():
 		$Connect/ErrorLabel.text = "Invalid name!"
 		return
 	$Connect/Host.set_text("Conectando...")
+	is_ghost = $Connect/GhostCheck.pressed
 	$Connect.hide()
 	$Players.show()
 	$Connect/ErrorLabel.text = ""
 
 	var player_name = $Connect/Name.text
-	var is_ghost = $Connect/GhostCheck.is_pressed()
-	gamestate.host_game(player_name, is_ghost)
+	gamestate.host_game(player_name)
 	refresh_lobby()
 	$Players/FindPublicIP.set_text(gamestate.my_ip)
 
@@ -84,9 +86,9 @@ func refresh_lobby():
 
 	$Players/Start.disabled = not get_tree().is_network_server()
 
-
+# Apenas host pode clicar
 func _on_start_pressed():
-	gamestate.begin_game()
+	gamestate.begin_game(is_ghost)
 
 
 func _on_find_public_ip_pressed():
