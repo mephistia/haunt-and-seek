@@ -4,18 +4,17 @@
 [ext_resource path="res://assets/characters/ghost.png" type="Texture" id=2]
 [ext_resource path="res://Scenes/Player.gd" type="Script" id=3]
 [ext_resource path="res://assets/fonts/Gamer.ttf" type="DynamicFontData" id=4]
-[ext_resource path="res://Scenes/Pivot.gd" type="Script" id=5]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
-"frames": [ ExtResource( 1 ) ],
-"loop": true,
-"name": "maria",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 2 ) ],
 "loop": true,
 "name": "ghost",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 1 ) ],
+"loop": true,
+"name": "maria",
 "speed": 5.0
 } ]
 
@@ -27,6 +26,10 @@ outline_size = 1
 outline_color = Color( 0.0705882, 0.0666667, 0.0666667, 1 )
 use_mipmaps = true
 font_data = ExtResource( 4 )
+
+[sub_resource type="CapsuleShape2D" id=4]
+radius = 80.0
+height = 16.0
 
 [node name="Player" type="KinematicBody2D"]
 script = ExtResource( 3 )
@@ -55,13 +58,17 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="Pivot" type="Position2D" parent="."]
-script = ExtResource( 5 )
+[node name="DetectionArea" type="Area2D" parent="."]
+position = Vector2( 0, -8 )
+__meta__ = {
+"_edit_group_": true
+}
 
-[node name="CamOffset" type="Position2D" parent="Pivot"]
-position = Vector2( 48, 0 )
+[node name="DetectionShape" type="CollisionShape2D" parent="DetectionArea"]
+shape = SubResource( 4 )
 
-[node name="Camera2D" type="Camera2D" parent="Pivot/CamOffset"]
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 0, -8 )
 drag_margin_h_enabled = true
 drag_margin_v_enabled = true
 smoothing_enabled = true
@@ -71,3 +78,23 @@ drag_margin_right = 0.15
 drag_margin_bottom = 0.15
 editor_draw_limits = true
 editor_draw_drag_margin = true
+
+[node name="RClickTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="RClickFeedback" type="Label" parent="."]
+margin_left = -22.0
+margin_right = 23.0
+margin_bottom = 14.0
+custom_fonts/font = SubResource( 3 )
+text = "oooooo..."
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RClickDuration" type="Timer" parent="."]
+one_shot = true
+[connection signal="area_shape_entered" from="DetectionArea" to="." method="_on_DetectionArea_area_shape_entered"]
+[connection signal="area_shape_exited" from="DetectionArea" to="." method="_on_DetectionArea_area_shape_exited"]

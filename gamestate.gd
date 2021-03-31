@@ -19,6 +19,8 @@ export var my_ip = 0
 var player_name = "Player"
 var is_ghost = null
 
+var is_hosting = false
+
 # Names for remote players in id:name format.
 var players = {}
 var players_ready = []
@@ -38,7 +40,7 @@ func _player_connected(id):
 
 # Callback from SceneTree.
 func _player_disconnected(id):
-	if has_node("/root/World"): # Game is in progress.
+	if has_node("/root/Match"): # Game is in progress.
 		if get_tree().is_network_server():
 			emit_signal("game_error", "Player " + players[id] + " disconnected")
 			end_game()
@@ -69,7 +71,6 @@ func _connected_fail():
 
 remote func register_player(new_player_name):
 	var id = get_tree().get_rpc_sender_id()
-	print(id)
 	players[id] = new_player_name
 	emit_signal("player_list_changed")
 
@@ -95,22 +96,24 @@ remote func pre_start_game(spawn_points):
 
 		if p_id == get_tree().get_network_unique_id():	
 			# If it's this peer
-			print("Meu ID: " + str(p_id))
+			print("ID: " + str(p_id))
 			if p_id == 1:
 				if is_ghost:
 					player = instantiate_ghost(world)
-				else:
+					world.get_node("CanvasLayer/GUI/HBoxContainer/VBoxContainer/FearProgress").hide()
+				elif is_ghost == false:
 					player = instantiate_maria(world) 
 			else:
-				if world.get_node_or_null("Players/Maria") != null:
+				var hostPlayerName = world.get_node("Players").get_child(0).name	
+				if hostPlayerName == "Maria":
 					player = instantiate_ghost(world)
+					world.get_node("CanvasLayer/GUI/HBoxContainer/VBoxContainer/FearProgress").hide()
 				else:
 					player = instantiate_maria(world)
 			# If node for this peer id, set name.
 			player.set_player_name(player_name)
 			
 		else:
-			print("Outro ID: " + p_id)
 			# se existe fantasma
 			if world.get_node_or_null("Players/Ghost") != null:
 				player = instantiate_maria(world)
@@ -121,7 +124,6 @@ remote func pre_start_game(spawn_points):
 
 		player.set_network_master(p_id) #set unique id as master.
 		world.get_node("Players").add_child(player)
-		print("Adicionado jogador " + player.name)
 
 	if not get_tree().is_network_server():
 		# Tell server we are ready to start.
@@ -162,26 +164,28 @@ remote func ready_to_start(id):
 func host_game(new_player_name, np_is_ghost):
 	player_name = new_player_name
 	is_ghost = np_is_ghost
+	is_hosting = true
 	peer = NetworkedMultiplayerENet.new()
 	var result_upnp = open_port(DEFAULT_PORT)
 	if result_upnp != 0:
 		print("ERROR ON UPNP CONNECTION: " + result_upnp)
 	else:
 		print("PORT OPENED")
-		peer.create_server(DEFAULT_PORT, MAX_PEERS)
-		get_tree().set_network_peer(peer)
+	peer.create_server(DEFAULT_PORT, MAX_PEERS)
+	get_tree().set_network_peer(peer)
 
 
 func join_game(ip, new_player_name):
 	player_name = new_player_name
+	is_hosting = false
 	peer = NetworkedMultiplayerENet.new()
 	var result_upnp = open_port(DEFAULT_PORT)
 	if result_upnp != 0:
 		print("ERROR ON UPNP CONNECTION: " + result_upnp)
 	else:
 		print("PORT OPENED")
-		peer.create_client(ip, DEFAULT_PORT)
-		get_tree().set_network_peer(peer)
+	peer.create_client(ip, DEFAULT_PORT)
+	get_tree().set_network_peer(peer)
 
 func open_port(port):
 	upnp.discover(2000, 2, "InternetGatewayDevice")

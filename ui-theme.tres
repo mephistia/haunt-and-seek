@@ -2,12 +2,12 @@
 
 [ext_resource path="res://assets/fonts/Minecraftia-Regular.ttf" type="DynamicFontData" id=1]
 
-[sub_resource type="StyleBoxEmpty" id=3]
+[sub_resource type="StyleBoxEmpty" id=1]
 
-[sub_resource type="StyleBoxFlat" id=1]
+[sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.235294, 0.227451, 0.266667, 1 )
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0.219608, 0.211765, 0.247059, 1 )
 border_color = Color( 0.8, 0.8, 0.8, 0 )
 expand_margin_left = 3.0
@@ -16,7 +16,7 @@ expand_margin_top = 3.0
 expand_margin_bottom = 3.0
 shadow_color = Color( 0, 0, 0, 0.607843 )
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=4]
 size = 8
 outline_size = 1
 outline_color = Color( 0.129412, 0.121569, 0.121569, 1 )
@@ -24,7 +24,7 @@ extra_spacing_top = 2
 font_data = ExtResource( 1 )
 
 [resource]
-default_font = SubResource( 2 )
+default_font = SubResource( 4 )
 Dialogs/constants/button_margin = 32
 Dialogs/constants/margin = 8
 LineEdit/colors/clear_button_color = Color( 0.88, 0.88, 0.88, 1 )
@@ -39,14 +39,14 @@ LineEdit/fonts/font = null
 LineEdit/icons/clear = null
 LineEdit/styles/focus = null
 LineEdit/styles/normal = null
-LineEdit/styles/read_only = SubResource( 3 )
-PopupDialog/styles/panel = SubResource( 1 )
+LineEdit/styles/read_only = SubResource( 1 )
+PopupDialog/styles/panel = SubResource( 2 )
 TooltipLabel/colors/font_color = Color( 1, 1, 1, 1 )
 TooltipLabel/colors/font_color_shadow = Color( 0, 0, 0, 0 )
 TooltipLabel/constants/shadow_offset_x = 1
 TooltipLabel/constants/shadow_offset_y = 1
 TooltipLabel/fonts/font = null
-TooltipPanel/styles/panel = SubResource( 4 )
+TooltipPanel/styles/panel = SubResource( 3 )
 WindowDialog/colors/title_color = Color( 0.133333, 0.133333, 0.133333, 1 )
 WindowDialog/constants/close_h_ofs = 18
 WindowDialog/constants/close_v_ofs = 18

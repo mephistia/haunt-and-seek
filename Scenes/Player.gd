@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+export var is_being_detected = false
+
 export var speed = 100
 
 export var items = []
@@ -23,10 +25,10 @@ func set_camera_limits():
 	var tilemap = map.get_node("TileMap")
 	var map_limits = tilemap.get_used_rect()
 	var cell_size = tilemap.cell_size
-	$Pivot/CamOffset/Camera2D.limit_left = map_limits.position.x * cell_size.x
-	$Pivot/CamOffset/Camera2D.limit_right = map_limits.end.x * cell_size.x
-	$Pivot/CamOffset/Camera2D.limit_top = map_limits.position.y * cell_size.y
-	$Pivot/CamOffset/Camera2D.limit_bottom = map_limits.end.y * cell_size.y
+	$Camera2D.limit_left = map_limits.position.x * cell_size.x
+	$Camera2D.limit_right = map_limits.end.x * cell_size.x
+	$Camera2D.limit_top = map_limits.position.y * cell_size.y
+	$Camera2D.limit_bottom = map_limits.end.y * cell_size.y
 
 func _ready():
 	on_ready()
@@ -36,12 +38,15 @@ func on_ready():
 	target = position
 	puppet_target = target
 	if is_network_master():
-		$Pivot/CamOffset/Camera2D.current = true
+		$Camera2D.current = true
 	map = get_tree().get_root().get_node("Match")
 	set_camera_limits()
 	
 
 func _input(event):
+	detect_inputs(event)
+		
+func detect_inputs(event):
 	if is_network_master():
 		if event.is_action_pressed("click"):
 			target = get_global_mouse_position()
@@ -51,6 +56,7 @@ func _input(event):
 			return
 			
 		rset("puppet_target", target)
+		
 
 func _physics_process(delta):
 	on_process(delta)
@@ -70,7 +76,7 @@ func on_process(delta):
 		
 	var camera_movement
 
-	if (position.distance_to(target) > 10):
+	if (position.distance_to(target) > 20):
 		velocity = move_and_slide(velocity)
 		
 		
@@ -100,4 +106,27 @@ func on_process(delta):
 
 
 
+func _on_DetectionArea_area_shape_entered(area_id, area, area_shape, self_shape):
+	start_detection()
+	
 
+func _on_DetectionArea_area_shape_exited(area_id, area, area_shape, self_shape):
+	stop_detection()
+		
+	
+func start_detection():
+	if !is_being_detected:
+		is_being_detected = true
+		print("Iniciou a detecção")
+	# DEBUG:
+	else:
+		print("Está sendo detectado!")
+		
+	
+func stop_detection():
+	if is_being_detected:
+		is_being_detected = false
+		print("Saiu da área")
+	# DEBUG
+	else:
+		print("Saiu da área mas não estava sendo detectado??")
