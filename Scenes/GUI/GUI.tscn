@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/GUI/fearbar_bg.png" type="Texture" id=1]
+[ext_resource path="res://assets/GUI/fearbar_fill.png" type="Texture" id=2]
+[ext_resource path="res://assets/GUI/fearbar_fg.png" type="Texture" id=3]
+
+[node name="GUI" type="MarginContainer"]
+anchor_right = 1.0
+margin_left = 20.0
+margin_top = 20.0
+margin_right = -20.0
+margin_bottom = -20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_right = 600.0
+margin_bottom = 32.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+margin_right = 192.0
+margin_bottom = 32.0
+
+[node name="FearProgress" type="TextureProgress" parent="HBoxContainer/VBoxContainer"]
+margin_right = 192.0
+margin_bottom = 32.0
+rounded = true
+texture_under = ExtResource( 1 )
+texture_over = ExtResource( 3 )
+texture_progress = ExtResource( 2 )
+tint_progress = Color( 0.486275, 0.207843, 0.0980392, 1 )

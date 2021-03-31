@@ -19,15 +19,16 @@ func _on_host_pressed():
 	if $Connect/Name.text == "":
 		$Connect/ErrorLabel.text = "Invalid name!"
 		return
-
+	$Connect/Host.set_text("Conectando...")
 	$Connect.hide()
 	$Players.show()
 	$Connect/ErrorLabel.text = ""
 
 	var player_name = $Connect/Name.text
-	var is_ghost = $Connect/GhostCheck.pressed
+	var is_ghost = $Connect/GhostCheck.is_pressed()
 	gamestate.host_game(player_name, is_ghost)
 	refresh_lobby()
+	$Players/FindPublicIP.set_text(gamestate.my_ip)
 
 
 func _on_join_pressed():
@@ -40,6 +41,7 @@ func _on_join_pressed():
 		$Connect/ErrorLabel.text = "Invalid IP address!"
 		return
 
+	$Connect/Join.set_text("Conectando...")
 	$Connect/ErrorLabel.text = ""
 	$Connect/Host.disabled = true
 	$Connect/Join.disabled = true
@@ -88,4 +90,4 @@ func _on_start_pressed():
 
 
 func _on_find_public_ip_pressed():
-	OS.shell_open("https://icanhazip.com/")
+	OS.shell_open("http://ipv4.icanhazip.com/")
