@@ -23,7 +23,6 @@ func _ready():
 	$RClickDuration.connect("timeout", self, "_on_RClickDuration_timeout")
 	.on_ready() # Chamar função pai ("super")
 	
-
 func _process(delta):
 	$RClickFeedback.text = "%3.1f" % $RClickTimer.time_left
 
@@ -45,7 +44,10 @@ func _on_RClickDuration_timeout():
 	rpc("emit_stopped_haunting")
 	
 sync func emit_stopped_haunting():
+	$AnimatedSprite.modulate = Color(1, 1, 1)
 	emit_signal("stopped_haunting")
 
 sync func emit_haunting():
+	# mudar cor para feedback visual
+	$AnimatedSprite.modulate = Color(1, 0, 0)
 	emit_signal("haunting")
