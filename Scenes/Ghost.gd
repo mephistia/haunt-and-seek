@@ -17,7 +17,7 @@ func _ready():
 	$AnimatedSprite.animation = "ghost"
 	speed = 75
 	$CollisionShape2D.set_deferred("disabled", true)
-	$DetectionArea/DetectionShape.shape.set_radius(80)
+	$DetectionArea/DetectionShape.shape.set_radius(90)
 	$DetectionArea/DetectionShape.shape.set_height(0)
 	$RClickTimer.connect("timeout", self, "_on_RClickTimer_timeout")
 	$RClickDuration.connect("timeout", self, "_on_RClickDuration_timeout")
