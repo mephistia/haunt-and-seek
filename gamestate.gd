@@ -29,6 +29,7 @@ signal connection_failed()
 signal connection_succeeded()
 signal game_ended()
 signal game_error(what)
+signal game_started()
 
 # Callback from SceneTree.
 func _player_connected(id):
@@ -98,47 +99,25 @@ remote func pre_start_game(id_class):
 			player = instantiate_ghost(world)
 
 		if p_id == get_tree().get_network_unique_id():	
-			# If it's this peer
 			if id_class[p_id] == 1:
 				world.get_node("CanvasLayer/GUI/HBoxContainer/VBoxContainer/FearProgress").hide()
-			print("ID: " + str(p_id))
-#			if p_id == 1:
-#				if is_ghost:
-#					player = instantiate_ghost(world)
-#					world.get_node("CanvasLayer/GUI/HBoxContainer/VBoxContainer/FearProgress").hide()
-#				elif is_ghost == false:
-#					player = instantiate_maria(world) 
-#			else:
-#				var hostPlayerName = world.get_node("Players").get_child(0).name	
-#				if hostPlayerName == "Maria":
-#					player = instantiate_ghost(world)
-#					world.get_node("CanvasLayer/GUI/HBoxContainer/VBoxContainer/FearProgress").hide()
-#				else:
-#					player = instantiate_maria(world)
-			# If node for this peer id, set name.
+
 			player.set_player_name(player_name)
 			
 		else:
-			# se existe fantasma
-#			if world.get_node_or_null("Players/Ghost") != null:
-#				player = instantiate_maria(world)
-#			else:
-#				player = instantiate_ghost(world)
-			# Otherwise set name from peer.
 			player.set_player_name(players[p_id])
 
 		player.set_network_master(p_id) #set unique id as master.
 		world.get_node("Players").add_child(player)
 
 	if not get_tree().is_network_server():
-		# Tell server we are ready to start.
 		rpc_id(1, "ready_to_start", get_tree().get_network_unique_id())
 	elif players.size() == 0:
 		post_start_game()
 
 
 remote func post_start_game():
-	
+	emit_signal("game_started")
 	get_tree().set_pause(false) # Unpause and unleash the game!
 
 func instantiate_maria(world):

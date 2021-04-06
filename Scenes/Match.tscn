@@ -1,7 +1,8 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://assets/tilesets/placeholder.png" type="Texture" id=1]
+[ext_resource path="res://assets/tilesets/scenery.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/GUI/GUI.tscn" type="PackedScene" id=2]
+
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
