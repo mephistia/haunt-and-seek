@@ -3,7 +3,7 @@
 [ext_resource path="res://assets/characters/maria.png" type="Texture" id=1]
 [ext_resource path="res://assets/characters/ghost.png" type="Texture" id=2]
 [ext_resource path="res://Scenes/Player.gd" type="Script" id=3]
-[ext_resource path="res://assets/fonts/Gamer.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://assets/fonts/Minecraftia-Regular.ttf" type="DynamicFontData" id=4]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -22,6 +22,7 @@ animations = [ {
 extents = Vector2( 8, 8 )
 
 [sub_resource type="DynamicFont" id=3]
+size = 8
 outline_size = 1
 outline_color = Color( 0.0705882, 0.0666667, 0.0666667, 1 )
 use_mipmaps = true
@@ -84,9 +85,9 @@ editor_draw_drag_margin = true
 one_shot = true
 
 [node name="RClickFeedback" type="Label" parent="."]
-margin_left = -22.0
-margin_right = 23.0
-margin_bottom = 14.0
+margin_left = -42.0
+margin_right = 42.0
+margin_bottom = 22.0
 custom_fonts/font = SubResource( 3 )
 text = "oooooo..."
 align = 1
