@@ -41,7 +41,7 @@ func _player_connected(id):
 func _player_disconnected(id):
 	if has_node("/root/Match"): # Game is in progress.
 		if get_tree().is_network_server():
-			emit_signal("game_error", "Player " + players[id] + " disconnected")
+			emit_signal("game_error", "Jogador " + players[id] + " desconectado.")
 			end_game()
 	else: # Game is not in progress.
 		# Unregister this player.
@@ -56,7 +56,7 @@ func _connected_ok():
 
 # Callback from SceneTree, only for clients (not server).
 func _server_disconnected():
-	emit_signal("game_error", "Server disconnected")
+	emit_signal("game_error", "Servidor desconectado.")
 	end_game()
 
 
@@ -151,21 +151,23 @@ func host_game(new_player_name):
 	peer = NetworkedMultiplayerENet.new()
 	var result_upnp = open_port(DEFAULT_PORT)
 	if result_upnp != 0:
-		print("ERROR ON UPNP CONNECTION: " + result_upnp)
+		print("ERROR ON UPNP CONNECTION: " + str(result_upnp))
+		emit_signal("game_error", "Erro na conexão UPnP:  " + str(result_upnp) + "\n\n\n Pode ser necessário ativar a conexão UPnP no roteador.")
+		end_game()
 	else:
 		print("PORT OPENED")
-	peer.create_server(DEFAULT_PORT, MAX_PEERS)
-	get_tree().set_network_peer(peer)
+		peer.create_server(DEFAULT_PORT, MAX_PEERS)
+		get_tree().set_network_peer(peer)
 	
 	
 func join_game(ip, new_player_name):
 	player_name = new_player_name
 	peer = NetworkedMultiplayerENet.new()
-	var result_upnp = open_port(DEFAULT_PORT)
-	if result_upnp != 0:
-		print("ERROR ON UPNP CONNECTION: " + result_upnp)
-	else:
-		print("PORT OPENED")
+#	var result_upnp = open_port(DEFAULT_PORT)
+#	if result_upnp != 0:
+#		print("ERROR ON UPNP CONNECTION: " + result_upnp)
+#	else:
+#		print("PORT OPENED")
 	peer.create_client(ip, DEFAULT_PORT)
 	get_tree().set_network_peer(peer)
 
