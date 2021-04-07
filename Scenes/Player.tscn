@@ -74,10 +74,10 @@ position = Vector2( 0, -8 )
 drag_margin_h_enabled = true
 drag_margin_v_enabled = true
 smoothing_enabled = true
-drag_margin_left = 0.15
-drag_margin_top = 0.15
-drag_margin_right = 0.15
-drag_margin_bottom = 0.15
+drag_margin_left = 0.04
+drag_margin_top = 0.11
+drag_margin_right = 0.04
+drag_margin_bottom = 0.07
 editor_draw_limits = true
 editor_draw_drag_margin = true
 
