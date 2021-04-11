@@ -4,3 +4,5 @@ OBS: UPnP deve estar ativado no roteador do host
 
 - Click esquerdo: andar
 - Click direito: gritar (apenas fantasma)
+
+
