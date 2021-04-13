@@ -4,6 +4,8 @@ signal haunting
 
 signal stopped_haunting
 
+var is_on_detection_area = false
+
 var cooldown = 8.0
 
 var duration = 2.5
@@ -54,6 +56,10 @@ func _process(delta):
 		var clamped_distance = clamp(inverse_lerp(0, detection_area, distance), 0.85, 1)
 		speed = clamped_distance * normal_speed
 		
+		if is_on_detection_area and maria_is_capturing:
+			var maria_name = get_tree().get_root().get_node("Match/Players/Maria/PlayerName").text
+			rpc("game_over", "Maria (" + maria_name + ")")
+		
 
 func _input(event):
 	.detect_inputs(event)
@@ -68,7 +74,8 @@ func _input(event):
 
 func _on_RClickTimer_timeout():
 	$RClickFeedback.hide()
-	can_haunt = true
+	if !is_on_detection_area:
+		can_haunt = true
 
 func _on_RClickDuration_timeout():
 	rpc("emit_stopped_haunting")
@@ -99,15 +106,16 @@ func _on_Maria_stopped_capturing():
 	maria_is_capturing = false
 
 # quando o sprite de Maria entrar na área do fantasma
-# corrigir!! 
 func _on_DetectionArea_body_entered(body):
 	if is_network_master() and body.get_name() == "Maria":
-		print("Is in area")
 		can_haunt = false
+		is_on_detection_area = true
 
 
 func _on_DetectionArea_body_exited(body):
 	if is_network_master() and body.get_name() == "Maria":
+		is_on_detection_area = false
 		if !can_haunt and $RClickTimer.time_left == 0:
 			can_haunt = true
+
 

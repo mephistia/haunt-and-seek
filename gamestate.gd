@@ -146,28 +146,29 @@ remote func ready_to_start(id):
 		post_start_game()
 
 
-func host_game(new_player_name):
+func host_game(new_player_name, is_local_network):
 	player_name = new_player_name
 	peer = NetworkedMultiplayerENet.new()
-#	var result_upnp = open_port(DEFAULT_PORT)
-#	if result_upnp != 0:
-#		print("ERROR ON UPNP CONNECTION: " + str(result_upnp))
-#		emit_signal("game_error", "Erro na conexão UPnP:  " + str(result_upnp) + "\n\n\n Pode ser necessário ativar a conexão UPnP no roteador.")
-#		end_game()
-#	else:
-#		print("PORT OPENED")
+	if !is_local_network:
+		var result_upnp = open_port(DEFAULT_PORT)
+		if result_upnp != 0:
+			print("ERROR ON UPNP CONNECTION: " + str(result_upnp))
+			emit_signal("game_error", "Erro na conexão UPnP:  " + str(result_upnp) + "\n\n\n Pode ser necessário ativar a conexão UPnP no roteador para jogar em WAN.")
+			end_game()
+		else:
+			print("PORT OPENED")
+	else:
+		my_ip = "127.0.0.1"
 	peer.create_server(DEFAULT_PORT, MAX_PEERS)
 	get_tree().set_network_peer(peer)
 	
 	
 func join_game(ip, new_player_name):
 	player_name = new_player_name
+	my_ip = upnp.query_external_address()
+	if my_ip == "":
+		my_ip = "127.0.0.1"
 	peer = NetworkedMultiplayerENet.new()
-#	var result_upnp = open_port(DEFAULT_PORT)
-#	if result_upnp != 0:
-#		print("ERROR ON UPNP CONNECTION: " + result_upnp)
-#	else:
-#		print("PORT OPENED")
 	peer.create_client(ip, DEFAULT_PORT)
 	get_tree().set_network_peer(peer)
 
@@ -219,10 +220,20 @@ func _ready():
 	get_tree().connect("server_disconnected", self, "_server_disconnected")
 	get_tree().set_auto_accept_quit(false)
 	
+
+func game_over(winner):			
+	var lobby = get_tree().get_root().get_node("Lobby")
+	lobby.show()
+	lobby.get_node("Connect").hide()
+	lobby.get_node("Players").hide()
+	lobby.get_node("GameOver").show()
+	lobby.get_node("GameOver/WinnerLabel").text = winner + " venceu!"
+	end_game()
+		
 func _notification(what):
 	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
 		upnp.delete_port_mapping(DEFAULT_PORT)
-		print("Bye!")
 		get_tree().quit() # default behavior
 	
-
+func delete_peer():
+	get_tree().set_network_peer(null) # Remove peer
