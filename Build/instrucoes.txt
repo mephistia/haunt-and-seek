@@ -1,8 +1,8 @@
-Um jogador seleciona o personagem no menu inicial e clica no botão Criar Partida, passando seu IP público para o outro jogador, que deve escrever/colar o IP e clicar no botão Entrar em Partida.
+Um jogador seleciona o personagem no menu inicial e clica no botão Criar Partida, passando seu IP para o outro jogador, que deve escrever/colar o IP e clicar no botão Entrar em Partida.
 
-OBS: UPnP deve estar ativado no roteador do host
+OBS: Para jogar sem ser em Rede Local é necessário ter UPnP ativado no roteador.
 
 - Click esquerdo: andar
-- Click direito: gritar (apenas fantasma)
+- Click direito: gritar (Fantasma), capturar fantasma (Maria)
 
 
