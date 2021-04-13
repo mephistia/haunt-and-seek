@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://lobby.gd" type="Script" id=1]
 [ext_resource path="res://assets/fonts/Minecraftia-Regular.ttf" type="DynamicFontData" id=2]
@@ -13,12 +13,25 @@ font_data = ExtResource( 2 )
 
 [sub_resource type="ButtonGroup" id=2]
 
+[sub_resource type="DynamicFont" id=3]
+outline_size = 1
+outline_color = Color( 0.129412, 0.121569, 0.121569, 1 )
+extra_spacing_top = 2
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 8
+outline_size = 1
+outline_color = Color( 0.129412, 0.121569, 0.121569, 1 )
+extra_spacing_top = 2
+font_data = ExtResource( 2 )
+
 [node name="Lobby" type="Control"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-size_flags_horizontal = 2
-size_flags_vertical = 2
-theme = ExtResource( 3 )
+pause_mode = 2
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -96,15 +109,22 @@ margin_right = 189.0
 margin_bottom = 302.0
 hint_tooltip = "Envie este IP para o outro jogador"
 mouse_filter = 1
+theme = ExtResource( 3 )
 text = "192.168.0.1"
 editable = false
 expand_to_text_length = true
+caret_blink = true
+caret_blink_speed = 0.5
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="IPIndication" type="Label" parent="Players"]
 margin_left = 75.0
 margin_top = 279.0
 margin_right = 115.0
 margin_bottom = 303.0
+theme = ExtResource( 3 )
 text = "Seu IP é:"
 valign = 1
 
@@ -124,50 +144,54 @@ __meta__ = {
 }
 
 [node name="NameLabel" type="Label" parent="Connect"]
-margin_left = 17.0
-margin_top = 29.0
-margin_right = 59.0
-margin_bottom = 49.0
+margin_left = 20.0
+margin_top = 32.0
+margin_right = 62.0
+margin_bottom = 52.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
 custom_fonts/font = SubResource( 1 )
 text = "Nome:"
 
 [node name="Name" type="LineEdit" parent="Connect"]
-margin_left = 17.0
-margin_top = 50.0
-margin_right = 173.0
-margin_bottom = 80.0
+margin_left = 20.0
+margin_top = 56.0
+margin_right = 176.0
+margin_bottom = 86.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 custom_fonts/font = SubResource( 1 )
 text = "Jogador 1"
+caret_blink = true
+caret_blink_speed = 0.5
 
 [node name="IPLabel" type="Label" parent="Connect"]
-margin_left = 17.0
-margin_top = 128.0
-margin_right = 59.0
-margin_bottom = 148.0
+margin_left = 20.0
+margin_top = 136.0
+margin_right = 62.0
+margin_bottom = 156.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
 custom_fonts/font = SubResource( 1 )
 text = "IP:"
 
 [node name="IPAddress" type="LineEdit" parent="Connect"]
-margin_left = 19.0
-margin_top = 147.0
-margin_right = 175.0
-margin_bottom = 177.0
+margin_left = 20.0
+margin_top = 152.0
+margin_right = 176.0
+margin_bottom = 182.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 custom_fonts/font = SubResource( 1 )
 text = "127.0.0.1"
+caret_blink = true
+caret_blink_speed = 0.5
 
 [node name="Host" type="Button" parent="Connect"]
-margin_left = 181.0
-margin_top = 53.0
-margin_right = 315.0
-margin_bottom = 79.0
+margin_left = 180.0
+margin_top = 58.0
+margin_right = 314.0
+margin_bottom = 84.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 custom_fonts/font = SubResource( 1 )
@@ -177,10 +201,10 @@ __meta__ = {
 }
 
 [node name="Join" type="Button" parent="Connect"]
-margin_left = 183.0
-margin_top = 149.0
-margin_right = 323.0
-margin_bottom = 175.0
+margin_left = 180.0
+margin_top = 154.0
+margin_right = 320.0
+margin_bottom = 180.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 custom_fonts/font = SubResource( 1 )
@@ -221,6 +245,21 @@ margin_bottom = 112.0
 custom_fonts/font = SubResource( 1 )
 group = SubResource( 2 )
 text = "Maria (Caçadora)"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LocalCheck" type="CheckBox" parent="Connect"]
+margin_left = 228.0
+margin_top = 88.0
+margin_right = 309.0
+margin_bottom = 112.0
+custom_fonts/font = SubResource( 1 )
+pressed = true
+text = "Rede Local"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ErrorDialog" type="AcceptDialog" parent="."]
 margin_right = 240.0
@@ -233,6 +272,83 @@ dialog_autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="GameOver" type="Panel" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -320.0
+margin_top = -180.0
+margin_right = 320.0
+margin_bottom = 180.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GameOverTitle" type="Label" parent="GameOver"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -56.0
+margin_top = 64.0
+margin_right = 56.0
+margin_bottom = 88.0
+size_flags_horizontal = 2
+size_flags_vertical = 0
+custom_fonts/font = SubResource( 3 )
+text = "Fim de jogo!"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WinnerLabel" type="Label" parent="GameOver"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -56.0
+margin_top = 120.0
+margin_right = 56.0
+margin_bottom = 144.0
+size_flags_horizontal = 2
+size_flags_vertical = 0
+custom_fonts/font = SubResource( 4 )
+text = "(fulano) venceu!"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayAgain" type="Button" parent="GameOver"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -136.0
+margin_top = 4.0
+margin_right = 136.0
+margin_bottom = 42.0
+theme = ExtResource( 3 )
+text = "JOGAR NOVAMENTE (trocar personagens)"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ReturnToMenu" type="Button" parent="GameOver"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -109.0
+margin_top = 76.0
+margin_right = 109.0
+margin_bottom = 114.0
+theme = ExtResource( 3 )
+text = "VOLTAR AO MENU"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="Players/Start" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="Connect/Host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="Connect/Join" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="GameOver/PlayAgain" to="." method="_on_PlayAgain_pressed"]
+[connection signal="pressed" from="GameOver/ReturnToMenu" to="." method="_on_ReturnToMenu_pressed"]

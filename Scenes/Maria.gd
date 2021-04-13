@@ -20,7 +20,7 @@ var ghost_is_haunting = false
 
 var max_captures = 3
 
-onready var detection_area = get_node("DetectionArea/DetectionShape").shape.radius * 5
+onready var detection_area = get_node("DetectionArea/DetectionShape").shape.radius * 4.5
 
 onready var fear_bar = get_tree().get_root().get_node("Match/CanvasLayer/GUI/HBoxContainer/VBoxContainer/FearProgress")
 
@@ -54,7 +54,6 @@ func _process(delta):
 		
 		var difference = detection_area - distance
 		
-		# var increase_by = inverse_lerp(5, detection_area, distance) * 3
 		var increase_by = (1 - (distance / detection_area)) * 3
 		fear_bar.value += increase_by
 			
@@ -89,11 +88,9 @@ func _on_RClickDuration_timeout():
 	captures_count.text = str(max_captures)
 	
 	if max_captures == 0:
-		game_over()
+		var ghost_name = get_tree().get_root().get_node("Match/Players/Ghost/PlayerName").text
+		rpc("game_over", "Fantasma (" + ghost_name + ")")
 	
-	
-func game_over():
-	pass
 	
 sync func emit_stopped_capturing():
 	$AnimatedSprite.modulate = Color(1, 1, 1)

@@ -2,6 +2,8 @@ extends Control
 
 var is_ghost = false
 
+var local_network = true
+
 func _ready():
 	# Called every time the node is added to the scene.
 	gamestate.connect("connection_failed", self, "_on_connection_failed")
@@ -21,14 +23,15 @@ func _on_host_pressed():
 	if $Connect/Name.text == "":
 		$Connect/ErrorLabel.text = "Invalid name!"
 		return
-	$Connect/Host.set_text("Conectando...")
 	is_ghost = $Connect/GhostCheck.pressed
 	$Connect.hide()
 	$Players.show()
 	$Connect/ErrorLabel.text = ""
 
 	var player_name = $Connect/Name.text
-	gamestate.host_game(player_name)
+	# passar a seleção de "Rede Local"
+	local_network = $Connect/LocalCheck.pressed
+	gamestate.host_game(player_name, local_network)
 	refresh_lobby()
 	$Players/FindPublicIP.set_text(gamestate.my_ip)
 
@@ -43,7 +46,6 @@ func _on_join_pressed():
 		$Connect/ErrorLabel.text = "Invalid IP address!"
 		return
 
-	$Connect/Join.set_text("Conectando...")
 	$Connect/ErrorLabel.text = ""
 	$Connect/Host.disabled = true
 	$Connect/Join.disabled = true
@@ -58,6 +60,7 @@ func _on_connection_success():
 
 
 func _on_connection_failed():
+	
 	$Connect/Host.disabled = false
 	$Connect/Join.disabled = false
 	$Connect/ErrorLabel.set_text("Connection failed.")
@@ -85,6 +88,7 @@ func refresh_lobby():
 		$Players/List.add_item(p)
 
 	$Players/Start.disabled = not get_tree().is_network_server()
+	# desabilita se não é o server
 
 # Apenas host pode clicar
 func _on_start_pressed():
@@ -93,3 +97,17 @@ func _on_start_pressed():
 
 func _on_find_public_ip_pressed():
 	OS.shell_open("http://ipv4.icanhazip.com/")
+
+
+func _on_PlayAgain_pressed():
+	pass
+	
+
+
+func _on_ReturnToMenu_pressed():
+	gamestate.delete_peer()
+	$GameOver.hide()
+
+	
+
+

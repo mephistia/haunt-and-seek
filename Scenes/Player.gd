@@ -117,16 +117,11 @@ func _on_DetectionArea_area_shape_exited(area_id, area, area_shape, self_shape):
 func start_detection():
 	if !is_being_detected:
 		is_being_detected = true
-		print("Iniciou a detecção")
-	# DEBUG:
-	else:
-		print("Está sendo detectado!")
 		
 	
 func stop_detection():
 	if is_being_detected:
 		is_being_detected = false
-		print("Saiu da área")
-	# DEBUG
-	else:
-		print("Saiu da área mas não estava sendo detectado??")
+
+sync func game_over(winner):
+	gamestate.game_over(winner)
