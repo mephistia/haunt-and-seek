@@ -100,7 +100,7 @@ remote func pre_start_game(id_class):
 
 		if p_id == get_tree().get_network_unique_id():	
 			if id_class[p_id] == 1:
-				world.get_node("CanvasLayer/GUI/HBoxContainer/VBoxContainer/FearProgress").hide()
+				world.get_node("CanvasLayer/GUI/HBoxContainer/VBoxContainer").hide()
 
 			player.set_player_name(player_name)
 			
@@ -149,15 +149,15 @@ remote func ready_to_start(id):
 func host_game(new_player_name):
 	player_name = new_player_name
 	peer = NetworkedMultiplayerENet.new()
-	var result_upnp = open_port(DEFAULT_PORT)
-	if result_upnp != 0:
-		print("ERROR ON UPNP CONNECTION: " + str(result_upnp))
-		emit_signal("game_error", "Erro na conexão UPnP:  " + str(result_upnp) + "\n\n\n Pode ser necessário ativar a conexão UPnP no roteador.")
-		end_game()
-	else:
-		print("PORT OPENED")
-		peer.create_server(DEFAULT_PORT, MAX_PEERS)
-		get_tree().set_network_peer(peer)
+#	var result_upnp = open_port(DEFAULT_PORT)
+#	if result_upnp != 0:
+#		print("ERROR ON UPNP CONNECTION: " + str(result_upnp))
+#		emit_signal("game_error", "Erro na conexão UPnP:  " + str(result_upnp) + "\n\n\n Pode ser necessário ativar a conexão UPnP no roteador.")
+#		end_game()
+#	else:
+#		print("PORT OPENED")
+	peer.create_server(DEFAULT_PORT, MAX_PEERS)
+	get_tree().set_network_peer(peer)
 	
 	
 func join_game(ip, new_player_name):

@@ -5,3 +5,8 @@
 
 [node name="Maria" instance=ExtResource( 2 )]
 script = ExtResource( 1 )
+
+[node name="RClickDuration" parent="." index="7"]
+wait_time = 0.5
+[connection signal="timeout" from="RClickTimer" to="." method="_on_RClickTimer_timeout"]
+[connection signal="timeout" from="RClickDuration" to="." method="_on_RClickDuration_timeout"]

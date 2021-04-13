@@ -51,3 +51,5 @@ texture = ExtResource( 3 )
 [node name="SFX" type="AudioStreamPlayer2D" parent="." index="9"]
 stream = SubResource( 4 )
 attenuation = 3.03143
+[connection signal="body_entered" from="DetectionArea" to="." method="_on_DetectionArea_body_entered"]
+[connection signal="body_exited" from="DetectionArea" to="." method="_on_DetectionArea_body_exited"]

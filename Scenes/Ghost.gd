@@ -12,24 +12,48 @@ var can_haunt = true
 
 var last_sfx_id = -1
 
+var maria
+
+var normal_speed = 75
+
 export(Array, AudioStream) var boo_sounds: Array
 
+var detection_area
+
+var maria_is_capturing = false
+
 func _ready():
+	gamestate.connect("game_started", self, "game_has_started")
 	$RClickTimer.wait_time = cooldown	
 	$RClickDuration.wait_time = duration
 	$RClickFeedback.hide()
 	$AnimatedSprite.animation = "ghost"
-	speed = 75
+	speed = normal_speed
 	$CollisionShape2D.set_deferred("disabled", true)
 	$DetectionArea/DetectionShape.shape.set_radius(90)
 	$DetectionArea/DetectionShape.shape.set_height(0)
+	detection_area = get_node("DetectionArea/DetectionShape").shape.radius * 2
 	$RClickTimer.connect("timeout", self, "_on_RClickTimer_timeout")
 	$RClickDuration.connect("timeout", self, "_on_RClickDuration_timeout")
 	randomize()
 	.on_ready() # Chamar função pai ("super")
 	
+	
+func game_has_started():
+	if is_network_master():
+		maria = get_parent().get_node("Maria")
+		if maria:
+			maria.connect("capturing", self, "_on_Maria_capturing")
+			maria.connect("stopped_capturing", self, "_on_Maria_stopped_capturing")
+		
 func _process(delta):
 	$RClickFeedback.text = "%3.1f" % $RClickTimer.time_left
+	# velocidade diminui quanto mais próximo de maria
+	if is_network_master():
+		var distance = maria.global_position.distance_to(global_position)
+		var clamped_distance = clamp(inverse_lerp(0, detection_area, distance), 0.85, 1)
+		speed = clamped_distance * normal_speed
+		
 
 func _input(event):
 	.detect_inputs(event)
@@ -66,4 +90,24 @@ sync func play_random():
 	last_sfx_id = rand_id
 	$SFX.stream = boo_sounds[rand_id]
 	$SFX.play()
+
+func _on_Maria_capturing():
+	maria_is_capturing = true
+	
+	
+func _on_Maria_stopped_capturing():
+	maria_is_capturing = false
+
+# quando o sprite de Maria entrar na área do fantasma
+# corrigir!! 
+func _on_DetectionArea_body_entered(body):
+	if is_network_master() and body.get_name() == "Maria":
+		print("Is in area")
+		can_haunt = false
+
+
+func _on_DetectionArea_body_exited(body):
+	if is_network_master() and body.get_name() == "Maria":
+		if !can_haunt and $RClickTimer.time_left == 0:
+			can_haunt = true
 
