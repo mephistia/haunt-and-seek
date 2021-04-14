@@ -41,7 +41,6 @@ func game_has_started():
 			ghost.connect("haunting", self, "_on_Ghost_haunting")
 			ghost.connect("stopped_haunting", self, "_on_Ghost_stopped_haunting")	
 
-
 func _on_DetectionArea_area_shape_entered(area_id, area, area_shape, self_shape):
 	.start_detection()
 	is_detecting = true
