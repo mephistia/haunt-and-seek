@@ -31,7 +31,6 @@ func _ready():
 	$RClickFeedback.hide()
 	$AnimatedSprite.animation = "ghost"
 	speed = normal_speed
-	$CollisionShape2D.set_deferred("disabled", true)
 	$DetectionArea/DetectionShape.shape.set_radius(90)
 	$DetectionArea/DetectionShape.shape.set_height(0)
 	detection_area = get_node("DetectionArea/DetectionShape").shape.radius * 2
@@ -43,6 +42,13 @@ func _ready():
 	
 func game_has_started():
 	if is_network_master():
+		# desativar masks		
+		$Trail.light_mask = 1
+		$AnimatedSprite.light_mask = 1
+		$PlayerName.light_mask = 1
+		$FakeLight.light_mask = 1
+		$FakeLight.material.light_mode = 0
+		$Trail.material.light_mode = 0
 		maria = get_parent().get_node("Maria")
 		if maria:
 			maria.connect("capturing", self, "_on_Maria_capturing")
@@ -51,7 +57,7 @@ func game_has_started():
 func _process(delta):
 	$RClickFeedback.text = "%3.1f" % $RClickTimer.time_left
 	# velocidade diminui quanto mais próximo de maria
-	if is_network_master():
+	if is_network_master() and maria:
 		var distance = maria.global_position.distance_to(global_position)
 		var clamped_distance = clamp(inverse_lerp(0, detection_area, distance), 0.85, 1)
 		speed = clamped_distance * normal_speed

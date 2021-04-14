@@ -14,7 +14,19 @@ light_mask = 0
 wait_time = 0.5
 
 [node name="Light2D" type="Light2D" parent="." index="8"]
+position = Vector2( 0, -8 )
 texture = ExtResource( 3 )
+shadow_enabled = true
+shadow_gradient_length = 2.0
+shadow_filter = 2
+shadow_filter_smooth = 15.0
+
+[node name="Light2DReveal" type="Light2D" parent="." index="9"]
+position = Vector2( 0, -9.00837 )
+scale = Vector2( 2.05206, 1.17024 )
+texture = ExtResource( 3 )
+mode = 3
+range_item_cull_mask = 2
 shadow_enabled = true
 [connection signal="timeout" from="RClickTimer" to="." method="_on_RClickTimer_timeout"]
 [connection signal="timeout" from="RClickDuration" to="." method="_on_RClickDuration_timeout"]
