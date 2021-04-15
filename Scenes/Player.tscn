@@ -71,13 +71,9 @@ shape = SubResource( 4 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 0, -8 )
-drag_margin_h_enabled = true
-drag_margin_v_enabled = true
+process_mode = 0
 smoothing_enabled = true
-drag_margin_left = 0.02
-drag_margin_top = 0.08
-drag_margin_right = 0.02
-drag_margin_bottom = 0.04
+smoothing_speed = 3.0
 editor_draw_limits = true
 editor_draw_drag_margin = true
 
