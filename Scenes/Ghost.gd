@@ -53,7 +53,8 @@ func game_has_started():
 		if maria:
 			maria.connect("capturing", self, "_on_Maria_capturing")
 			maria.connect("stopped_capturing", self, "_on_Maria_stopped_capturing")
-		
+			maria.get_node("Center").hide()
+				
 func _process(delta):
 	$RClickFeedback.text = "%3.1f" % $RClickTimer.time_left
 	# velocidade diminui quanto mais próximo de maria

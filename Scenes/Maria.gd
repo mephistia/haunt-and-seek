@@ -115,11 +115,12 @@ func _on_DetectionArea_area_shape_exited(area_id, area, area_shape, self_shape):
 
 func _on_Ghost_haunting():
 	ghost_is_haunting = true
-	$Tween.interpolate_property(sound_indicator, "modulate", Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.5, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	$Tween.interpolate_property(sound_indicator, "modulate", Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.6, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	$Tween.interpolate_property(sound_indicator, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), 0.6, Tween.TRANS_LINEAR, Tween.EASE_OUT, 0.6)
+	$Tween.interpolate_property(sound_indicator, "modulate", Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.6, Tween.TRANS_LINEAR, Tween.EASE_IN, 1.2)
+	$Tween.interpolate_property(sound_indicator, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), 0.6, Tween.TRANS_LINEAR, Tween.EASE_OUT, 1.8)
 	$Tween.start()
 func _on_Ghost_stopped_haunting():
 	ghost_is_haunting = false
-	$Tween.interpolate_property(sound_indicator, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), 0.5, Tween.TRANS_LINEAR, Tween.EASE_OUT)
-	$Tween.start()
 	
 	
