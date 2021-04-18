@@ -68,8 +68,7 @@ func _process(delta):
 		
 
 func _input(event):
-	.detect_inputs(event)
-	if event.is_action_pressed("click_right") and can_haunt:
+	if event.is_action_pressed("main_action") and can_haunt:
 		if is_network_master():
 			$RClickTimer.start()
 			$RClickDuration.start()

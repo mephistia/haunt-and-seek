@@ -45,6 +45,8 @@ func _on_DetectionArea_area_shape_entered(area_id, area, area_shape, self_shape)
 	.start_detection()
 	is_detecting = true
 	
+	
+# se pegar item q aumenta visão: $Light2D.texture_scale = 2	
 
 func _process(delta):
 	$RClickFeedback.text = "%3.1f" % $RClickTimer.time_left
@@ -61,8 +63,7 @@ func _process(delta):
 		fear_bar.value -= 1
 
 func _input(event):
-	.detect_inputs(event)
-	if event.is_action_pressed("click_right") and can_capture and max_captures > 0:
+	if event.is_action_pressed("main_action") and can_capture and max_captures > 0:
 		if is_network_master():
 			$RClickTimer.start()
 			$RClickDuration.start()
