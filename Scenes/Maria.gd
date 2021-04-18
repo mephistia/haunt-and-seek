@@ -20,11 +20,16 @@ var ghost_is_haunting = false
 
 var max_captures = 3
 
+var rotation_tween_ended = true
+
 onready var detection_area = get_node("DetectionArea/DetectionShape").shape.radius * 4.5
 
 onready var fear_bar = get_tree().get_root().get_node("Match/CanvasLayer/GUI/HBoxContainer/VBoxContainer/FearProgress")
 
 onready var captures_count = get_tree().get_root().get_node("Match/CanvasLayer/GUI/HBoxContainer/VBoxContainer/HBoxContainer2/CapturesCount")
+
+onready var sound_indicator = $Center/SoundIndicator
+
 
 func _ready():
 	gamestate.connect("game_started", self, "game_has_started")
@@ -50,17 +55,25 @@ func _on_DetectionArea_area_shape_entered(area_id, area, area_shape, self_shape)
 
 func _process(delta):
 	$RClickFeedback.text = "%3.1f" % $RClickTimer.time_left
-	if is_detecting  and is_network_master() and ghost_is_haunting:
-		distance = ghost.global_position.distance_to(global_position)
-		
-		var difference = detection_area - distance
-		
-		var increase_by = (1 - (distance / detection_area)) * 3
-		fear_bar.value += increase_by
+	if is_network_master():
+		# sempre mostra indicador
+		if ghost_is_haunting:		
 			
-	# deve diminuir mesmo dentro da área
-	elif is_network_master():
-		fear_bar.value -= 1
+			sound_indicator.look_at(ghost.global_position)
+			sound_indicator.rotation_degrees += 90
+			
+		if is_detecting and ghost_is_haunting:
+			distance = ghost.global_position.distance_to(global_position)
+			
+			var difference = detection_area - distance
+			
+			var increase_by = (1 - (distance / detection_area)) * 3
+			fear_bar.value += increase_by
+				
+		# deve diminuir mesmo dentro da área
+		else:
+			fear_bar.value -= 1
+		
 
 func _input(event):
 	if event.is_action_pressed("main_action") and can_capture and max_captures > 0:
@@ -102,6 +115,11 @@ func _on_DetectionArea_area_shape_exited(area_id, area, area_shape, self_shape):
 
 func _on_Ghost_haunting():
 	ghost_is_haunting = true
-
+	$Tween.interpolate_property(sound_indicator, "modulate", Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.5, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	$Tween.start()
 func _on_Ghost_stopped_haunting():
 	ghost_is_haunting = false
+	$Tween.interpolate_property(sound_indicator, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), 0.5, Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	$Tween.start()
+	
+	

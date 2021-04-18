@@ -8,7 +8,7 @@ var is_on_detection_area = false
 
 var cooldown = 8.0
 
-var duration = 2.5
+export var duration = 2.5
 
 var can_haunt = true
 

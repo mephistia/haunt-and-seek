@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scenes/Maria.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/fx/light.png" type="Texture" id=3]
+[ext_resource path="res://assets/GUI/sound_indicator.png" type="Texture" id=4]
 
 [node name="Maria" instance=ExtResource( 2 )]
 script = ExtResource( 1 )
@@ -28,5 +29,17 @@ texture = ExtResource( 3 )
 mode = 3
 range_item_cull_mask = 2
 shadow_enabled = true
+
+[node name="Tween" type="Tween" parent="." index="10"]
+
+[node name="Center" type="Node2D" parent="." index="11"]
+position = Vector2( 0, -8 )
+
+[node name="SoundIndicator" type="Sprite" parent="Center" index="0"]
+modulate = Color( 1, 1, 1, 0 )
+scale = Vector2( 0.5, 0.5 )
+z_index = 1
+texture = ExtResource( 4 )
+offset = Vector2( 0, -80 )
 [connection signal="timeout" from="RClickTimer" to="." method="_on_RClickTimer_timeout"]
 [connection signal="timeout" from="RClickDuration" to="." method="_on_RClickDuration_timeout"]
