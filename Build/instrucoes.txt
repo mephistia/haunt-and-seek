@@ -2,7 +2,7 @@ Um jogador seleciona o personagem no menu inicial e clica no botão Criar Partid
 
 OBS: Para jogar sem ser em Rede Local é necessário ter UPnP ativado no roteador.
 
-- Click esquerdo: andar
-- Click direito: gritar (Fantasma), capturar fantasma (Maria)
+- Teclas WASD: andar
+- Tecla R: realizar ação principal (fantasma - assombrar, Maria - usar dispositivo de captura)
 
 
