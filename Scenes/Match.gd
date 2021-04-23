@@ -2,6 +2,8 @@ extends Node2D
 
 var spawns = []
 
+var items_spawned = []
+
 var item_scene = load("res://Scenes/Item.tscn")
 
 func _ready():
@@ -12,7 +14,6 @@ func _ready():
 
 
 func game_has_started():
-	var items_spawned = []
 	for i in 2:
 		var spawn = spawns[randi() % spawns.size()]
 		if i == 1:
@@ -24,6 +25,5 @@ func game_has_started():
 		item_spawned.type = i
 		item_spawned.update_texture()
 		add_child(item_spawned)
-		items_spawned.append(item_spawned)
-		
+		items_spawned.append(item_spawned)		
 		
