@@ -2,7 +2,7 @@ extends Node2D
 
 var spawns = []
 
-var item_scene = preload("res://Scenes/Item.tscn")
+var item_scene = load("res://Scenes/Item.tscn")
 
 func _ready():
 	for N in $ItemSpawns.get_children():
@@ -23,4 +23,7 @@ func game_has_started():
 		item_spawned.global_position = spawn
 		item_spawned.type = i
 		item_spawned.update_texture()
+		add_child(item_spawned)
+		items_spawned.append(item_spawned)
+		
 		
