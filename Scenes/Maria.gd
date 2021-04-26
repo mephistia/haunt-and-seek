@@ -12,7 +12,13 @@ var can_capture = true
 
 var is_detecting = false
 
+var detecting = []
+
 var ghost
+
+var haunt_pos
+
+var haunt_name
 
 var distance = 0
 
@@ -49,7 +55,11 @@ func game_has_started():
 func _on_DetectionArea_area_shape_entered(area_id, area, area_shape, self_shape):
 	.start_detection()
 	is_detecting = true
+	print(area.get_parent().get_name())
+	print(area.get_parent().get_instance_id())
 	
+	if !detecting.has(area.get_parent().get_name()):
+		detecting.append(area.get_parent().get_name())
 	
 # se pegar item q aumenta visão: $Light2D.texture_scale = 2	
 
@@ -59,12 +69,14 @@ func _process(delta):
 		# sempre mostra indicador
 		if ghost_is_haunting:		
 			
-			sound_indicator.look_at(ghost.global_position)
+			sound_indicator.look_at(haunt_pos)
 			sound_indicator.rotation_degrees += 90
 			
-		if is_detecting and ghost_is_haunting:
-			distance = ghost.global_position.distance_to(global_position)
-			
+		if detecting.has(haunt_name) and ghost_is_haunting:
+			distance = haunt_pos.distance_to(global_position)
+			print(haunt_pos)
+			print(global_position)
+			#distance = ghost.global_position.distance_to(global_position)
 			var difference = detection_area - distance
 			
 			var increase_by = (1 - (distance / detection_area)) * 3
@@ -72,11 +84,10 @@ func _process(delta):
 				
 		# deve diminuir mesmo dentro da área
 		else:
-			fear_bar.value -= 1
+			fear_bar.value -= 0.1
 		
 
 func _input(event):
-	.on_input(event)
 	if event.is_action_pressed("main_action") and can_capture and max_captures > 0:
 		if is_network_master():
 			$RClickTimer.start()
@@ -113,9 +124,15 @@ sync func emit_stopped_capturing():
 func _on_DetectionArea_area_shape_exited(area_id, area, area_shape, self_shape):
 	.stop_detection()
 	is_detecting = false
+	detecting.erase(area.get_parent().get_name())
+	
 
-func _on_Ghost_haunting():
+func _on_Ghost_haunting(name,pos):
 	ghost_is_haunting = true
+	haunt_name=name
+	haunt_pos=pos
+	print ("hunter is haunted")
+	print("haunt_name " + str(haunt_name))
 	$Tween.interpolate_property(sound_indicator, "modulate", Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.6, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	$Tween.interpolate_property(sound_indicator, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), 0.6, Tween.TRANS_LINEAR, Tween.EASE_OUT, 0.6)
 	$Tween.interpolate_property(sound_indicator, "modulate", Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.6, Tween.TRANS_LINEAR, Tween.EASE_IN, 1.2)

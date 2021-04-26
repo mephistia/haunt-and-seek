@@ -1,11 +1,10 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://assets/GUI/fearbar_bg.png" type="Texture" id=1]
 [ext_resource path="res://assets/GUI/fearbar_fill.png" type="Texture" id=2]
 [ext_resource path="res://assets/GUI/fearbar_fg.png" type="Texture" id=3]
 [ext_resource path="res://assets/fonts/Minecraftia-Regular.ttf" type="DynamicFontData" id=4]
 [ext_resource path="res://assets/GUI/captures.png" type="Texture" id=5]
-[ext_resource path="res://Scenes/GUI/Inventory.tscn" type="PackedScene" id=6]
 
 [sub_resource type="DynamicFont" id=1]
 size = 8
@@ -14,7 +13,7 @@ outline_color = Color( 0.0705882, 0.0666667, 0.0666667, 1 )
 use_mipmaps = true
 font_data = ExtResource( 4 )
 
-[node name="GUI" type="Control"]
+[node name="GUI" type="MarginContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 8.0
@@ -28,9 +27,6 @@ __meta__ = {
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 margin_right = 624.0
 margin_bottom = 344.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
 margin_right = 192.0
@@ -65,5 +61,3 @@ margin_bottom = 13.0
 custom_fonts/font = SubResource( 1 )
 text = "3"
 valign = 1
-
-[node name="Inventory" parent="." instance=ExtResource( 6 )]
