@@ -1,6 +1,6 @@
 extends "res://Scenes/Player.gd"
 
-signal haunting(what, where)
+signal haunting
 
 signal stopped_haunting
 
@@ -76,25 +76,7 @@ func _input(event):
 			$RClickFeedback.show()
 			rpc("play_random")
 			can_haunt = false
-			rpc("emit_haunting", get_name(), global_position)
-			#print ("emit_haunting R: " + str(global_position.x)+ str(global_position.y))
-	elif event is InputEventMouseButton and can_haunt:
-		if is_network_master():
-			var space = get_world_2d().direct_space_state
-			var mousePos = get_global_mouse_position()
-			var stuff_selected = space.intersect_point(mousePos, 1)
-			if stuff_selected:
-				if stuff_selected[0]["collider"].is_in_group("Objects"):
-					$RClickTimer.start()
-					$RClickDuration.start()
-					$RClickFeedback.show()
-					rpc("play_random")
-					can_haunt = false
-					rpc("emit_haunting", stuff_selected[0]["collider"].get_name(), stuff_selected[0]["collider"].global_position)
-					#print ("emit_haunting Mouse: " + str(event.position.x)+ str(event.position.y))
-
-
-
+			rpc("emit_haunting")
 
 func _on_RClickTimer_timeout():
 	$RClickFeedback.hide()
@@ -108,11 +90,10 @@ sync func emit_stopped_haunting():
 	$AnimatedSprite.modulate = Color(1, 1, 1)
 	emit_signal("stopped_haunting")
 
-sync func emit_haunting(name,position):
+sync func emit_haunting():
 	# mudar cor para feedback visual
 	$AnimatedSprite.modulate = Color(1, 0, 0)
-	print ("SEND HAUNT id = " + str(name))
-	emit_signal("haunting",name,position)
+	emit_signal("haunting")
 
 sync func play_random():
 	var rand_id = randi() % boo_sounds.size()

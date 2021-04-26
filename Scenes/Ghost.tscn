@@ -47,7 +47,9 @@ color_ramp = SubResource( 4 )
 [sub_resource type="CanvasItemMaterial" id=8]
 light_mode = 2
 
-[node name="Ghost" instance=ExtResource( 2 )]
+[node name="Ghost" groups=[
+"Players",
+] instance=ExtResource( 2 )]
 collision_layer = 2
 collision_mask = 2
 script = ExtResource( 1 )
@@ -100,6 +102,5 @@ expand = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_DetectionArea_body_entered"]
 [connection signal="body_exited" from="DetectionArea" to="." method="_on_DetectionArea_body_exited"]
