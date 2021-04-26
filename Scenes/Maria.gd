@@ -84,7 +84,7 @@ func _process(delta):
 				
 		# deve diminuir mesmo dentro da área
 		else:
-			fear_bar.value -= 0.1
+			fear_bar.value -= 1
 		
 
 func _input(event):
