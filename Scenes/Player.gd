@@ -1,10 +1,14 @@
 extends KinematicBody2D
 
+signal item_collected(which, by)
+
 export var is_being_detected = false
 
 export var speed = 100
 
 export var items = []
+
+var item_perceived
 
 var map
 
@@ -36,6 +40,16 @@ func on_ready():
 	map = get_tree().get_root().get_node("Match")
 	set_camera_limits()
 
+func _input(event):
+	on_input(event)
+	
+func on_input(event):
+	if event.is_action_pressed("pick_up") and item_perceived != null and items.size() < 2:
+		items.append(item_perceived.type)
+		emit_signal("item_collected", item_perceived, self)
+		item_perceived = null
+	else:
+		pass # TODO: adicionar som de ação bloqueada
 
 func _physics_process(delta):
 	on_process(delta)
@@ -97,3 +111,20 @@ func stop_detection():
 
 sync func game_over(winner):
 	gamestate.game_over(winner)
+
+
+func _on_ItemArea_body_entered(body):
+	if (body.is_in_group("Items") and is_network_master()):
+		if (items.size() < 2):
+			body.show_tooltip()
+			item_perceived = body
+		else:
+			body.show_tooltip_blocked()
+
+
+func _on_ItemArea_body_exited(body):
+	if (body.is_in_group("Items")):
+		body.hide_tooltip()
+		
+	if (item_perceived == body):
+		item_perceived = null

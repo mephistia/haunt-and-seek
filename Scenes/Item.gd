@@ -1,5 +1,4 @@
-extends Sprite
-
+extends KinematicBody2D
 
 export var type = 0
 
@@ -8,6 +7,7 @@ var texture_necklace = preload("res://assets/GUI/item_necklace.png")
 
 func _ready():
 	randomize()
+	$Tooltip.hide()
 
 func rand_type():
 	type = randi() % 2 # 0 ou 1
@@ -15,7 +15,18 @@ func rand_type():
 
 func update_texture():
 	if type == 0:
-		texture = texture_ring
+		$Sprite.texture = texture_ring
 	else:
-		texture = texture_necklace
+		$Sprite.texture = texture_necklace
+
+
+func show_tooltip():
+	$Tooltip.modulate = Color.white
+	$Tooltip.show()
 	
+func hide_tooltip():
+	$Tooltip.hide()
+	
+func show_tooltip_blocked():
+	$Tooltip.modulate = Color(1,1,1,.7)
+	$Tooltip.show()
