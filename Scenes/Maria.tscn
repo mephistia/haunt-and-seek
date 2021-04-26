@@ -5,9 +5,7 @@
 [ext_resource path="res://assets/fx/light.png" type="Texture" id=3]
 [ext_resource path="res://assets/GUI/sound_indicator.png" type="Texture" id=4]
 
-[node name="Maria" groups=[
-"Players",
-] instance=ExtResource( 2 )]
+[node name="Maria" instance=ExtResource( 2 )]
 script = ExtResource( 1 )
 
 [node name="AnimatedSprite" parent="." index="0"]
@@ -43,5 +41,6 @@ scale = Vector2( 0.5, 0.5 )
 z_index = 1
 texture = ExtResource( 4 )
 offset = Vector2( 0, -80 )
+
 [connection signal="timeout" from="RClickTimer" to="." method="_on_RClickTimer_timeout"]
 [connection signal="timeout" from="RClickDuration" to="." method="_on_RClickDuration_timeout"]
