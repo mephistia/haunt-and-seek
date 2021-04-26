@@ -76,6 +76,7 @@ func _process(delta):
 		
 
 func _input(event):
+	.on_input(event)
 	if event.is_action_pressed("main_action") and can_capture and max_captures > 0:
 		if is_network_master():
 			$RClickTimer.start()
