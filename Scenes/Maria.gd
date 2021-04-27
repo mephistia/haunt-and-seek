@@ -67,13 +67,16 @@ func _process(delta):
 			
 			var difference = detection_area - distance
 			
-			var increase_by = (1 - (distance / detection_area)) * 3
+			var increase_by = (1 - (distance / detection_area)) * 4.5
 			fear_bar.value += increase_by
 				
 		# deve diminuir mesmo dentro da área
 		else:
 			fear_bar.value -= 1
 		
+		if (fear_bar.value == fear_bar.max_value):
+			var ghost_name = get_tree().get_root().get_node("Match/Players/Ghost/PlayerName").text
+			rpc("game_over", "Fantasma (" + ghost_name + ")")
 
 func _input(event):
 	.on_input(event)

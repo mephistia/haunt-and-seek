@@ -24,6 +24,8 @@ var detection_area
 
 var maria_is_capturing = false
 
+var object_to_haunt = null
+
 func _ready():
 	gamestate.connect("game_started", self, "game_has_started")
 	$RClickTimer.wait_time = cooldown	
@@ -31,7 +33,7 @@ func _ready():
 	$RClickFeedback.hide()
 	$AnimatedSprite.animation = "ghost"
 	speed = normal_speed
-	$DetectionArea/DetectionShape.shape.set_radius(90)
+	$DetectionArea/DetectionShape.shape.set_radius(40)
 	$DetectionArea/DetectionShape.shape.set_height(0)
 	detection_area = get_node("DetectionArea/DetectionShape").shape.radius * 2
 	$RClickTimer.connect("timeout", self, "_on_RClickTimer_timeout")
@@ -66,17 +68,29 @@ func _process(delta):
 		if is_on_detection_area and maria_is_capturing:
 			var maria_name = get_tree().get_root().get_node("Match/Players/Maria/PlayerName").text
 			rpc("game_over", "Maria (" + maria_name + ")")
-		
+
 
 func _input(event):
-	if event.is_action_pressed("main_action") and can_haunt:
+	if event.is_action_pressed("main_action") and can_haunt and not is_paralyzed:
 		if is_network_master():
-			$RClickTimer.start()
-			$RClickDuration.start()
-			$RClickFeedback.show()
-			rpc("play_random")
-			can_haunt = false
-			rpc("emit_haunting")
+			if (object_to_haunt == null):
+				haunt(false)
+			else:
+				#rset("puppet_pos", object_to_haunt.position)
+				haunt(true)
+				$AnimatedSprite.hide()
+			
+func haunt(should_paralyze):
+	$RClickTimer.start()
+	$RClickDuration.start()
+	$RClickFeedback.show()
+	rpc("play_random")
+	can_haunt = false
+	rpc("emit_haunting")
+	if (should_paralyze):
+		is_paralyzed = true
+		$AnimatedSprite.hide()
+		
 
 func _on_RClickTimer_timeout():
 	$RClickFeedback.hide()
@@ -84,6 +98,8 @@ func _on_RClickTimer_timeout():
 		can_haunt = true
 
 func _on_RClickDuration_timeout():
+	is_paralyzed = false
+	$AnimatedSprite.show()
 	rpc("emit_stopped_haunting")
 	
 sync func emit_stopped_haunting():
@@ -116,6 +132,13 @@ func _on_DetectionArea_body_entered(body):
 	if is_network_master() and body.get_name() == "Maria":
 		can_haunt = false
 		is_on_detection_area = true
+	if is_network_master() and body.is_in_group("Objects"):
+		if can_haunt:
+			body.get_node("Tooltip").show_tooltip()
+			object_to_haunt = body
+		else:
+			body.get_node("Tooltip").show_tooltip_blocked()
+		pass
 
 
 func _on_DetectionArea_body_exited(body):
@@ -123,5 +146,8 @@ func _on_DetectionArea_body_exited(body):
 		is_on_detection_area = false
 		if !can_haunt and $RClickTimer.time_left == 0:
 			can_haunt = true
+	if is_network_master() and body.is_in_group("Objects"):
+		object_to_haunt = null
+		body.get_node("Tooltip").hide_tooltip()
 
 
