@@ -17,9 +17,10 @@ puppet var puppet_motion = Vector2()
 
 puppet var sprite
 
+var is_paralyzed = false
+
 func set_player_name(newName):
 	$PlayerName.text = newName
-	
 	
 func set_camera_limits():
 	var tilemap = map.get_node("TileMap")
@@ -52,7 +53,8 @@ func on_input(event):
 		pass # TODO: adicionar som de ação bloqueada
 
 func _physics_process(delta):
-	on_process(delta)
+	if not is_paralyzed:
+		on_process(delta)
 	
 func on_process(delta):
 	var motion = Vector2()
@@ -116,15 +118,16 @@ sync func game_over(winner):
 func _on_ItemArea_body_entered(body):
 	if (body.is_in_group("Items") and is_network_master()):
 		if (items.size() < 2):
-			body.show_tooltip()
+			body.get_node("Tooltip").show_tooltip()
 			item_perceived = body
 		else:
-			body.show_tooltip_blocked()
+			body.get_node("Tooltip").show_tooltip_blocked()
+
 
 
 func _on_ItemArea_body_exited(body):
 	if (body.is_in_group("Items")):
-		body.hide_tooltip()
+		body.get_node("Tooltip").hide_tooltip()
 		
 	if (item_perceived == body):
 		item_perceived = null

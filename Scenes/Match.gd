@@ -4,11 +4,9 @@ signal item_was_collected(which)
 
 var spawns = []
 
-var items_spawned = []
+var items_spawned = [] #IDs dos itens spawnados
 
 var items_used = []
-
-var item_scene = load("res://Scenes/Item.tscn")
 
 func _ready():
 	for N in $ItemSpawns.get_children():
@@ -30,40 +28,40 @@ func game_has_started():
 		for i in 2:
 			var spawn = spawns[randi() % spawns.size()]
 			if i == 1:
-				while spawn == items_spawned[0].position:
+				while spawn == get_node("Item" + str(items_spawned[0])).position:
 					spawn = spawns[randi() % spawns.size()]
 					
-			var item_name = "Item" + str(i)
-			rpc("spawn_item", item_scene, spawn, i, item_name)
+			rpc("spawn_item", spawn, i)
 			
-remotesync func spawn_item(item_scene, spawn, type, item_name):
+sync func spawn_item(spawn, type):
+	var item_scene = load("res://Scenes/Item.tscn")
 	var item_spawned = item_scene.instance()
 	item_spawned.global_position = spawn
 	item_spawned.type = type
 	item_spawned.update_texture()
-	item_spawned.name = item_name
 	add_child(item_spawned)
-	items_spawned.append(item_spawned)
+	item_spawned.id = items_spawned.size()
+	item_spawned.name = "Item" + str(item_spawned.id)
+	items_spawned.append(item_spawned.id)
 
 func Maria_item_collected(which, by):
 	collect_item(which, by)
+	rpc("delete_item", which.id)
 	
 	
 func Ghost_item_collected(which, by):
 	collect_item(which, by)
-	print("Ghost obteu item do tipo " + str(which.type))
+	rpc("delete_item", which.id)
+	
 	
 func collect_item(which, by):
 		if by.is_network_master():
 			$CanvasLayer/GUI/Inventory.add_item(which)
-		rpc("delete_item", which)
 
 		
-remotesync func delete_item(which):
-	get_node(which.get_path()).queue_free()
-	var item_idx = items_spawned.find(which)
+sync func delete_item(id):
+	get_node("Item" + str(id)).queue_free()
+	var item_idx = items_spawned.find(id)
 	if (item_idx > -1):
 		items_spawned.remove(item_idx)
-	
-
 

@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://assets/tilesets/scenery.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/GUI/GUI.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/Match.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/HauntObject.tscn" type="PackedScene" id=4]
 
 [sub_resource type="OccluderPolygon2D" id=1]
 polygon = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
@@ -102,3 +103,17 @@ position = Vector2( 888, 552 )
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="GUI" parent="CanvasLayer" instance=ExtResource( 2 )]
+
+[node name="Objects" type="Node2D" parent="."]
+
+[node name="HauntObject" parent="Objects" instance=ExtResource( 4 )]
+position = Vector2( 528, 664 )
+
+[node name="HauntObject2" parent="Objects" instance=ExtResource( 4 )]
+position = Vector2( 1088, 424 )
+
+[node name="HauntObject3" parent="Objects" instance=ExtResource( 4 )]
+position = Vector2( 1440, 728 )
+
+[node name="HauntObject4" parent="Objects" instance=ExtResource( 4 )]
+position = Vector2( 376, 176 )
