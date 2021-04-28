@@ -21,12 +21,11 @@ func add_item(item):
 		
 	if (slot1.get_node_or_null("TextureRect") == null):
 		slot1.add_child(texture_child)
-		print("node name: " + str(texture_child.name))
 	else:
 		slot2.add_child(texture_child)
 		
 func use_item(slot):
-	get_node("Slot" + str(slot)).get_node("TextureRect")
+	get_node("Slot" + str(slot)).get_node("TextureRect").queue_free()
 	var item_type = items[slot-1]
 	items.remove(slot-1)
 	return item_type

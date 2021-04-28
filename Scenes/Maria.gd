@@ -67,7 +67,7 @@ func _process(delta):
 			
 			var difference = detection_area - distance
 			
-			var increase_by = (1 - (distance / detection_area)) * 4.5
+			var increase_by = (1 - (distance / detection_area)) * 3.5
 			fear_bar.value += increase_by
 				
 		# deve diminuir mesmo dentro da área
