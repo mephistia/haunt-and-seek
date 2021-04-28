@@ -21,8 +21,10 @@ func game_has_started():
 	
 	if (maria):
 		maria.connect("item_collected", self, "Maria_item_collected")
+		maria.connect("used_item", self, "Maria_used_item")
 	if (ghost):
 		ghost.connect("item_collected", self, "Ghost_item_collected")
+		ghost.connect("used_item", self, "Ghost_used_item")
 	
 	if (get_tree().is_network_server()):	
 		for i in 2:
@@ -48,16 +50,27 @@ func Maria_item_collected(which, by):
 	collect_item(which, by)
 	rpc("delete_item", which.id)
 	
+func Maria_used_item(slot, who):
+	if who.is_network_master():
+		var item_type_to_use = use_item(slot)
+		print("Usar item do tipo: " + str(item_type_to_use))
+	
 	
 func Ghost_item_collected(which, by):
 	collect_item(which, by)
 	rpc("delete_item", which.id)
 	
-	
+func Ghost_used_item(slot, who):
+	if who.is_network_master():
+		var item_type_to_use = use_item(slot)
+		print("Usar item do tipo: " + str(item_type_to_use))
+
 func collect_item(which, by):
 		if by.is_network_master():
 			$CanvasLayer/GUI/Inventory.add_item(which)
 
+func use_item(slot):
+	return $CanvasLayer/GUI/Inventory.use_item(slot)
 		
 sync func delete_item(id):
 	get_node("Item" + str(id)).queue_free()

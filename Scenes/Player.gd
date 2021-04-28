@@ -2,6 +2,8 @@ extends KinematicBody2D
 
 signal item_collected(which, by)
 
+signal used_item(slot, type, who)
+
 export var is_being_detected = false
 
 export var speed = 100
@@ -45,13 +47,33 @@ func _input(event):
 	on_input(event)
 	
 func on_input(event):
-	if event.is_action_pressed("pick_up") and item_perceived != null and items.size() < 2:
-		items.append(item_perceived.type)
-		emit_signal("item_collected", item_perceived, self)
-		item_perceived = null
-	else:
-		pass # TODO: adicionar som de ação bloqueada
-
+	# mudar para apenas passar por cima
+	
+#	if event.is_action_pressed("pick_up"):
+#		if item_perceived != null and items.size() < 2:
+#			items.append(item_perceived.type)
+#			emit_signal("item_collected", item_perceived, self)
+#			item_perceived = null
+#		else:
+#			pass # TODO: adicionar som de ação bloqueada
+	if is_network_master():
+		if event.is_action_pressed("item_1"):
+			if range(items.size()).has(0):
+				print("Usou item do slot 1!")  #TODO: usar item
+				emit_signal("used_item", 1, self)
+				items.remove(0)
+			else:
+				print("Slot vazio!")
+		
+		if event.is_action_pressed("item_2"):
+			if range(items.size()).has(1):
+				print("Usou item do slot 2!")
+				emit_signal("used_item", 2, self)
+				items.remove(1)
+			else:
+				print("Slot vazio!")
+		
+		
 func _physics_process(delta):
 	if not is_paralyzed:
 		on_process(delta)
@@ -86,12 +108,11 @@ func on_process(delta):
 		
 	move_and_slide(motion * speed)
 	if not is_network_master():
-		puppet_pos = position # To avoid jitter
+		puppet_pos = position 
 		
 	# limitar tela
 	position.x = clamp(position.x, $Camera2D.limit_left + 32, $Camera2D.limit_right - 32)
 	position.y = clamp(position.y, $Camera2D.limit_top + 32, $Camera2D.limit_bottom - 32)
-
 
 
 func _on_DetectionArea_area_shape_entered(area_id, area, area_shape, self_shape):
@@ -118,16 +139,21 @@ sync func game_over(winner):
 func _on_ItemArea_body_entered(body):
 	if (body.is_in_group("Items") and is_network_master()):
 		if (items.size() < 2):
-			body.get_node("Tooltip").show_tooltip()
+			#body.get_node("Tooltip").show_tooltip()
 			item_perceived = body
+			items.append(item_perceived.type)
+			emit_signal("item_collected", item_perceived, self)
+			item_perceived = null
 		else:
-			body.get_node("Tooltip").show_tooltip_blocked()
+			#  TODO: adicionar som de ação bloqueada
+			pass
 
 
 
 func _on_ItemArea_body_exited(body):
-	if (body.is_in_group("Items")):
-		body.get_node("Tooltip").hide_tooltip()
+	pass
+#	if (body.is_in_group("Items")):
+#		body.get_node("Tooltip").hide_tooltip()
 		
-	if (item_perceived == body):
-		item_perceived = null
+#	if (item_perceived == body):
+#		item_perceived = null
