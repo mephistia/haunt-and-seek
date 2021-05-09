@@ -26,7 +26,7 @@ shadow_filter_smooth = 15.0
 
 [node name="Light2DReveal" type="Light2D" parent="." index="9"]
 position = Vector2( 0, -9.00837 )
-scale = Vector2( 2.05206, 1.17024 )
+scale = Vector2( 2.72626, 1.55472 )
 texture = ExtResource( 3 )
 mode = 3
 range_item_cull_mask = 2
