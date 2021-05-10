@@ -62,9 +62,9 @@ func _process(delta):
 			distance = ghost.global_position.distance_to(global_position)
 			
 			
-			var difference = (global_position.length() - distance)
+			var difference = (global_position.length() - (distance)) / 10
 			print("Difference: " + str(difference))
-			var contained_difference = inverse_lerp(150, 0, difference)
+			var contained_difference = inverse_lerp(0, 35, difference)
 			var increase_by = abs(contained_difference)
 			print ("increase_by: " + str(increase_by))
 			print("Fear bar is on: " + str(fear_bar.value))
