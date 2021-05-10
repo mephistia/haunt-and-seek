@@ -63,9 +63,6 @@ z_index = 1
 [node name="PlayerName" parent="." index="2"]
 light_mask = 3
 
-[node name="DetectionArea" parent="." index="3"]
-visible = false
-
 [node name="SFX" type="AudioStreamPlayer2D" parent="." index="8"]
 stream = SubResource( 1 )
 attenuation = 3.03143
@@ -102,5 +99,15 @@ expand = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="ItemDuration1" type="Timer" parent="." index="12"]
+wait_time = 10.0
+one_shot = true
+
+[node name="ItemDuration2" type="Timer" parent="." index="13"]
+wait_time = 10.0
+one_shot = true
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_DetectionArea_body_entered"]
 [connection signal="body_exited" from="DetectionArea" to="." method="_on_DetectionArea_body_exited"]
+[connection signal="timeout" from="ItemDuration1" to="." method="_on_ItemDuration1_timeout"]
+[connection signal="timeout" from="ItemDuration2" to="." method="_on_ItemDuration2_timeout"]

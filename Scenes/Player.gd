@@ -42,24 +42,21 @@ func on_ready():
 		$Camera2D.current = true
 	map = get_tree().get_root().get_node("Match")
 	set_camera_limits()
+	
+func useItem(itemId):
+	pass
+	
 
 func _input(event):
 	on_input(event)
 	
 func on_input(event):
-	# mudar para apenas passar por cima
-	
-#	if event.is_action_pressed("pick_up"):
-#		if item_perceived != null and items.size() < 2:
-#			items.append(item_perceived.type)
-#			emit_signal("item_collected", item_perceived, self)
-#			item_perceived = null
-#		else:
-#			pass # TODO: adicionar som de ação bloqueada
+
+	 # TODO: adicionar som de ação bloqueada
 	if is_network_master():
 		if event.is_action_pressed("item_1"):
 			if range(items.size()).has(0):
-				print("Usou item do slot 1!")  #TODO: usar item
+				rpc("useItem", items[0])
 				emit_signal("used_item", 1, self)
 				items.remove(0)
 			else:
@@ -67,7 +64,7 @@ func on_input(event):
 		
 		if event.is_action_pressed("item_2"):
 			if range(items.size()).has(1):
-				print("Usou item do slot 2!")
+				rpc("useItem", items[1])
 				emit_signal("used_item", 2, self)
 				items.remove(1)
 			else:
@@ -77,6 +74,9 @@ func on_input(event):
 func _physics_process(delta):
 	if not is_paralyzed:
 		on_process(delta)
+	elif is_network_master():
+		rset_unreliable("puppet_pos", position)
+		rset_unreliable("puppet_motion", Vector2(0,0))
 	
 func on_process(delta):
 	var motion = Vector2()

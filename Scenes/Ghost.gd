@@ -33,7 +33,7 @@ func _ready():
 	$RClickFeedback.hide()
 	$AnimatedSprite.animation = "ghost"
 	speed = normal_speed
-	$DetectionArea/DetectionShape.shape.set_radius(40)
+	$DetectionArea/DetectionShape.shape.set_radius(100)
 	$DetectionArea/DetectionShape.shape.set_height(0)
 	detection_area = get_node("DetectionArea/DetectionShape").shape.radius * 2
 	$RClickTimer.connect("timeout", self, "_on_RClickTimer_timeout")
@@ -43,6 +43,7 @@ func _ready():
 	
 	
 func game_has_started():
+	maria = get_parent().get_node("Maria")
 	if is_network_master():
 		# desativar masks		
 		$Trail.light_mask = 1
@@ -51,11 +52,9 @@ func game_has_started():
 		$FakeLight.light_mask = 1
 		$FakeLight.material.light_mode = 0
 		$Trail.material.light_mode = 0
-		maria = get_parent().get_node("Maria")
 		if maria:
 			maria.connect("capturing", self, "_on_Maria_capturing")
 			maria.connect("stopped_capturing", self, "_on_Maria_stopped_capturing")
-			maria.get_node("Center").hide()
 				
 func _process(delta):
 	$RClickFeedback.text = "%3.1f" % $RClickTimer.time_left
@@ -88,9 +87,11 @@ func haunt(should_paralyze):
 	can_haunt = false
 	rpc("emit_haunting")
 	if (should_paralyze):
-		is_paralyzed = true
+		rpc("set_paralyzed", true)
 		$AnimatedSprite.hide()
-		
+	
+sync func set_paralyzed(value):
+	is_paralyzed = value
 
 func _on_RClickTimer_timeout():
 	$RClickFeedback.hide()
@@ -98,7 +99,7 @@ func _on_RClickTimer_timeout():
 		can_haunt = true
 
 func _on_RClickDuration_timeout():
-	is_paralyzed = false
+	rpc("set_paralyzed", false)
 	$AnimatedSprite.show()
 	rpc("emit_stopped_haunting")
 	
@@ -151,3 +152,26 @@ func _on_DetectionArea_body_exited(body):
 		body.get_node("Tooltip").hide_tooltip()
 
 
+sync func useItem(id):
+	if id == 0:
+		# menos rastros
+		$Trail.speed_scale = 0.5
+		$ItemDuration1.start()
+	elif id == 1:
+		# maior alcance assombração
+		rpc("changeMariaDetectionRadius", true)
+		$ItemDuration2.start()
+
+sync func changeMariaDetectionRadius(should_increase):
+		if maria:
+			if should_increase:
+				maria.get_node("DetectionArea/DetectionShape").shape.radius = 300
+			else:
+				maria.get_node("DetectionArea/DetectionShape").shape.radius = 216
+	
+func _on_ItemDuration1_timeout():
+	$Trail.speed_scale = 3
+
+
+func _on_ItemDuration2_timeout():
+	rpc("changeMariaDetectionRadius", false)
