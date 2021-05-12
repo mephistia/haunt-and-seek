@@ -5,6 +5,6 @@ OBS: Para jogar sem ser em Rede Local é necessário ter UPnP ativado no roteado
 - Teclas WASD: andar
 - Tecla Espaço: realizar ação principal (fantasma - assombrar, Maria - usar dispositivo de captura [3 usos])
 
-OBS: A utilização de itens ainda não funciona, apesar de já ser possível coletá-los. O jogo deve ser fechado completamente para iniciar uma nova partida (bugs com rede)
+OBS: A utilização de itens ainda não funciona completamente, apesar de já ser possível coletá-los. O jogo deve ser fechado completamente para iniciar uma nova partida (bugs com rede)
 
 
