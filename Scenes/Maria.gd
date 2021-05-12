@@ -90,6 +90,9 @@ func _input(event):
 			max_captures -= 1
 			can_capture = false
 			rpc("emit_capturing")
+			
+sync func useItem(id):
+	pass
 
 
 sync func emit_capturing():
