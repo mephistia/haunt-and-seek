@@ -26,6 +26,8 @@ var maria_is_capturing = false
 
 var object_to_haunt = null
 
+var old_position
+
 func _ready():
 	gamestate.connect("game_started", self, "game_has_started")
 	$RClickTimer.wait_time = cooldown	
@@ -33,8 +35,6 @@ func _ready():
 	$RClickFeedback.hide()
 	$AnimatedSprite.animation = "ghost"
 	speed = normal_speed
-	$DetectionArea/DetectionShape.shape.set_radius(100)
-	$DetectionArea/DetectionShape.shape.set_height(0)
 	detection_area = get_node("DetectionArea/DetectionShape").shape.radius * 2
 	$RClickTimer.connect("timeout", self, "_on_RClickTimer_timeout")
 	$RClickDuration.connect("timeout", self, "_on_RClickDuration_timeout")
@@ -72,10 +72,13 @@ func _process(delta):
 func _input(event):
 	if event.is_action_pressed("main_action") and can_haunt and not is_paralyzed:
 		if is_network_master():
+			old_position = position
+			
 			if (object_to_haunt == null):
 				haunt(false)
 			else:
-				#rset("puppet_pos", object_to_haunt.position)
+				rset("puppet_pos", object_to_haunt.position)
+				position = object_to_haunt.position
 				haunt(true)
 				$AnimatedSprite.hide()
 			
@@ -86,12 +89,25 @@ func haunt(should_paralyze):
 	rpc("play_random")
 	can_haunt = false
 	rpc("emit_haunting")
+	print("Paralisar? " + str(should_paralyze))
 	if (should_paralyze):
+		if maria:
+			rpc("set_new_contained_diff", 25)
 		rpc("set_paralyzed", true)
-		$AnimatedSprite.hide()
+		rpc("toggle_invisible", true)
+		
+sync func set_new_contained_diff(value):
+	maria.max_contained_diff = value
+	print("Maria contained diff: " + str(value))
 	
 sync func set_paralyzed(value):
 	is_paralyzed = value
+
+sync func toggle_invisible(hide):
+	if hide:
+		$AnimatedSprite.hide()
+	else:
+		$AnimatedSprite.show()
 
 func _on_RClickTimer_timeout():
 	$RClickFeedback.hide()
@@ -99,9 +115,14 @@ func _on_RClickTimer_timeout():
 		can_haunt = true
 
 func _on_RClickDuration_timeout():
-	rpc("set_paralyzed", false)
-	$AnimatedSprite.show()
+	if is_paralyzed:
+		rset("puppet_pos", old_position)
+		position = old_position
+		rpc("set_paralyzed", false)
+	rpc("set_new_contained_diff", 35)
+	rpc("toggle_invisible", false)
 	rpc("emit_stopped_haunting")
+
 	
 sync func emit_stopped_haunting():
 	$AnimatedSprite.modulate = Color(1, 1, 1)
@@ -167,7 +188,7 @@ sync func changeMariaDetectionRadius(should_increase):
 			if should_increase:
 				maria.get_node("DetectionArea/DetectionShape").shape.radius = 300
 			else:
-				maria.get_node("DetectionArea/DetectionShape").shape.radius = 216
+				maria.get_node("DetectionArea/DetectionShape").shape.radius = 200
 	
 func _on_ItemDuration1_timeout():
 	$Trail.speed_scale = 3
@@ -175,3 +196,12 @@ func _on_ItemDuration1_timeout():
 
 func _on_ItemDuration2_timeout():
 	rpc("changeMariaDetectionRadius", false)
+
+	
+func _on_DetectionArea_area_shape_entered(area_id, area, area_shape, self_shape):
+	if area.get_parent().name == "Maria":
+		rpc("start_detection")
+
+func _on_DetectionArea_area_shape_exited(area_id, area, area_shape, self_shape):
+	if area.get_parent().name == "Maria":
+		rpc("stop_detection")

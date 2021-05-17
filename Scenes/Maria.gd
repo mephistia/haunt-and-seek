@@ -10,8 +10,6 @@ var duration = 0.5
 
 var can_capture = true
 
-var is_detecting = false
-
 var ghost
 
 var distance = 0
@@ -21,6 +19,10 @@ var ghost_is_haunting = false
 var max_captures = 3
 
 var rotation_tween_ended = true
+
+export var divide_difference_by = 10
+
+export var max_contained_diff = 25
 
 onready var fear_bar = get_tree().get_root().get_node("Match/CanvasLayer/GUI/HBoxContainer/VBoxContainer/FearProgress")
 
@@ -54,17 +56,17 @@ func _process(delta):
 	if is_network_master():
 		# sempre mostra indicador
 		if ghost_is_haunting:		
-			
+			print("Detecting? " + str(is_being_detected))
 			sound_indicator.look_at(ghost.global_position)
 			sound_indicator.rotation_degrees += 90
 			
-		if is_detecting and ghost_is_haunting:
-			distance = ghost.global_position.distance_to(global_position)
+		if is_being_detected and ghost_is_haunting:
+			distance = position.distance_to(ghost.position)
 			
 			
-			var difference = (global_position.length() - (distance)) / 10
+			var difference = (global_position.length() - (distance)) / divide_difference_by
 			print("Difference: " + str(difference))
-			var contained_difference = inverse_lerp(0, 35, difference)
+			var contained_difference = inverse_lerp(0, max_contained_diff, difference)
 			var increase_by = abs(contained_difference)
 			print ("increase_by: " + str(increase_by))
 			print("Fear bar is on: " + str(fear_bar.value))
@@ -88,6 +90,9 @@ func _input(event):
 			max_captures -= 1
 			can_capture = false
 			rpc("emit_capturing")
+			
+sync func useItem(id):
+	pass
 
 
 sync func emit_capturing():
@@ -112,14 +117,7 @@ func _on_RClickDuration_timeout():
 sync func emit_stopped_capturing():
 	$AnimatedSprite.modulate = Color(1, 1, 1)
 	emit_signal("stopped_capturing")
-	
-func _on_DetectionArea_area_shape_entered(area_id, area, area_shape, self_shape):
-	.start_detection()
-	is_detecting = true
 
-func _on_DetectionArea_area_shape_exited(area_id, area, area_shape, self_shape):
-	.stop_detection()
-	is_detecting = false
 
 func _on_Ghost_haunting():
 	ghost_is_haunting = true
@@ -131,4 +129,11 @@ func _on_Ghost_haunting():
 func _on_Ghost_stopped_haunting():
 	ghost_is_haunting = false
 	
-	
+		
+func _on_DetectionArea_area_shape_entered(area_id, area, area_shape, self_shape):
+	if area.get_parent().name == "Ghost":
+		rpc("start_detection")
+
+func _on_DetectionArea_area_shape_exited(area_id, area, area_shape, self_shape):
+	if area.get_parent().name == "Ghost":
+		rpc("stop_detection")
