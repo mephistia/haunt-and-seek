@@ -61,7 +61,7 @@ func _process(delta):
 	# velocidade diminui quanto mais próximo de maria
 	if is_network_master() and maria:
 		var distance = maria.global_position.distance_to(global_position)
-		var clamped_distance = clamp(inverse_lerp(0, detection_area, distance), 0.85, 1)
+		var clamped_distance = clamp(inverse_lerp(0, detection_area, distance), 0.75, 1)
 		speed = clamped_distance * normal_speed
 		
 		if is_on_detection_area and maria_is_capturing:
