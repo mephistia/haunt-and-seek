@@ -5,7 +5,7 @@ onready var slot2 = $Slot2
 
 var items = []
 
-func add_item(item):
+func add_item(item, by_name):
 	items.append(item.type)
 	var texture_child = TextureRect.new()
 	texture_child.texture = item.get_node("Sprite").texture
@@ -15,9 +15,15 @@ func add_item(item):
 	texture_child.anchor_top = 0.15
 	texture_child.anchor_right = 0.15
 	if (item.type == 1):
-		texture_child.hint_tooltip = "Descrição do item tipo 1"
+		if by_name == "Maria":
+			texture_child.hint_tooltip = "Diminui a barra de medo mais rápido"
+		else:
+			texture_child.hint_tooltip = "Aumenta o alcance da assombração"
 	else:
-		texture_child.hint_tooltip = "Descrição do item tipo 0"
+		if by_name == "Maria":
+			texture_child.hint_tooltip = "Aumenta a luz da lanterna"
+		else:
+			texture_child.hint_tooltip = "Diminui a quantidade de rastros deixados"
 		
 	if (slot1.get_node_or_null("TextureRect") == null):
 		slot1.add_child(texture_child)

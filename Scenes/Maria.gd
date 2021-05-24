@@ -6,7 +6,7 @@ signal stopped_capturing
 
 var cooldown = 8.0
 
-var duration = 0.5
+var duration = 0.8
 
 var can_capture = true
 
@@ -19,6 +19,8 @@ var ghost_is_haunting = false
 var max_captures = 3
 
 var rotation_tween_ended = true
+
+var reduce_fear_bar = 1
 
 export var divide_difference_by = 10
 
@@ -37,6 +39,7 @@ func _ready():
 	$RClickDuration.wait_time = duration
 	$AnimatedSprite.animation = "maria"
 	$RClickFeedback.hide()
+	$CapturingVFX.emitting = false
 	.on_ready() # Chamar função pai ("super")
 
 func game_has_started():
@@ -46,10 +49,6 @@ func game_has_started():
 			ghost.connect("haunting", self, "_on_Ghost_haunting")
 			ghost.connect("stopped_haunting", self, "_on_Ghost_stopped_haunting")	
 
-
-	
-	
-# se pegar item q aumenta visão: $Light2D.texture_scale = 2	
 
 func _process(delta):
 	$RClickFeedback.text = "%3.1f" % $RClickTimer.time_left
@@ -65,16 +64,13 @@ func _process(delta):
 			
 			
 			var difference = (global_position.length() - (distance)) / divide_difference_by
-			print("Difference: " + str(difference))
 			var contained_difference = inverse_lerp(0, max_contained_diff, difference)
 			var increase_by = abs(contained_difference)
-			print ("increase_by: " + str(increase_by))
-			print("Fear bar is on: " + str(fear_bar.value))
 			fear_bar.value += increase_by
 				
 		# deve diminuir mesmo dentro da área
 		else:
-			fear_bar.value -= 1
+			fear_bar.value -= reduce_fear_bar
 		
 		if (fear_bar.value == fear_bar.max_value):
 			var ghost_name = get_tree().get_root().get_node("Match/Players/Ghost/PlayerName").text
@@ -92,12 +88,19 @@ func _input(event):
 			rpc("emit_capturing")
 			
 sync func useItem(id):
-	pass
-
+	if id == 0:
+		# mais visão
+		$Light2D.texture_scale = 2
+		$ItemDuration1.start()
+	elif id == 1:
+		#reduz mais rápido
+		reduce_fear_bar = 2
+		$ItemDuration2.start()
+		
 
 sync func emit_capturing():
 	# feedback visual
-	$AnimatedSprite.modulate = Color(1, 0, 0)
+	$CapturingVFX.emitting = true
 	emit_signal("capturing")
 	
 func _on_RClickTimer_timeout():
@@ -115,7 +118,7 @@ func _on_RClickDuration_timeout():
 	
 	
 sync func emit_stopped_capturing():
-	$AnimatedSprite.modulate = Color(1, 1, 1)
+	$CapturingVFX.emitting = false
 	emit_signal("stopped_capturing")
 
 
@@ -137,3 +140,11 @@ func _on_DetectionArea_area_shape_entered(area_id, area, area_shape, self_shape)
 func _on_DetectionArea_area_shape_exited(area_id, area, area_shape, self_shape):
 	if area.get_parent().name == "Ghost":
 		rpc("stop_detection")
+
+
+func _on_ItemDuration1_timeout():
+	$Light2D.texture_scale = 1
+
+
+func _on_ItemDuration2_timeout():
+	reduce_fear_bar = 1
