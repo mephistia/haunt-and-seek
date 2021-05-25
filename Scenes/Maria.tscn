@@ -1,65 +1,22 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scenes/Maria.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/fx/light.png" type="Texture" id=3]
 [ext_resource path="res://assets/GUI/sound_indicator.png" type="Texture" id=4]
-[ext_resource path="res://assets/fx/dingbats-39.png" type="Texture" id=5]
-
-[sub_resource type="Gradient" id=2]
-offsets = PoolRealArray( 0, 0.752688 )
-colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
-
-[sub_resource type="GradientTexture" id=3]
-gradient = SubResource( 2 )
-
-[sub_resource type="CurveTexture" id=4]
-
-[sub_resource type="ParticlesMaterial" id=5]
-emission_shape = 1
-emission_sphere_radius = 40.0
-flag_disable_z = true
-direction = Vector3( 0, 0, 0 )
-spread = 180.0
-gravity = Vector3( 0, 0, 0 )
-angular_velocity = 350.0
-orbit_velocity = 0.0
-orbit_velocity_random = 0.24
-radial_accel = -50.0
-tangential_accel = 30.0
-scale = 0.3
-color_ramp = SubResource( 3 )
-hue_variation_curve = SubResource( 4 )
-
-[sub_resource type="CapsuleShape2D" id=1]
-radius = 200.0
-height = 208.0
 
 [node name="Maria" groups=[
 "Players",
 ] instance=ExtResource( 2 )]
 script = ExtResource( 1 )
 
-[node name="CapturingVFX" type="Particles2D" parent="." index="0"]
-position = Vector2( 0, -8 )
-amount = 35
-process_material = SubResource( 5 )
-texture = ExtResource( 5 )
-
-[node name="AnimatedSprite" parent="." index="1"]
+[node name="AnimatedSprite" parent="." index="0"]
 light_mask = 0
 
 [node name="RClickDuration" parent="." index="7"]
 wait_time = 0.5
 
-[node name="DetectionArea" type="Area2D" parent="." index="8"]
-
-[node name="DetectionShape" type="CollisionShape2D" parent="DetectionArea" index="0"]
-position = Vector2( 0, -8 )
-rotation = 1.5708
-shape = SubResource( 1 )
-
-[node name="Light2D" type="Light2D" parent="." index="10"]
+[node name="Light2D" type="Light2D" parent="." index="8"]
 position = Vector2( 0, -8 )
 texture = ExtResource( 3 )
 shadow_enabled = true
@@ -67,17 +24,17 @@ shadow_gradient_length = 2.0
 shadow_filter = 2
 shadow_filter_smooth = 15.0
 
-[node name="Light2DReveal" type="Light2D" parent="." index="11"]
-position = Vector2( 1.12247, -17.1462 )
-scale = Vector2( 3.03284, 1.72955 )
+[node name="Light2DReveal" type="Light2D" parent="." index="9"]
+position = Vector2( 0, -9.00837 )
+scale = Vector2( 2.72626, 1.55472 )
 texture = ExtResource( 3 )
 mode = 3
 range_item_cull_mask = 2
 shadow_enabled = true
 
-[node name="Tween" type="Tween" parent="." index="12"]
+[node name="Tween" type="Tween" parent="." index="10"]
 
-[node name="Center" type="Node2D" parent="." index="13"]
+[node name="Center" type="Node2D" parent="." index="11"]
 position = Vector2( 0, -8 )
 
 [node name="SoundIndicator" type="Sprite" parent="Center" index="0"]
@@ -87,16 +44,5 @@ z_index = 1
 texture = ExtResource( 4 )
 offset = Vector2( 0, -80 )
 
-[node name="ItemDuration1" type="Timer" parent="." index="14"]
-wait_time = 10.0
-one_shot = true
-
-[node name="ItemDuration2" type="Timer" parent="." index="15"]
-wait_time = 10.0
-one_shot = true
 [connection signal="timeout" from="RClickTimer" to="." method="_on_RClickTimer_timeout"]
 [connection signal="timeout" from="RClickDuration" to="." method="_on_RClickDuration_timeout"]
-[connection signal="area_shape_entered" from="DetectionArea" to="." method="_on_DetectionArea_area_shape_entered"]
-[connection signal="area_shape_exited" from="DetectionArea" to="." method="_on_DetectionArea_area_shape_exited"]
-[connection signal="timeout" from="ItemDuration1" to="." method="_on_ItemDuration1_timeout"]
-[connection signal="timeout" from="ItemDuration2" to="." method="_on_ItemDuration2_timeout"]

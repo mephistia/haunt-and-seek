@@ -69,9 +69,6 @@ func on_input(event):
 				items.remove(1)
 			else:
 				print("Slot vazio!")
-				
-		if event.is_action_pressed("tecla_3"):
-			print("Detecting? " + str(is_being_detected))
 		
 		
 func _physics_process(delta):
@@ -117,13 +114,22 @@ func on_process(delta):
 	position.x = clamp(position.x, $Camera2D.limit_left + 32, $Camera2D.limit_right - 32)
 	position.y = clamp(position.y, $Camera2D.limit_top + 32, $Camera2D.limit_bottom - 32)
 
+
+func _on_DetectionArea_area_shape_entered(area_id, area, area_shape, self_shape):
+	start_detection()
+	
+
+func _on_DetectionArea_area_shape_exited(area_id, area, area_shape, self_shape):
+	stop_detection()
 		
 	
-sync func start_detection():
+func start_detection():
+	if !is_being_detected:
 		is_being_detected = true
 		
 	
-sync func stop_detection():
+func stop_detection():
+	if is_being_detected:
 		is_being_detected = false
 
 sync func game_over(winner):
@@ -146,3 +152,8 @@ func _on_ItemArea_body_entered(body):
 
 func _on_ItemArea_body_exited(body):
 	pass
+#	if (body.is_in_group("Items")):
+#		body.get_node("Tooltip").hide_tooltip()
+		
+#	if (item_perceived == body):
+#		item_perceived = null
