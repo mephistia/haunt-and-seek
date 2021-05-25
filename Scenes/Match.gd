@@ -67,7 +67,7 @@ func Ghost_used_item(slot, who):
 
 func collect_item(which, by):
 		if by.is_network_master():
-			$CanvasLayer/GUI/Inventory.add_item(which, by.name)
+			$CanvasLayer/GUI/Inventory.add_item(which)
 
 func use_item(slot):
 	return $CanvasLayer/GUI/Inventory.use_item(slot)
