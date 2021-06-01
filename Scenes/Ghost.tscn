@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Scenes/Ghost.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
@@ -47,9 +47,6 @@ orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 color_ramp = SubResource( 5 )
 
-[sub_resource type="CanvasItemMaterial" id=9]
-light_mode = 2
-
 [node name="Ghost" groups=[
 "Players",
 ] instance=ExtResource( 2 )]
@@ -91,31 +88,26 @@ local_coords = false
 process_material = SubResource( 8 )
 texture = ExtResource( 3 )
 
-[node name="FakeLight" type="TextureRect" parent="." index="11"]
-modulate = Color( 1, 1, 1, 0.372549 )
-light_mask = 3
-material = SubResource( 9 )
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -32.0
-margin_top = -44.0
-margin_right = 32.0
-margin_bottom = 20.0
+[node name="ItemDuration1" type="Timer" parent="." index="11"]
+wait_time = 10.0
+one_shot = true
+
+[node name="ItemDuration2" type="Timer" parent="." index="12"]
+wait_time = 10.0
+one_shot = true
+
+[node name="Light2D" type="Light2D" parent="." index="13"]
+modulate = Color( 1, 1, 1, 0.423529 )
+position = Vector2( 0, -8 )
+scale = Vector2( 0.536313, 0.533333 )
 texture = ExtResource( 10 )
-expand = true
+energy = 1.25
+shadow_gradient_length = 2.0
+shadow_filter = 2
+shadow_filter_smooth = 15.0
 __meta__ = {
-"_edit_use_anchors_": false
+"_editor_description_": ""
 }
-
-[node name="ItemDuration1" type="Timer" parent="." index="12"]
-wait_time = 10.0
-one_shot = true
-
-[node name="ItemDuration2" type="Timer" parent="." index="13"]
-wait_time = 10.0
-one_shot = true
 [connection signal="area_shape_entered" from="DetectionArea" to="." method="_on_DetectionArea_area_shape_entered"]
 [connection signal="area_shape_exited" from="DetectionArea" to="." method="_on_DetectionArea_area_shape_exited"]
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_DetectionArea_body_entered"]

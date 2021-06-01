@@ -49,8 +49,6 @@ func game_has_started():
 		$Trail.light_mask = 1
 		$AnimatedSprite.light_mask = 1
 		$PlayerName.light_mask = 1
-		$FakeLight.light_mask = 1
-		$FakeLight.material.light_mode = 0
 		$Trail.material.light_mode = 0
 		if maria:
 			maria.connect("capturing", self, "_on_Maria_capturing")
@@ -91,6 +89,9 @@ func haunt(should_paralyze):
 	rpc("emit_haunting")
 	print("Paralisar? " + str(should_paralyze))
 	if (should_paralyze):
+		# randomizar tempo
+		$RClickDuration.wait_time = rand_range(0.8, 3.2)
+		$RClickTimer.wait_time = rand_range(5.3, 9.2)
 		if maria:
 			rpc("set_new_contained_diff", 25)
 		rpc("set_paralyzed", true)

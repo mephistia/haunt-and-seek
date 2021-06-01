@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Scenes/Maria.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
@@ -6,14 +6,19 @@
 [ext_resource path="res://assets/GUI/sound_indicator.png" type="Texture" id=4]
 [ext_resource path="res://assets/fx/dingbats-39.png" type="Texture" id=5]
 
-[sub_resource type="Gradient" id=2]
+[sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0, 0.752688 )
 colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
 
-[sub_resource type="GradientTexture" id=3]
-gradient = SubResource( 2 )
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
+
+[sub_resource type="Curve" id=3]
+min_value = -1.0
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
 
 [sub_resource type="CurveTexture" id=4]
+curve = SubResource( 3 )
 
 [sub_resource type="ParticlesMaterial" id=5]
 emission_shape = 1
@@ -28,10 +33,10 @@ orbit_velocity_random = 0.24
 radial_accel = -50.0
 tangential_accel = 30.0
 scale = 0.3
-color_ramp = SubResource( 3 )
+color_ramp = SubResource( 2 )
 hue_variation_curve = SubResource( 4 )
 
-[sub_resource type="CapsuleShape2D" id=1]
+[sub_resource type="CapsuleShape2D" id=6]
 radius = 200.0
 height = 208.0
 
@@ -57,18 +62,20 @@ wait_time = 0.5
 [node name="DetectionShape" type="CollisionShape2D" parent="DetectionArea" index="0"]
 position = Vector2( 0, -8 )
 rotation = 1.5708
-shape = SubResource( 1 )
+shape = SubResource( 6 )
 
 [node name="Light2D" type="Light2D" parent="." index="10"]
 position = Vector2( 0, -8 )
+scale = Vector2( 0.893855, 0.893855 )
 texture = ExtResource( 3 )
+energy = 1.39
 shadow_enabled = true
 shadow_gradient_length = 2.0
 shadow_filter = 2
 shadow_filter_smooth = 15.0
 
 [node name="Light2DReveal" type="Light2D" parent="." index="11"]
-position = Vector2( 1.12247, -17.1462 )
+position = Vector2( 0, -16 )
 scale = Vector2( 3.03284, 1.72955 )
 texture = ExtResource( 3 )
 mode = 3
