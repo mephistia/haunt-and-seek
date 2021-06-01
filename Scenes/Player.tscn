@@ -67,10 +67,10 @@ smoothing_speed = 3.0
 editor_draw_limits = true
 editor_draw_drag_margin = true
 
-[node name="RClickTimer" type="Timer" parent="."]
+[node name="MainActionTimer" type="Timer" parent="."]
 one_shot = true
 
-[node name="RClickFeedback" type="Label" parent="."]
+[node name="MainActionFeedback" type="Label" parent="."]
 margin_left = -42.0
 margin_right = 42.0
 margin_bottom = 22.0
@@ -82,7 +82,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RClickDuration" type="Timer" parent="."]
+[node name="MainActionDuration" type="Timer" parent="."]
 one_shot = true
 
 [node name="ItemArea" type="Area2D" parent="."]

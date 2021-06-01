@@ -35,10 +35,10 @@ onready var sound_indicator = $Center/SoundIndicator
 
 func _ready():
 	gamestate.connect("game_started", self, "game_has_started")
-	$RClickTimer.wait_time = cooldown	
-	$RClickDuration.wait_time = duration
+	$MainActionTimer.wait_time = cooldown	
+	$MainActionDuration.wait_time = duration
 	$AnimatedSprite.animation = "maria"
-	$RClickFeedback.hide()
+	$MainActionFeedback.hide()
 	$CapturingVFX.emitting = false
 	.on_ready() # Chamar função pai ("super")
 
@@ -52,9 +52,8 @@ func game_has_started():
 
 
 func _process(delta):
-	$RClickFeedback.text = "%3.1f" % $RClickTimer.time_left
+	$MainActionFeedback.text = "%3.1f" % $MainActionTimer.time_left
 	if is_network_master():
-		# sempre mostra indicador
 		if ghost_is_haunting:		
 			print("Detecting? " + str(is_being_detected))
 			sound_indicator.look_at(ghost.global_position)
@@ -81,9 +80,9 @@ func _input(event):
 	.on_input(event)
 	if event.is_action_pressed("main_action") and can_capture and max_captures > 0:
 		if is_network_master():
-			$RClickTimer.start()
-			$RClickDuration.start()
-			$RClickFeedback.show()
+			$MainActionTimer.start()
+			$MainActionDuration.start()
+			$MainActionFeedback.show()
 			max_captures -= 1
 			can_capture = false
 			rpc("emit_capturing")
@@ -104,11 +103,11 @@ sync func emit_capturing():
 	$CapturingVFX.emitting = true
 	emit_signal("capturing")
 	
-func _on_RClickTimer_timeout():
-	$RClickFeedback.hide()
+func _on_MainActionTimer_timeout():
+	$MainActionFeedback.hide()
 	can_capture = true
 
-func _on_RClickDuration_timeout():
+func _on_MainActionDuration_timeout():
 	rpc("emit_stopped_capturing")
 
 	captures_count.text = str(max_captures)
