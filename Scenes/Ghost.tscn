@@ -17,8 +17,10 @@ data = PoolByteArray( 79, 103, 103, 83, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 32, 79, 0,
 [sub_resource type="CanvasItemMaterial" id=2]
 light_mode = 2
 
-[sub_resource type="Gradient" id=3]
-colors = PoolColorArray( 0.998291, 1, 0.992188, 1, 1, 0.884436, 0.356863, 0 )
+[sub_resource type="Gradient" id=4]
+offsets = PoolRealArray( 0.0129032, 1 )
+colors = PoolColorArray( 0.866667, 1, 0.980392, 0.4, 0, 0.631373, 0.811765, 0 )
+
 
 [sub_resource type="GradientTexture" id=4]
 gradient = SubResource( 3 )
@@ -44,8 +46,6 @@ orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 color_ramp = SubResource( 4 )
 
-[sub_resource type="CanvasItemMaterial" id=8]
-light_mode = 2
 
 [node name="Ghost" groups=[
 "Players",
@@ -63,8 +63,16 @@ z_index = 1
 [node name="PlayerName" parent="." index="2"]
 light_mask = 3
 
-[node name="SFX" type="AudioStreamPlayer2D" parent="." index="8"]
-stream = SubResource( 1 )
+[node name="DetectionArea" type="Area2D" parent="." index="7"]
+visible = false
+position = Vector2( 0, -8 )
+
+[node name="DetectionShape" type="CollisionShape2D" parent="DetectionArea" index="0"]
+shape = SubResource( 1 )
+
+[node name="SFX" type="AudioStreamPlayer2D" parent="." index="9"]
+stream = SubResource( 2 )
+
 attenuation = 3.03143
 
 [node name="Trail" type="Particles2D" parent="." index="9"]
@@ -82,31 +90,30 @@ local_coords = false
 process_material = SubResource( 7 )
 texture = ExtResource( 3 )
 
-[node name="FakeLight" type="TextureRect" parent="." index="10"]
-modulate = Color( 1, 1, 1, 0.372549 )
-light_mask = 3
-material = SubResource( 8 )
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -32.0
-margin_top = -44.0
-margin_right = 32.0
-margin_bottom = 20.0
+[node name="ItemDuration1" type="Timer" parent="." index="11"]
+
+wait_time = 10.0
+one_shot = true
+
+[node name="ItemDuration2" type="Timer" parent="." index="12"]
+wait_time = 10.0
+one_shot = true
+
+[node name="Light2D" type="Light2D" parent="." index="13"]
+modulate = Color( 1, 1, 1, 0.423529 )
+position = Vector2( 0, -8 )
+scale = Vector2( 0.536313, 0.533333 )
 texture = ExtResource( 10 )
-expand = true
+energy = 1.25
+shadow_gradient_length = 2.0
+shadow_filter = 2
+shadow_filter_smooth = 15.0
 __meta__ = {
-"_edit_use_anchors_": false
+"_editor_description_": ""
 }
+[connection signal="area_shape_entered" from="DetectionArea" to="." method="_on_DetectionArea_area_shape_entered"]
+[connection signal="area_shape_exited" from="DetectionArea" to="." method="_on_DetectionArea_area_shape_exited"]
 
-[node name="ItemDuration1" type="Timer" parent="." index="12"]
-wait_time = 10.0
-one_shot = true
-
-[node name="ItemDuration2" type="Timer" parent="." index="13"]
-wait_time = 10.0
-one_shot = true
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_DetectionArea_body_entered"]
 [connection signal="body_exited" from="DetectionArea" to="." method="_on_DetectionArea_body_exited"]
 [connection signal="timeout" from="ItemDuration1" to="." method="_on_ItemDuration1_timeout"]

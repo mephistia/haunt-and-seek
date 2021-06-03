@@ -28,16 +28,16 @@ var object_to_haunt = null
 
 func _ready():
 	gamestate.connect("game_started", self, "game_has_started")
-	$RClickTimer.wait_time = cooldown	
-	$RClickDuration.wait_time = duration
-	$RClickFeedback.hide()
+	$MainActionTimer.wait_time = cooldown	
+	$MainActionDuration.wait_time = duration
+	$MainActionFeedback.hide()
 	$AnimatedSprite.animation = "ghost"
 	speed = normal_speed
 	$DetectionArea/DetectionShape.shape.set_radius(100)
 	$DetectionArea/DetectionShape.shape.set_height(0)
 	detection_area = get_node("DetectionArea/DetectionShape").shape.radius * 2
-	$RClickTimer.connect("timeout", self, "_on_RClickTimer_timeout")
-	$RClickDuration.connect("timeout", self, "_on_RClickDuration_timeout")
+	$MainActionTimer.connect("timeout", self, "_on_MainActionTimer_timeout")
+	$MainActionDuration.connect("timeout", self, "_on_MainActionDuration_timeout")
 	randomize()
 	.on_ready() # Chamar função pai ("super")
 	
@@ -49,15 +49,13 @@ func game_has_started():
 		$Trail.light_mask = 1
 		$AnimatedSprite.light_mask = 1
 		$PlayerName.light_mask = 1
-		$FakeLight.light_mask = 1
-		$FakeLight.material.light_mode = 0
 		$Trail.material.light_mode = 0
 		if maria:
 			maria.connect("capturing", self, "_on_Maria_capturing")
 			maria.connect("stopped_capturing", self, "_on_Maria_stopped_capturing")
 				
 func _process(delta):
-	$RClickFeedback.text = "%3.1f" % $RClickTimer.time_left
+	$MainActionFeedback.text = "%3.1f" % $MainActionTimer.time_left
 	# velocidade diminui quanto mais próximo de maria
 	if is_network_master() and maria:
 		var distance = maria.global_position.distance_to(global_position)
@@ -80,27 +78,49 @@ func _input(event):
 				$AnimatedSprite.hide()
 			
 func haunt(should_paralyze):
-	$RClickTimer.start()
-	$RClickDuration.start()
-	$RClickFeedback.show()
+	$MainActionTimer.start()
+	$MainActionDuration.start()
+	$MainActionFeedback.show()
 	rpc("play_random")
 	can_haunt = false
 	rpc("emit_haunting")
 	if (should_paralyze):
+
+		# randomizar tempo
+		$MainActionDuration.wait_time = rand_range(0.8, 3.2)
+		$MainActionTimer.wait_time = rand_range(5.3, 9.2)
+		if maria:
+			rpc("set_new_contained_diff", 25)
 		rpc("set_paralyzed", true)
-		$AnimatedSprite.hide()
+		rpc("toggle_invisible", true)
+		
+sync func set_new_contained_diff(value):
+	maria.max_contained_diff = value
+
 	
 sync func set_paralyzed(value):
 	is_paralyzed = value
 
-func _on_RClickTimer_timeout():
-	$RClickFeedback.hide()
+
+sync func toggle_invisible(hide):
+	if hide:
+		$AnimatedSprite.hide()
+	else:
+		$AnimatedSprite.show()
+
+func _on_MainActionTimer_timeout():
+	$MainActionFeedback.hide()
 	if !is_on_detection_area:
 		can_haunt = true
 
-func _on_RClickDuration_timeout():
-	rpc("set_paralyzed", false)
-	$AnimatedSprite.show()
+func _on_MainActionDuration_timeout():
+	if is_paralyzed:
+		rset("puppet_pos", old_position)
+		position = old_position
+		rpc("set_paralyzed", false)
+	rpc("set_new_contained_diff", 35)
+	rpc("toggle_invisible", false)
+
 	rpc("emit_stopped_haunting")
 	
 sync func emit_stopped_haunting():
@@ -145,7 +165,7 @@ func _on_DetectionArea_body_entered(body):
 func _on_DetectionArea_body_exited(body):
 	if is_network_master() and body.get_name() == "Maria":
 		is_on_detection_area = false
-		if !can_haunt and $RClickTimer.time_left == 0:
+		if !can_haunt and $MainActionTimer.time_left == 0:
 			can_haunt = true
 	if is_network_master() and body.is_in_group("Objects"):
 		object_to_haunt = null
