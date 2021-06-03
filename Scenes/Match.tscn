@@ -171,3 +171,4 @@ position = Vector2( 352, 248 )
 
 [node name="HauntObject23" parent="Objects" instance=ExtResource( 4 )]
 position = Vector2( 1072, 1008 )
+

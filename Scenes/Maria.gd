@@ -6,9 +6,11 @@ signal stopped_capturing
 
 var cooldown = 8.0
 
-var duration = 0.8
+var duration = 0.5
 
 var can_capture = true
+
+var is_detecting = false
 
 var ghost
 
@@ -19,12 +21,6 @@ var ghost_is_haunting = false
 var max_captures = 3
 
 var rotation_tween_ended = true
-
-var reduce_fear_bar = 1
-
-export var divide_difference_by = 10
-
-export var max_contained_diff = 25
 
 onready var fear_bar = get_tree().get_root().get_node("Match/CanvasLayer/GUI/HBoxContainer/VBoxContainer/FearProgress")
 
@@ -40,6 +36,7 @@ func _ready():
 	$AnimatedSprite.animation = "maria"
 	$MainActionFeedback.hide()
 	$CapturingVFX.emitting = false
+
 	.on_ready() # Chamar função pai ("super")
 
 func game_has_started():
@@ -51,26 +48,33 @@ func game_has_started():
 			ghost.get_node("Light2D").hide()
 
 
+	
+	
+# se pegar item q aumenta visão: $Light2D.texture_scale = 2	
+
 func _process(delta):
 	$MainActionFeedback.text = "%3.1f" % $MainActionTimer.time_left
 	if is_network_master():
 		if ghost_is_haunting:		
-			print("Detecting? " + str(is_being_detected))
+			
 			sound_indicator.look_at(ghost.global_position)
 			sound_indicator.rotation_degrees += 90
 			
-		if is_being_detected and ghost_is_haunting:
-			distance = position.distance_to(ghost.position)
+		if is_detecting and ghost_is_haunting:
+			distance = ghost.global_position.distance_to(global_position)
 			
 			
-			var difference = (global_position.length() - (distance)) / divide_difference_by
-			var contained_difference = inverse_lerp(0, max_contained_diff, difference)
+			var difference = (global_position.length() - (distance)) / 10
+			print("Difference: " + str(difference))
+			var contained_difference = inverse_lerp(0, 35, difference)
 			var increase_by = abs(contained_difference)
+			print ("increase_by: " + str(increase_by))
+			print("Fear bar is on: " + str(fear_bar.value))
 			fear_bar.value += increase_by
 				
 		# deve diminuir mesmo dentro da área
 		else:
-			fear_bar.value -= reduce_fear_bar
+			fear_bar.value -= 1
 		
 		if (fear_bar.value == fear_bar.max_value):
 			var ghost_name = get_tree().get_root().get_node("Match/Players/Ghost/PlayerName").text
@@ -86,21 +90,11 @@ func _input(event):
 			max_captures -= 1
 			can_capture = false
 			rpc("emit_capturing")
-			
-sync func useItem(id):
-	if id == 0:
-		# mais visão
-		$Light2D.texture_scale = 2
-		$ItemDuration1.start()
-	elif id == 1:
-		#reduz mais rápido
-		reduce_fear_bar = 2
-		$ItemDuration2.start()
-		
+
 
 sync func emit_capturing():
 	# feedback visual
-	$CapturingVFX.emitting = true
+	$AnimatedSprite.modulate = Color(1, 0, 0)
 	emit_signal("capturing")
 	
 func _on_MainActionTimer_timeout():
@@ -118,9 +112,16 @@ func _on_MainActionDuration_timeout():
 	
 	
 sync func emit_stopped_capturing():
-	$CapturingVFX.emitting = false
+	$AnimatedSprite.modulate = Color(1, 1, 1)
 	emit_signal("stopped_capturing")
+	
+func _on_DetectionArea_area_shape_entered(area_id, area, area_shape, self_shape):
+	.start_detection()
+	is_detecting = true
 
+func _on_DetectionArea_area_shape_exited(area_id, area, area_shape, self_shape):
+	.stop_detection()
+	is_detecting = false
 
 func _on_Ghost_haunting():
 	ghost_is_haunting = true
@@ -132,19 +133,4 @@ func _on_Ghost_haunting():
 func _on_Ghost_stopped_haunting():
 	ghost_is_haunting = false
 	
-		
-func _on_DetectionArea_area_shape_entered(area_id, area, area_shape, self_shape):
-	if area.get_parent().name == "Ghost":
-		rpc("start_detection")
-
-func _on_DetectionArea_area_shape_exited(area_id, area, area_shape, self_shape):
-	if area.get_parent().name == "Ghost":
-		rpc("stop_detection")
-
-
-func _on_ItemDuration1_timeout():
-	$Light2D.texture_scale = 1
-
-
-func _on_ItemDuration2_timeout():
-	reduce_fear_bar = 1
+	
