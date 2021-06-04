@@ -49,6 +49,7 @@ func game_has_started():
 			ghost.connect("haunting", self, "_on_Ghost_haunting")
 			ghost.connect("stopped_haunting", self, "_on_Ghost_stopped_haunting")	
 			ghost.get_node("Light2D").hide()
+			ghost.get_node("HauntingAnim").hide()
 
 
 func _process(delta):

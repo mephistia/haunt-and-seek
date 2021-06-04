@@ -39,6 +39,7 @@ func _ready():
 	$RClickTimer.connect("timeout", self, "_on_RClickTimer_timeout")
 	$RClickDuration.connect("timeout", self, "_on_RClickDuration_timeout")
 	randomize()
+	$HauntingAnim.emitting = false
 	.on_ready() # Chamar função pai ("super")
 	
 	
@@ -87,7 +88,7 @@ func haunt(should_paralyze):
 	rpc("play_random")
 	can_haunt = false
 	rpc("emit_haunting")
-	print("Paralisar? " + str(should_paralyze))
+	$HauntingAnim.emitting = true
 	if (should_paralyze):
 		# randomizar tempo
 		$RClickDuration.wait_time = rand_range(0.8, 3.2)
@@ -123,6 +124,8 @@ func _on_RClickDuration_timeout():
 	rpc("set_new_contained_diff", 35)
 	rpc("toggle_invisible", false)
 	rpc("emit_stopped_haunting")
+	$HauntingAnim.emitting = false
+	
 
 	
 sync func emit_stopped_haunting():
