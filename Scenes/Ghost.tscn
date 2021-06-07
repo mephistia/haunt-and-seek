@@ -79,7 +79,21 @@ collision_mask = 2
 script = ExtResource( 1 )
 boo_sounds = [ ExtResource( 6 ), ExtResource( 4 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 5 ), ExtResource( 7 ) ]
 
-[node name="AnimatedSprite" parent="." index="0"]
+[node name="Light2D" type="Light2D" parent="." index="0"]
+modulate = Color( 1, 1, 1, 0.423529 )
+light_mask = 1024
+position = Vector2( 0, -8 )
+scale = Vector2( 0.536313, 0.533333 )
+texture = ExtResource( 10 )
+energy = 2.5
+shadow_gradient_length = 2.0
+shadow_filter = 2
+shadow_filter_smooth = 15.0
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="AnimatedSprite" parent="." index="1"]
 modulate = Color( 1, 1, 1, 0.784314 )
 light_mask = -2147483645
 position = Vector2( 0, -16 )
@@ -88,20 +102,20 @@ animation = "maria_idle"
 frame = 6
 centered = true
 
-[node name="PlayerName" parent="." index="2"]
-light_mask = 3
+[node name="PlayerName" parent="." index="3"]
+light_mask = 19
 
-[node name="DetectionArea" type="Area2D" parent="." index="7"]
+[node name="DetectionArea" type="Area2D" parent="." index="8"]
 position = Vector2( 0, -8 )
 
 [node name="DetectionShape" type="CollisionShape2D" parent="DetectionArea" index="0"]
 shape = SubResource( 1 )
 
-[node name="SFX" type="AudioStreamPlayer2D" parent="." index="9"]
+[node name="SFX" type="AudioStreamPlayer2D" parent="." index="10"]
 stream = SubResource( 2 )
 attenuation = 3.03143
 
-[node name="Trail" type="Particles2D" parent="." index="10"]
+[node name="Trail" type="Particles2D" parent="." index="11"]
 modulate = Color( 1, 1, 1, 0.431373 )
 show_behind_parent = true
 light_mask = 3
@@ -116,26 +130,13 @@ local_coords = false
 process_material = SubResource( 8 )
 texture = ExtResource( 3 )
 
-[node name="ItemDuration1" type="Timer" parent="." index="11"]
+[node name="ItemDuration1" type="Timer" parent="." index="12"]
 wait_time = 10.0
 one_shot = true
 
-[node name="ItemDuration2" type="Timer" parent="." index="12"]
+[node name="ItemDuration2" type="Timer" parent="." index="13"]
 wait_time = 10.0
 one_shot = true
-
-[node name="Light2D" type="Light2D" parent="." index="13"]
-modulate = Color( 1, 1, 1, 0.423529 )
-position = Vector2( 0, -8 )
-scale = Vector2( 0.536313, 0.533333 )
-texture = ExtResource( 10 )
-energy = 2.5
-shadow_gradient_length = 2.0
-shadow_filter = 2
-shadow_filter_smooth = 15.0
-__meta__ = {
-"_editor_description_": ""
-}
 
 [node name="HauntingAnim" type="Particles2D" parent="." index="14"]
 position = Vector2( 0, -8 )

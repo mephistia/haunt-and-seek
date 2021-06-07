@@ -5,13 +5,12 @@
 [ext_resource path="res://Scenes/GUI/Tooltip.gd" type="Script" id=3]
 
 [node name="Tooltip" type="Node2D"]
-light_mask = 4
 position = Vector2( -28, 12 )
 z_index = 2
 script = ExtResource( 3 )
 
 [node name="Panel" type="Panel" parent="."]
-light_mask = 4
+light_mask = 16
 margin_right = 56.0
 margin_bottom = 16.0
 __meta__ = {
