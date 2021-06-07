@@ -16,22 +16,35 @@ var map
 
 puppet var puppet_pos = Vector2()
 puppet var puppet_motion = Vector2()
+puppet var puppet_is_facing_right = true
 
 puppet var sprite
 
 var is_paralyzed = false
 
+var is_facing_right = true
+
+var idle_animation_name
+
+var moving_animation_name
+
 func set_player_name(newName):
 	$PlayerName.text = newName
 	
 func set_camera_limits():
-	var tilemap = map.get_node("TileMap")
+	var tilemap = map.get_node("TileMapCollisions")
 	var map_limits = tilemap.get_used_rect()
+#	print("Map limits: ")
+#	print(map_limits)
 	var cell_size = tilemap.cell_size
 	$Camera2D.limit_left = map_limits.position.x * cell_size.x
 	$Camera2D.limit_right = map_limits.end.x * cell_size.x
 	$Camera2D.limit_top = map_limits.position.y * cell_size.y
 	$Camera2D.limit_bottom = map_limits.end.y * cell_size.y
+	print($Camera2D.limit_left)
+	print($Camera2D.limit_right)
+	print($Camera2D.limit_top)
+	print($Camera2D.limit_bottom)
 
 func _ready():
 	on_ready()
@@ -87,8 +100,10 @@ func on_process(delta):
 	if is_network_master():	
 		if Input.is_action_pressed("move_left"):
 			motion += Vector2(-1, 0)
+			is_facing_right = false
 		if Input.is_action_pressed("move_right"):
 			motion += Vector2(1, 0)
+			is_facing_right = true
 		if Input.is_action_pressed("move_up"):
 			motion += Vector2(0, -1)
 		if Input.is_action_pressed("move_down"):
@@ -96,18 +111,23 @@ func on_process(delta):
 		
 		rset_unreliable("puppet_motion", motion)
 		rset_unreliable("puppet_pos", position)
+		rset_unreliable("puppet_is_facing_right", is_facing_right)
 		rset("sprite", $AnimatedSprite)
 	else:
 		position = puppet_pos
 		motion = puppet_motion
+		is_facing_right = puppet_is_facing_right
+		
 		
 	if motion.length() > 0:	
-		$AnimatedSprite.play()
+		$AnimatedSprite.play(moving_animation_name)
 		motion = motion.normalized()
-		$AnimatedSprite.flip_h = motion.x < 0
 		
 	else:
-		$AnimatedSprite.stop()
+		$AnimatedSprite.play(idle_animation_name)
+		
+	$AnimatedSprite.flip_h = !is_facing_right
+		
 		
 	move_and_slide(motion * speed)
 	if not is_network_master():

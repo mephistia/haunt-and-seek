@@ -11,8 +11,6 @@ const MAX_PEERS = 2
 
 var peer = null
 
-var upnp = UPNP.new()
-
 export var my_ip = 0
 
 # Name for my player.
@@ -30,6 +28,7 @@ signal connection_succeeded()
 signal game_ended()
 signal game_error(what)
 signal game_started()
+signal character_of_player(character_name)
 
 # Callback from SceneTree.
 func _player_connected(id):
@@ -43,6 +42,7 @@ func _player_disconnected(id):
 		if get_tree().is_network_server():
 			emit_signal("game_error", "Jogador " + players[id] + " desconectado.")
 			end_game()
+			clear_players()
 	else: # Game is not in progress.
 		# Unregister this player.
 		unregister_player(id)
@@ -58,6 +58,7 @@ func _connected_ok():
 func _server_disconnected():
 	emit_signal("game_error", "Servidor desconectado.")
 	end_game()
+	clear_players()
 
 
 # Callback from SceneTree, only for clients (not server).
@@ -95,8 +96,10 @@ remote func pre_start_game(id_class):
 		
 		if id_class[p_id] == 0:
 			player = instantiate_maria(world) 
+			emit_signal("character_of_player", "maria")
 		else:
 			player = instantiate_ghost(world)
+			emit_signal("character_of_player", "ghost")
 
 		if p_id == get_tree().get_network_unique_id():	
 			if id_class[p_id] == 1:
@@ -146,39 +149,20 @@ remote func ready_to_start(id):
 		post_start_game()
 
 
-func host_game(new_player_name, is_local_network):
+func host_game(new_player_name):
 	player_name = new_player_name
 	peer = NetworkedMultiplayerENet.new()
-	if !is_local_network:
-		var result_upnp = open_port(DEFAULT_PORT)
-		if result_upnp != 0:
-			print("ERROR ON UPNP CONNECTION: " + str(result_upnp))
-			emit_signal("game_error", "Erro na conexão UPnP:  " + str(result_upnp) + "\n\n\n Pode ser necessário ativar a conexão UPnP no roteador para jogar em WAN.")
-			end_game()
-		else:
-			print("PORT OPENED")
-	else:
-		my_ip = "127.0.0.1"
+	my_ip = "127.0.0.1"
 	peer.create_server(DEFAULT_PORT, MAX_PEERS)
 	get_tree().set_network_peer(peer)
-	
+		
 	
 func join_game(ip, new_player_name):
 	player_name = new_player_name
-	my_ip = upnp.query_external_address()
-	if my_ip == "":
-		my_ip = "127.0.0.1"
+	my_ip = "127.0.0.1"
 	peer = NetworkedMultiplayerENet.new()
 	peer.create_client(ip, DEFAULT_PORT)
 	get_tree().set_network_peer(peer)
-
-
-func open_port(port):
-	upnp.discover(2000, 2, "InternetGatewayDevice")
-	var result = upnp.add_port_mapping(port)
-	print(upnp.query_external_address())
-	my_ip = upnp.query_external_address()
-	return result
 
 
 func get_player_list():
@@ -188,6 +172,8 @@ func get_player_list():
 func get_player_name():
 	return player_name
 
+func get_is_server():
+	return get_tree().is_network_server()
 
 func begin_game(is_ghost):
 	assert(get_tree().is_network_server())
@@ -209,8 +195,7 @@ func end_game():
 		get_node("/root/Match").queue_free()
 
 	emit_signal("game_ended")
-	players.clear()
-
+	
 
 func _ready():
 	get_tree().connect("network_peer_connected", self, "_player_connected")
@@ -227,13 +212,16 @@ func game_over(winner):
 	lobby.get_node("Connect").hide()
 	lobby.get_node("Players").hide()
 	lobby.get_node("GameOver").show()
+	lobby.get_node("GameOver/PlayAgain").disabled = !get_tree().is_network_server()
 	lobby.get_node("GameOver/WinnerLabel").text = winner + " venceu!"
 	end_game()
 		
 func _notification(what):
 	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
-		upnp.delete_port_mapping(DEFAULT_PORT)
 		get_tree().quit() # default behavior
 	
 func delete_peer():
 	get_tree().set_network_peer(null) # Remove peer
+
+func clear_players():
+	players.clear()

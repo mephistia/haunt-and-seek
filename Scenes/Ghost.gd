@@ -33,7 +33,10 @@ func _ready():
 	$RClickTimer.wait_time = cooldown	
 	$RClickDuration.wait_time = duration
 	$RClickFeedback.hide()
-	$AnimatedSprite.animation = "ghost"
+	idle_animation_name = "ghost"
+	moving_animation_name = "ghost"
+	$AnimatedSprite.scale = Vector2(1.5, 1.5)
+	$AnimatedSprite.position = Vector2(0, -12)
 	speed = normal_speed
 	detection_area = get_node("DetectionArea/DetectionShape").shape.radius * 2
 	$RClickTimer.connect("timeout", self, "_on_RClickTimer_timeout")
@@ -90,7 +93,7 @@ func haunt(should_paralyze):
 	rpc("emit_haunting")
 	$HauntingAnim.emitting = true
 	if (should_paralyze):
-		# randomizar tempo
+		# randomizar tempos se for objeto
 		$RClickDuration.wait_time = rand_range(0.8, 3.2)
 		$RClickTimer.wait_time = rand_range(5.3, 9.2)
 		if maria:

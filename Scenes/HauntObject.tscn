@@ -14,6 +14,7 @@ collision_layer = 4
 script = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]
+modulate = Color( 0.0823529, 0.0823529, 0.0901961, 1 )
 texture = ExtResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

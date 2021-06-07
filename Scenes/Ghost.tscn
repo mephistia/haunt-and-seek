@@ -82,7 +82,11 @@ boo_sounds = [ ExtResource( 6 ), ExtResource( 4 ), ExtResource( 8 ), ExtResource
 [node name="AnimatedSprite" parent="." index="0"]
 modulate = Color( 1, 1, 1, 0.784314 )
 light_mask = -2147483645
+position = Vector2( 0, -16 )
 z_index = 1
+animation = "maria_idle"
+frame = 6
+centered = true
 
 [node name="PlayerName" parent="." index="2"]
 light_mask = 3
@@ -125,7 +129,7 @@ modulate = Color( 1, 1, 1, 0.423529 )
 position = Vector2( 0, -8 )
 scale = Vector2( 0.536313, 0.533333 )
 texture = ExtResource( 10 )
-energy = 1.25
+energy = 2.5
 shadow_gradient_length = 2.0
 shadow_filter = 2
 shadow_filter_smooth = 15.0

@@ -37,9 +37,10 @@ func _ready():
 	gamestate.connect("game_started", self, "game_has_started")
 	$RClickTimer.wait_time = cooldown	
 	$RClickDuration.wait_time = duration
-	$AnimatedSprite.animation = "maria"
 	$RClickFeedback.hide()
 	$CapturingVFX.emitting = false
+	idle_animation_name = "maria_idle"
+	moving_animation_name = "maria_walking"
 	.on_ready() # Chamar função pai ("super")
 
 func game_has_started():
