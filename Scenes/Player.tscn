@@ -109,6 +109,7 @@ script = ExtResource( 3 )
 position = Vector2( -16, -29 )
 frames = SubResource( 17 )
 animation = "maria_walking"
+frame = 2
 playing = true
 centered = false
 
