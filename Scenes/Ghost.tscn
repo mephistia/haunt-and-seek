@@ -99,7 +99,6 @@ light_mask = -2147483645
 position = Vector2( 0, -16 )
 z_index = 1
 animation = "maria_idle"
-frame = 6
 centered = true
 
 [node name="PlayerName" parent="." index="3"]

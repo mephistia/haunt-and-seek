@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/ghost_4.wav-a60cfbf99abb5f21e58a4eec7d89d1cb.sample"
+path="res://.import/ghost_4.wav-c0b460a6f89ad563d3f6fb1d9f2f01f7.sample"
 
 [deps]
 
-source_file="res://assets/audio/ghost/ghost_4.wav"
-dest_files=[ "res://.import/ghost_4.wav-a60cfbf99abb5f21e58a4eec7d89d1cb.sample" ]
+source_file="res://assets/audio/Ghost/ghost_4.wav"
+dest_files=[ "res://.import/ghost_4.wav-c0b460a6f89ad563d3f6fb1d9f2f01f7.sample" ]
 
 [params]
 

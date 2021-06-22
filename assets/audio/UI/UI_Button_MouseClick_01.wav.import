@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/UI_Button_MouseClick_01.wav-daf027b8fa85fcb5c6e9b50a4fb002d5.sample"
+
+[deps]
+
+source_file="res://assets/audio/UI/UI_Button_MouseClick_01.wav"
+dest_files=[ "res://.import/UI_Button_MouseClick_01.wav-daf027b8fa85fcb5c6e9b50a4fb002d5.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

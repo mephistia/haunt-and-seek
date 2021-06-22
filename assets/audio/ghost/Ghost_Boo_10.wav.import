@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Ghost_Boo_10.wav-769a1d5bf90643c3322b1443cd5e06ad.sample"
+
+[deps]
+
+source_file="res://assets/audio/Ghost/Ghost_Boo_10.wav"
+dest_files=[ "res://.import/Ghost_Boo_10.wav-769a1d5bf90643c3322b1443cd5e06ad.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Haunt_Radio_Static_Loop_01.wav-a0e814ff431042b0a19510664f28b377.sample"
+
+[deps]
+
+source_file="res://assets/audio/Haunt/Haunt_Radio_Static_Loop_01.wav"
+dest_files=[ "res://.import/Haunt_Radio_Static_Loop_01.wav-a0e814ff431042b0a19510664f28b377.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

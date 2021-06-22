@@ -103,7 +103,9 @@ remote func pre_start_game(id_class):
 
 		if p_id == get_tree().get_network_unique_id():	
 			if id_class[p_id] == 1:
-				world.get_node("CanvasLayer/GUI/HBoxContainer/VBoxContainer").hide()
+				world.get_node("CanvasLayer/GUI/FearProgress").hide()
+				world.get_node("CanvasLayer/GUI/CapturesCount").hide()
+				world.get_node("CanvasLayer/GUI/CapturesIcon").hide()
 
 			player.set_player_name(player_name)
 			

@@ -26,9 +26,9 @@ export var divide_difference_by = 10
 
 export var max_contained_diff = 25
 
-onready var fear_bar = get_tree().get_root().get_node("Match/CanvasLayer/GUI/HBoxContainer/VBoxContainer/FearProgress")
+onready var fear_bar = get_tree().get_root().get_node("Match/CanvasLayer/GUI/FearProgress")
 
-onready var captures_count = get_tree().get_root().get_node("Match/CanvasLayer/GUI/HBoxContainer/VBoxContainer/HBoxContainer2/CapturesCount")
+onready var captures_count = get_tree().get_root().get_node("Match/CanvasLayer/GUI/CapturesCount")
 
 onready var sound_indicator = $Center/SoundIndicator
 

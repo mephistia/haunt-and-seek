@@ -1,0 +1,62 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://ui-theme.tres" type="Theme" id=1]
+[ext_resource path="res://assets/GUI/title.png" type="Texture" id=2]
+[ext_resource path="res://assets/GUI/bg.jpg" type="Texture" id=3]
+
+[node name="LoadingBar" type="Node2D"]
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_right = 640.0
+margin_bottom = 360.0
+texture = ExtResource( 3 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 79.0
+margin_top = 264.0
+margin_right = 565.0
+margin_bottom = 299.331
+rect_scale = Vector2( 0.8, 0.8 )
+rect_pivot_offset = Vector2( 243, 18 )
+theme = ExtResource( 1 )
+rounded = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 128.0
+margin_top = 304.0
+margin_right = 614.0
+margin_bottom = 346.0
+rect_scale = Vector2( 0.8, 0.8 )
+theme = ExtResource( 1 )
+text = "Carregando..."
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+margin_top = 24.0
+margin_right = 640.0
+margin_bottom = 216.0
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
