@@ -17,7 +17,6 @@ __meta__ = {
 }
 
 [node name="MainMenu" type="Control" parent="Panel"]
-visible = false
 margin_right = 640.0
 margin_bottom = 360.0
 __meta__ = {
@@ -83,3 +82,4 @@ shortcut_in_tooltip = false
 text = "Créditos"
 
 [node name="Options" parent="Panel" instance=ExtResource( 4 )]
+visible = false

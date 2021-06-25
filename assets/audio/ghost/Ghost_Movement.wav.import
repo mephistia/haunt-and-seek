@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/Ghost_Movement.wav-79ee2eb7292f3f69cfefb124a5424120.sample"
+path="res://.import/Ghost_Movement.wav-74eddfcf370ee87278bf92c0e335aabe.sample"
 
 [deps]
 
-source_file="res://assets/audio/Ghost/Ghost_Movement.wav"
-dest_files=[ "res://.import/Ghost_Movement.wav-79ee2eb7292f3f69cfefb124a5424120.sample" ]
+source_file="res://assets/audio/ghost/Ghost_Movement.wav"
+dest_files=[ "res://.import/Ghost_Movement.wav-74eddfcf370ee87278bf92c0e335aabe.sample" ]
 
 [params]
 

@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/Ghost_Boo_1.wav-c85c8489690268bc37557042a49ecac3.sample"
+path="res://.import/Ghost_Boo_1.wav-4995178a54d53042f5fb303b6d088217.sample"
 
 [deps]
 
-source_file="res://assets/audio/Ghost/Ghost_Boo_1.wav"
-dest_files=[ "res://.import/Ghost_Boo_1.wav-c85c8489690268bc37557042a49ecac3.sample" ]
+source_file="res://assets/audio/ghost/Ghost_Boo_1.wav"
+dest_files=[ "res://.import/Ghost_Boo_1.wav-4995178a54d53042f5fb303b6d088217.sample" ]
 
 [params]
 

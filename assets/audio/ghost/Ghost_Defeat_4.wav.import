@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/Ghost_Defeat_4.wav-253b05f38e549f2cc87d594ba6ee56a0.sample"
+path="res://.import/Ghost_Defeat_4.wav-6cbb27bae64d5ef0b5fed4564646c9be.sample"
 
 [deps]
 
-source_file="res://assets/audio/Ghost/Ghost_Defeat_4.wav"
-dest_files=[ "res://.import/Ghost_Defeat_4.wav-253b05f38e549f2cc87d594ba6ee56a0.sample" ]
+source_file="res://assets/audio/ghost/Ghost_Defeat_4.wav"
+dest_files=[ "res://.import/Ghost_Defeat_4.wav-6cbb27bae64d5ef0b5fed4564646c9be.sample" ]
 
 [params]
 
