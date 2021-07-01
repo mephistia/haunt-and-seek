@@ -26,11 +26,16 @@ export var divide_difference_by = 10
 
 export var max_contained_diff = 25
 
+export(Array, AudioStream) var moving_sounds: Array
+
+var last_sfx_id = -1
+
 onready var fear_bar = get_tree().get_root().get_node("Match/CanvasLayer/GUI/FearProgress")
 
 onready var captures_count = get_tree().get_root().get_node("Match/CanvasLayer/GUI/CapturesCount")
 
 onready var sound_indicator = $Center/SoundIndicator
+
 
 
 func _ready():
@@ -55,10 +60,14 @@ func game_has_started():
 
 func _process(delta):
 	$RClickFeedback.text = "%3.1f" % $RClickTimer.time_left
+	
+	if is_moving:
+		if !$MoveSFX.playing:
+			play_random_moving()
+	
 	if is_network_master():
 		# sempre mostra indicador
 		if ghost_is_haunting:		
-			print("Detecting? " + str(is_being_detected))
 			sound_indicator.look_at(ghost.global_position)
 			sound_indicator.rotation_degrees += 90
 			
@@ -102,8 +111,8 @@ sync func useItem(id):
 		
 
 sync func emit_capturing():
-	# feedback visual
 	$CapturingVFX.emitting = true
+	$CaptureSFX.play()
 	emit_signal("capturing")
 	
 func _on_RClickTimer_timeout():
@@ -123,6 +132,16 @@ func _on_RClickDuration_timeout():
 sync func emit_stopped_capturing():
 	$CapturingVFX.emitting = false
 	emit_signal("stopped_capturing")
+	
+	
+sync func play_random_moving():
+	var rand_id = randi() % moving_sounds.size()
+	while rand_id == last_sfx_id:
+		rand_id = randi() % moving_sounds.size()
+		
+	last_sfx_id = rand_id
+	$MoveSFX.stream = moving_sounds[rand_id]
+	$MoveSFX.play()
 
 
 func _on_Ghost_haunting():

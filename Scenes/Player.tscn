@@ -1,91 +1,94 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://assets/characters/maria-walk.png" type="Texture" id=1]
 [ext_resource path="res://assets/characters/GhostWillySprites-Sheet.png" type="Texture" id=2]
 [ext_resource path="res://Scenes/Player.gd" type="Script" id=3]
 [ext_resource path="res://assets/fonts/Minecraftia-Regular.ttf" type="DynamicFontData" id=4]
 [ext_resource path="res://assets/characters/maria-idle.png" type="Texture" id=5]
+[ext_resource path="res://assets/audio/Gameplay/Gameplay_Blocked.wav" type="AudioStream" id=6]
+[ext_resource path="res://assets/audio/Item/Item_Use.wav" type="AudioStream" id=7]
+[ext_resource path="res://assets/audio/Item/Item_Get.wav" type="AudioStream" id=8]
 
 [sub_resource type="AtlasTexture" id=1]
-atlas = ExtResource( 2 )
-region = Rect2( 0, 0, 16, 16 )
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=2]
-atlas = ExtResource( 2 )
-region = Rect2( 16, 0, 16, 16 )
+atlas = ExtResource( 1 )
+region = Rect2( 32, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 1 )
-region = Rect2( 0, 0, 32, 32 )
+region = Rect2( 64, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=4]
 atlas = ExtResource( 1 )
-region = Rect2( 32, 0, 32, 32 )
+region = Rect2( 96, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=5]
 atlas = ExtResource( 1 )
-region = Rect2( 64, 0, 32, 32 )
+region = Rect2( 128, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=6]
 atlas = ExtResource( 1 )
-region = Rect2( 96, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=7]
-atlas = ExtResource( 1 )
-region = Rect2( 128, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=8]
-atlas = ExtResource( 1 )
 region = Rect2( 160, 0, 32, 32 )
 
-[sub_resource type="AtlasTexture" id=9]
+[sub_resource type="AtlasTexture" id=7]
 atlas = ExtResource( 5 )
 region = Rect2( 0, 0, 32, 32 )
 
-[sub_resource type="AtlasTexture" id=10]
+[sub_resource type="AtlasTexture" id=8]
 atlas = ExtResource( 5 )
 region = Rect2( 32, 0, 32, 32 )
 
-[sub_resource type="AtlasTexture" id=11]
+[sub_resource type="AtlasTexture" id=9]
 atlas = ExtResource( 5 )
 region = Rect2( 64, 0, 32, 32 )
 
-[sub_resource type="AtlasTexture" id=12]
+[sub_resource type="AtlasTexture" id=10]
 atlas = ExtResource( 5 )
 region = Rect2( 96, 0, 32, 32 )
 
-[sub_resource type="AtlasTexture" id=13]
+[sub_resource type="AtlasTexture" id=11]
 atlas = ExtResource( 5 )
 region = Rect2( 128, 0, 32, 32 )
 
-[sub_resource type="AtlasTexture" id=14]
+[sub_resource type="AtlasTexture" id=12]
 atlas = ExtResource( 5 )
 region = Rect2( 160, 0, 32, 32 )
 
-[sub_resource type="AtlasTexture" id=15]
+[sub_resource type="AtlasTexture" id=13]
 atlas = ExtResource( 5 )
 region = Rect2( 192, 0, 32, 32 )
 
-[sub_resource type="AtlasTexture" id=16]
+[sub_resource type="AtlasTexture" id=14]
 atlas = ExtResource( 5 )
 region = Rect2( 224, 0, 32, 32 )
 
+[sub_resource type="AtlasTexture" id=15]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=16]
+atlas = ExtResource( 2 )
+region = Rect2( 16, 0, 16, 16 )
+
 [sub_resource type="SpriteFrames" id=17]
 animations = [ {
-"frames": [ SubResource( 1 ), SubResource( 2 ) ],
-"loop": true,
-"name": "ghost",
-"speed": 6.0
-}, {
-"frames": [ SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ) ],
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ) ],
 "loop": true,
 "name": "maria_walking",
-"speed": 8.5
+"speed": 9.5
 }, {
-"frames": [ SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 16 ) ],
+"frames": [ SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ) ],
 "loop": true,
 "name": "maria_idle",
 "speed": 8.5
+}, {
+"frames": [ SubResource( 15 ), SubResource( 16 ) ],
+"loop": true,
+"name": "ghost",
+"speed": 6.0
 } ]
 
 [sub_resource type="RectangleShape2D" id=18]
@@ -109,12 +112,12 @@ script = ExtResource( 3 )
 position = Vector2( -16, -29 )
 frames = SubResource( 17 )
 animation = "maria_walking"
-frame = 2
+frame = 3
 playing = true
 centered = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, -8 )
+position = Vector2( 0, -5 )
 shape = SubResource( 18 )
 
 [node name="PlayerName" type="Label" parent="."]
@@ -165,5 +168,20 @@ position = Vector2( 0, -8 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ItemArea"]
 position = Vector2( 0, -3.42045 )
 shape = SubResource( 20 )
+
+[node name="ItemGetSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 8 )
+volume_db = -2.0
+bus = "Effects"
+
+[node name="ItemUseSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 7 )
+volume_db = -2.0
+bus = "Effects"
+
+[node name="BlockedSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 6 )
+volume_db = -2.0
+bus = "Effects"
 [connection signal="body_entered" from="ItemArea" to="." method="_on_ItemArea_body_entered"]
 [connection signal="body_exited" from="ItemArea" to="." method="_on_ItemArea_body_exited"]

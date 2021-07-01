@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=11 format=2]
+[gd_resource type="TileSet" load_steps=12 format=2]
 
 [ext_resource path="res://assets/tilesets/2_LivingRoom_16x16.png" type="Texture" id=1]
 [ext_resource path="res://assets/tilesets/5_Classroom_and_library_16x16.png" type="Texture" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://assets/tilesets/4_Bedroom_16x16.png" type="Texture" id=8]
 [ext_resource path="res://assets/tilesets/3_Bathroom_16x16.png" type="Texture" id=9]
 [ext_resource path="res://assets/tilesets/10_Birthday_party_16x16.png" type="Texture" id=10]
+[ext_resource path="res://assets/tilesets/HauntObjects.png" type="Texture" id=11]
 
 [resource]
 0/name = "arvore_1"
@@ -2560,3 +2561,59 @@
 177/shape_one_way_margin = 0.0
 177/shapes = [  ]
 177/z_index = 0
+178/name = "MusicBox"
+178/texture = ExtResource( 11 )
+178/tex_offset = Vector2( 0, 0 )
+178/modulate = Color( 1, 1, 1, 1 )
+178/region = Rect2( 0, 0, 16, 16 )
+178/tile_mode = 0
+178/occluder_offset = Vector2( 0, 0 )
+178/navigation_offset = Vector2( 0, 0 )
+178/shape_offset = Vector2( 0, 0 )
+178/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+178/shape_one_way = false
+178/shape_one_way_margin = 0.0
+178/shapes = [  ]
+178/z_index = 0
+179/name = "TV"
+179/texture = ExtResource( 11 )
+179/tex_offset = Vector2( 0, 0 )
+179/modulate = Color( 1, 1, 1, 1 )
+179/region = Rect2( 16, 16, 32, 32 )
+179/tile_mode = 0
+179/occluder_offset = Vector2( 0, 0 )
+179/navigation_offset = Vector2( 0, 0 )
+179/shape_offset = Vector2( 0, 0 )
+179/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+179/shape_one_way = false
+179/shape_one_way_margin = 0.0
+179/shapes = [  ]
+179/z_index = 0
+180/name = "Radio"
+180/texture = ExtResource( 11 )
+180/tex_offset = Vector2( 0, 0 )
+180/modulate = Color( 1, 1, 1, 1 )
+180/region = Rect2( 0, 16, 16, 32 )
+180/tile_mode = 0
+180/occluder_offset = Vector2( 0, 0 )
+180/navigation_offset = Vector2( 0, 0 )
+180/shape_offset = Vector2( 0, 0 )
+180/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+180/shape_one_way = false
+180/shape_one_way_margin = 0.0
+180/shapes = [  ]
+180/z_index = 0
+181/name = "Typewriter"
+181/texture = ExtResource( 11 )
+181/tex_offset = Vector2( 0, 0 )
+181/modulate = Color( 1, 1, 1, 1 )
+181/region = Rect2( 16, 0, 16, 16 )
+181/tile_mode = 0
+181/occluder_offset = Vector2( 0, 0 )
+181/navigation_offset = Vector2( 0, 0 )
+181/shape_offset = Vector2( 0, 0 )
+181/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+181/shape_one_way = false
+181/shape_one_way_margin = 0.0
+181/shapes = [  ]
+181/z_index = 0

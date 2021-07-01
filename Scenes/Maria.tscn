@@ -1,58 +1,69 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Scenes/Maria.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/fx/light.png" type="Texture" id=3]
 [ext_resource path="res://assets/GUI/sound_indicator.png" type="Texture" id=4]
-[ext_resource path="res://assets/fx/dingbats-39.png" type="Texture" id=5]
+[ext_resource path="res://assets/fx/19_freezing_spritesheet.png" type="Texture" id=5]
+[ext_resource path="res://assets/audio/Hunter/Hunter_Steps_1.wav" type="AudioStream" id=6]
+[ext_resource path="res://assets/audio/Hunter/Hunter_Steps_2.wav" type="AudioStream" id=7]
+[ext_resource path="res://assets/audio/Hunter/Hunter_Steps_3.wav" type="AudioStream" id=8]
+[ext_resource path="res://assets/audio/Gameplay/Gameplay_Capture.wav" type="AudioStream" id=9]
 
-[sub_resource type="Gradient" id=1]
-offsets = PoolRealArray( 0, 0.752688 )
-colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
+[sub_resource type="CanvasItemMaterial" id=1]
+blend_mode = 1
+particles_animation = true
+particles_anim_h_frames = 10
+particles_anim_v_frames = 10
+particles_anim_loop = false
 
-[sub_resource type="GradientTexture" id=2]
-gradient = SubResource( 1 )
+[sub_resource type="Gradient" id=2]
+offsets = PoolRealArray( 0, 0.556035, 1 )
+colors = PoolColorArray( 1, 1, 1, 0.173611, 1, 1, 1, 1, 1, 1, 1, 0 )
 
-[sub_resource type="Curve" id=3]
-min_value = -1.0
-_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
 
-[sub_resource type="CurveTexture" id=4]
-curve = SubResource( 3 )
-
-[sub_resource type="ParticlesMaterial" id=5]
+[sub_resource type="ParticlesMaterial" id=4]
 emission_shape = 1
-emission_sphere_radius = 40.0
+emission_sphere_radius = 20.0
 flag_disable_z = true
 direction = Vector3( 0, 0, 0 )
 spread = 180.0
 gravity = Vector3( 0, 0, 0 )
-angular_velocity = 350.0
 orbit_velocity = 0.0
-orbit_velocity_random = 0.24
-radial_accel = -50.0
-tangential_accel = 30.0
-scale = 0.3
-color_ramp = SubResource( 2 )
-hue_variation_curve = SubResource( 4 )
+orbit_velocity_random = 0.0
+scale = 0.5
+color_ramp = SubResource( 3 )
+hue_variation = -0.01
+hue_variation_random = 0.33
+anim_speed = 1.0
 
-[sub_resource type="CapsuleShape2D" id=6]
+[sub_resource type="CapsuleShape2D" id=5]
 radius = 200.0
 height = 208.0
+
+[sub_resource type="AudioStreamRandomPitch" id=6]
+audio_stream = ExtResource( 6 )
+random_pitch = 1.2
 
 [node name="Maria" groups=[
 "Players",
 ] instance=ExtResource( 2 )]
 script = ExtResource( 1 )
+moving_sounds = [ ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ) ]
 
 [node name="CapturingVFX" type="Particles2D" parent="." index="0"]
+material = SubResource( 1 )
 position = Vector2( 0, -8 )
-amount = 35
-process_material = SubResource( 5 )
+amount = 10
+lifetime = 2.0
+process_material = SubResource( 4 )
 texture = ExtResource( 5 )
 
 [node name="AnimatedSprite" parent="." index="1"]
 light_mask = 0
+frame = 2
 
 [node name="RClickDuration" parent="." index="7"]
 wait_time = 0.5
@@ -62,7 +73,7 @@ wait_time = 0.5
 [node name="DetectionShape" type="CollisionShape2D" parent="DetectionArea" index="0"]
 position = Vector2( 0, -8 )
 rotation = 1.5708
-shape = SubResource( 6 )
+shape = SubResource( 5 )
 
 [node name="Light2D" type="Light2D" parent="." index="10"]
 position = Vector2( 0, -8 )
@@ -101,6 +112,14 @@ one_shot = true
 [node name="ItemDuration2" type="Timer" parent="." index="15"]
 wait_time = 10.0
 one_shot = true
+
+[node name="MoveSFX" type="AudioStreamPlayer2D" parent="." index="16"]
+stream = SubResource( 6 )
+bus = "Effects"
+
+[node name="CaptureSFX" type="AudioStreamPlayer2D" parent="." index="17"]
+stream = ExtResource( 9 )
+bus = "Effects"
 [connection signal="timeout" from="RClickTimer" to="." method="_on_RClickTimer_timeout"]
 [connection signal="timeout" from="RClickDuration" to="." method="_on_RClickDuration_timeout"]
 [connection signal="area_shape_entered" from="DetectionArea" to="." method="_on_DetectionArea_area_shape_entered"]

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Hunter_Steps_3.wav-9c248d5dbc0d94cd690f01ee16b37300.sample"
+
+[deps]
+
+source_file="res://assets/audio/Hunter/Hunter_Steps_3.wav"
+dest_files=[ "res://.import/Hunter_Steps_3.wav-9c248d5dbc0d94cd690f01ee16b37300.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=1

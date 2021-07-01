@@ -1,8 +1,16 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://assets/tilesets/PlaceHolderObject.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/GUI/Tooltip.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/HauntObject.gd" type="Script" id=3]
+[ext_resource path="res://assets/audio/Haunt/Haunt_Clock.wav" type="AudioStream" id=4]
+[ext_resource path="res://assets/audio/Haunt/Haunt_Lights.wav" type="AudioStream" id=5]
+[ext_resource path="res://assets/audio/Haunt/Haunt_Radio_Static_Short_01.wav" type="AudioStream" id=6]
+[ext_resource path="res://assets/audio/Haunt/Haunt_MusicBox.wav" type="AudioStream" id=7]
+[ext_resource path="res://assets/audio/Haunt/Haunt_Dragging_1.wav" type="AudioStream" id=8]
+[ext_resource path="res://assets/audio/Haunt/Haunt_Float_Sound.wav" type="AudioStream" id=9]
+[ext_resource path="res://assets/audio/Haunt/Haunt_Water.wav" type="AudioStream" id=10]
+[ext_resource path="res://assets/audio/Haunt/Haunt_Typewriter_1.wav" type="AudioStream" id=11]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 6.15413, 9.02806 )
@@ -12,6 +20,7 @@ extents = Vector2( 6.15413, 9.02806 )
 ]]
 collision_layer = 4
 script = ExtResource( 3 )
+haunt_SFX_stream = [ ExtResource( 4 ), ExtResource( 5 ), ExtResource( 10 ), ExtResource( 8 ), ExtResource( 6 ), ExtResource( 11 ), ExtResource( 7 ), ExtResource( 9 ) ]
 
 [node name="Sprite" type="Sprite" parent="."]
 modulate = Color( 0.0823529, 0.0823529, 0.0901961, 1 )
@@ -21,3 +30,7 @@ texture = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="Tooltip" parent="." instance=ExtResource( 2 )]
+
+[node name="HauntSFX" type="AudioStreamPlayer2D" parent="."]
+attenuation = 3.86374
+bus = "Effects"

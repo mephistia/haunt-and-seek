@@ -28,23 +28,19 @@ var idle_animation_name
 
 var moving_animation_name
 
+var is_moving = false
+
 func set_player_name(newName):
 	$PlayerName.text = newName
 	
 func set_camera_limits():
 	var tilemap = map.get_node("TileMapCollisions")
 	var map_limits = tilemap.get_used_rect()
-#	print("Map limits: ")
-#	print(map_limits)
 	var cell_size = tilemap.cell_size
 	$Camera2D.limit_left = map_limits.position.x * cell_size.x
 	$Camera2D.limit_right = map_limits.end.x * cell_size.x
 	$Camera2D.limit_top = map_limits.position.y * cell_size.y
 	$Camera2D.limit_bottom = map_limits.end.y * cell_size.y
-	print($Camera2D.limit_left)
-	print($Camera2D.limit_right)
-	print($Camera2D.limit_top)
-	print($Camera2D.limit_bottom)
 
 func _ready():
 	on_ready()
@@ -54,8 +50,8 @@ func on_ready():
 	if is_network_master():
 		$Camera2D.current = true
 	map = get_tree().get_root().get_node("Match")
-	set_camera_limits()
-	
+	set_camera_limits()		
+		
 func useItem(itemId):
 	pass
 	
@@ -64,28 +60,34 @@ func _input(event):
 	on_input(event)
 	
 func on_input(event):
-
-	 # TODO: adicionar som de ação bloqueada
 	if is_network_master():
 		if event.is_action_pressed("item_1"):
 			if range(items.size()).has(0):
 				rpc("useItem", items[0])
 				emit_signal("used_item", 1, self)
+				play_sfx("item_use")
 				items.remove(0)
 			else:
-				print("Slot vazio!")
+				play_sfx("blocked")
+				
 		
 		if event.is_action_pressed("item_2"):
 			if range(items.size()).has(1):
 				rpc("useItem", items[1])
 				emit_signal("used_item", 2, self)
+				play_sfx("item_use")
 				items.remove(1)
 			else:
-				print("Slot vazio!")
+				play_sfx("blocked")
 				
-		if event.is_action_pressed("tecla_3"):
-			print("Detecting? " + str(is_being_detected))
-		
+
+func play_sfx(stream_name):
+	if stream_name == "item_use":
+		$ItemGetSFX.play()
+	elif stream_name == "item_get":
+		$ItemUseSFX.play()
+	elif stream_name == "blocked":
+		$BlockedSFX.play()
 		
 func _physics_process(delta):
 	if not is_paralyzed:
@@ -121,10 +123,16 @@ func on_process(delta):
 		
 	if motion.length() > 0:	
 		$AnimatedSprite.play(moving_animation_name)
+		if !is_moving: 
+			is_moving = true
+			started_moving()
 		motion = motion.normalized()
 		
 	else:
 		$AnimatedSprite.play(idle_animation_name)
+		if is_moving:
+			is_moving = false
+			stopped_moving()
 		
 	$AnimatedSprite.flip_h = !is_facing_right
 		
@@ -140,27 +148,31 @@ func on_process(delta):
 		
 	
 sync func start_detection():
-		is_being_detected = true
+	is_being_detected = true
 		
 	
 sync func stop_detection():
-		is_being_detected = false
+	is_being_detected = false
 
 sync func game_over(winner):
 	gamestate.game_over(winner)
 
+sync func started_moving():
+	pass
+	
+sync func stopped_moving():
+	pass
 
 func _on_ItemArea_body_entered(body):
 	if (body.is_in_group("Items") and is_network_master()):
 		if (items.size() < 2):
-			#body.get_node("Tooltip").show_tooltip()
 			item_perceived = body
 			items.append(item_perceived.type)
 			emit_signal("item_collected", item_perceived, self)
+			play_sfx("item_get")
 			item_perceived = null
 		else:
-			#  TODO: adicionar som de ação bloqueada
-			pass
+			play_sfx("blocked")
 
 
 

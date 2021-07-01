@@ -86,6 +86,7 @@ remote func pre_start_game(id_class):
 	get_tree().get_root().add_child(world)
 
 	get_tree().get_root().get_node("Lobby").hide()
+	get_tree().get_root().get_node("Lobby/MenuMusic").playing = false
 
 	# Preload  Maria and  Ghost
 	var maria = load("res://Scenes/Maria.tscn")

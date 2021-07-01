@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://lobby.gd" type="Script" id=1]
 [ext_resource path="res://assets/fonts/Minecraftia-Regular.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://ui-theme.tres" type="Theme" id=3]
+[ext_resource path="res://assets/audio/Music/Music_Menu.wav" type="AudioStream" id=4]
 
 [sub_resource type="DynamicFont" id=1]
 size = 8
@@ -347,6 +348,11 @@ text = "VOLTAR AO MENU"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="MenuMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+autoplay = true
+bus = "Music"
 [connection signal="pressed" from="Players/Start" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="Connect/Host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="Connect/Join" to="." method="_on_join_pressed"]

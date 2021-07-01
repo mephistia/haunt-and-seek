@@ -28,6 +28,13 @@ var object_to_haunt = null
 
 var old_position
 
+# som de movimento
+var transition_duration = 0.5
+var transition_type = 1
+var volume_high = 8
+var volume_low = 0
+
+
 func _ready():
 	gamestate.connect("game_started", self, "game_has_started")
 	$RClickTimer.wait_time = cooldown	
@@ -90,20 +97,18 @@ func haunt(should_paralyze):
 	$RClickFeedback.show()
 	rpc("play_random")
 	can_haunt = false
-	rpc("emit_haunting")
 	$HauntingAnim.emitting = true
 	if (should_paralyze):
-		# randomizar tempos se for objeto
 		$RClickDuration.wait_time = rand_range(0.8, 3.2)
 		$RClickTimer.wait_time = rand_range(5.3, 9.2)
 		if maria:
 			rpc("set_new_contained_diff", 25)
 		rpc("set_paralyzed", true)
 		rpc("toggle_invisible", true)
+	rpc("emit_haunting")
 		
 sync func set_new_contained_diff(value):
 	maria.max_contained_diff = value
-	print("Maria contained diff: " + str(value))
 	
 sync func set_paralyzed(value):
 	is_paralyzed = value
@@ -118,6 +123,16 @@ func _on_RClickTimer_timeout():
 	$RClickFeedback.hide()
 	if !is_on_detection_area:
 		can_haunt = true
+
+sync func started_moving():
+	$MoveSFXTween.interpolate_property($MoveSFX, "volume_db", volume_low, volume_high, transition_duration, transition_type, Tween.EASE_IN, 0)
+	$MoveSFXTween.start()
+
+	
+sync func stopped_moving():
+	$MoveSFXTween.interpolate_property($MoveSFX, "volume_db", volume_high, volume_low, transition_duration, transition_type, Tween.EASE_IN, 0)
+	$MoveSFXTween.start()
+
 
 func _on_RClickDuration_timeout():
 	if is_paralyzed:
@@ -136,7 +151,6 @@ sync func emit_stopped_haunting():
 	emit_signal("stopped_haunting")
 
 sync func emit_haunting():
-	# mudar cor para feedback visual
 	$AnimatedSprite.modulate = Color(1, 0, 0)
 	emit_signal("haunting")
 
@@ -146,8 +160,8 @@ sync func play_random():
 		rand_id = randi() % boo_sounds.size()
 		
 	last_sfx_id = rand_id
-	$SFX.stream = boo_sounds[rand_id]
-	$SFX.play()
+	$BooSFX.stream = boo_sounds[rand_id]
+	$BooSFX.play()
 
 func _on_Maria_capturing():
 	maria_is_capturing = true

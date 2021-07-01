@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Fantasma_Movement_loop_01.wav-177ad4c70c62f02aa4575b10091c4756.sample"
+
+[deps]
+
+source_file="res://assets/audio/ghost/Fantasma_Movement_loop_01.wav"
+dest_files=[ "res://.import/Fantasma_Movement_loop_01.wav-177ad4c70c62f02aa4575b10091c4756.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=false
+edit/loop=true
+compress/mode=1

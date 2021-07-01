@@ -66,7 +66,7 @@ func _on_connection_failed():
 
 
 func _on_game_ended():
-	show()
+	show()	
 	$Connect.show()
 	$Players.hide()
 	$Connect/Host.disabled = false
