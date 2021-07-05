@@ -88,7 +88,6 @@ script = ExtResource( 1 )
 boo_sounds = [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ) ]
 
 [node name="Light2D" type="Light2D" parent="." index="0"]
-visible = false
 modulate = Color( 1, 1, 1, 0.423529 )
 light_mask = 1024
 position = Vector2( 0, -8 )
@@ -108,14 +107,13 @@ light_mask = -2147483645
 position = Vector2( 0, -16 )
 z_index = 1
 animation = "maria_idle"
-frame = 7
+frame = 6
 centered = true
 
 [node name="PlayerName" parent="." index="3"]
 light_mask = 19
 
 [node name="DetectionArea" type="Area2D" parent="." index="8"]
-visible = false
 position = Vector2( 0, -8 )
 
 [node name="DetectionShape" type="CollisionShape2D" parent="DetectionArea" index="0"]

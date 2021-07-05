@@ -21,11 +21,9 @@ func game_has_started():
 		ghost_boo_sfx = ghost.get_node("BooSFX")
 
 func _on_ghost_haunting():
-	if ghost.object_to_haunt == self and ghost.is_paralyzed:
+	if ghost.object_to_haunt == self and ghost.is_paralyzed and ghost.is_network_master():
 		ghost_boo_sfx.stop()
-		ghost_boo_sfx.rpc("stop")
 		rpc("play_sound")
-
 
 sync func play_sound():
 	match type:

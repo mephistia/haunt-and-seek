@@ -1,107 +1,23 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://assets/characters/maria-walk.png" type="Texture" id=1]
-[ext_resource path="res://assets/characters/GhostWillySprites-Sheet.png" type="Texture" id=2]
+[ext_resource path="res://PlayerSprites.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://Scenes/Player.gd" type="Script" id=3]
 [ext_resource path="res://assets/fonts/Minecraftia-Regular.ttf" type="DynamicFontData" id=4]
-[ext_resource path="res://assets/characters/maria-idle.png" type="Texture" id=5]
 [ext_resource path="res://assets/audio/Gameplay/Gameplay_Blocked.wav" type="AudioStream" id=6]
 [ext_resource path="res://assets/audio/Item/Item_Use.wav" type="AudioStream" id=7]
 [ext_resource path="res://assets/audio/Item/Item_Get.wav" type="AudioStream" id=8]
 
-[sub_resource type="AtlasTexture" id=1]
-atlas = ExtResource( 1 )
-region = Rect2( 0, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=2]
-atlas = ExtResource( 1 )
-region = Rect2( 32, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=3]
-atlas = ExtResource( 1 )
-region = Rect2( 64, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=4]
-atlas = ExtResource( 1 )
-region = Rect2( 96, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=5]
-atlas = ExtResource( 1 )
-region = Rect2( 128, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=6]
-atlas = ExtResource( 1 )
-region = Rect2( 160, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=7]
-atlas = ExtResource( 5 )
-region = Rect2( 0, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=8]
-atlas = ExtResource( 5 )
-region = Rect2( 32, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=9]
-atlas = ExtResource( 5 )
-region = Rect2( 64, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=10]
-atlas = ExtResource( 5 )
-region = Rect2( 96, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=11]
-atlas = ExtResource( 5 )
-region = Rect2( 128, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=12]
-atlas = ExtResource( 5 )
-region = Rect2( 160, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=13]
-atlas = ExtResource( 5 )
-region = Rect2( 192, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=14]
-atlas = ExtResource( 5 )
-region = Rect2( 224, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=15]
-atlas = ExtResource( 2 )
-region = Rect2( 0, 0, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=16]
-atlas = ExtResource( 2 )
-region = Rect2( 16, 0, 16, 16 )
-
-[sub_resource type="SpriteFrames" id=17]
-animations = [ {
-"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ) ],
-"loop": true,
-"name": "maria_walking",
-"speed": 9.5
-}, {
-"frames": [ SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ) ],
-"loop": true,
-"name": "maria_idle",
-"speed": 8.5
-}, {
-"frames": [ SubResource( 15 ), SubResource( 16 ) ],
-"loop": true,
-"name": "ghost",
-"speed": 6.0
-} ]
-
-[sub_resource type="RectangleShape2D" id=18]
+[sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 8, 8 )
 
-[sub_resource type="DynamicFont" id=19]
+[sub_resource type="DynamicFont" id=2]
 size = 8
 outline_size = 1
 outline_color = Color( 0.0705882, 0.0666667, 0.0666667, 1 )
 use_mipmaps = true
 font_data = ExtResource( 4 )
 
-[sub_resource type="CapsuleShape2D" id=20]
+[sub_resource type="CapsuleShape2D" id=3]
 radius = 11.8607
 height = 7.51727
 
@@ -110,7 +26,7 @@ script = ExtResource( 3 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( -16, -29 )
-frames = SubResource( 17 )
+frames = ExtResource( 1 )
 animation = "maria_walking"
 frame = 3
 playing = true
@@ -118,7 +34,7 @@ centered = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -5 )
-shape = SubResource( 18 )
+shape = SubResource( 1 )
 
 [node name="PlayerName" type="Label" parent="."]
 visible = false
@@ -127,7 +43,7 @@ margin_left = -32.0
 margin_top = -40.0
 margin_right = 32.0
 margin_bottom = -24.0
-custom_fonts/font = SubResource( 19 )
+custom_fonts/font = SubResource( 2 )
 text = "Player"
 align = 1
 __meta__ = {
@@ -151,7 +67,7 @@ light_mask = 16
 margin_left = -42.0
 margin_right = 42.0
 margin_bottom = 22.0
-custom_fonts/font = SubResource( 19 )
+custom_fonts/font = SubResource( 2 )
 text = "oooooo..."
 align = 1
 valign = 1
@@ -167,7 +83,7 @@ position = Vector2( 0, -8 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ItemArea"]
 position = Vector2( 0, -3.42045 )
-shape = SubResource( 20 )
+shape = SubResource( 3 )
 
 [node name="ItemGetSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 8 )

@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://assets/fonts/PlayfairDisplay-BoldItalic.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://assets/fonts/PlayfairDisplay-Bold.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://ui-theme.tres" type="Theme" id=3]
+[ext_resource path="res://Scenes/Options.gd" type="Script" id=4]
 
 [sub_resource type="DynamicFont" id=1]
 size = 22
@@ -13,22 +14,23 @@ font_data = ExtResource( 1 )
 [sub_resource type="DynamicFont" id=2]
 font_data = ExtResource( 2 )
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=5]
 size = 14
 font_data = ExtResource( 2 )
 
 [node name="Options" type="Control"]
 margin_right = 640.0
 margin_bottom = 360.0
+script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="OptionsLabel" type="Label" parent="."]
-margin_left = 128.0
-margin_top = 48.0
-margin_right = 512.0
-margin_bottom = 78.0
+margin_left = 192.0
+margin_top = 40.0
+margin_right = 448.0
+margin_bottom = 70.0
 custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
 text = "Opções"
@@ -39,10 +41,10 @@ __meta__ = {
 }
 
 [node name="VolumeLabel" type="Label" parent="."]
-margin_left = 128.0
-margin_top = 104.0
-margin_right = 512.0
-margin_bottom = 134.0
+margin_left = 192.0
+margin_top = 96.0
+margin_right = 448.0
+margin_bottom = 119.0
 custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
 text = "Volume"
@@ -55,9 +57,9 @@ __meta__ = {
 [node name="EffectsLabel" type="Label" parent="."]
 margin_left = 192.0
 margin_top = 152.0
-margin_right = 296.0
-margin_bottom = 182.0
-custom_fonts/font = SubResource( 3 )
+margin_right = 236.0
+margin_bottom = 172.0
+custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
 text = "Efeitos"
 valign = 1
@@ -78,9 +80,9 @@ __meta__ = {
 [node name="MusicLabel" type="Label" parent="."]
 margin_left = 192.0
 margin_top = 192.0
-margin_right = 296.0
-margin_bottom = 222.0
-custom_fonts/font = SubResource( 3 )
+margin_right = 448.0
+margin_bottom = 212.0
+custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
 text = "Música"
 valign = 1
@@ -101,8 +103,8 @@ __meta__ = {
 [node name="BtnReturn" type="Button" parent="."]
 margin_left = 192.0
 margin_top = 296.0
-margin_right = 320.0
-margin_bottom = 328.0
+margin_right = 290.0
+margin_bottom = 316.0
 theme = ExtResource( 3 )
 text = "Voltar ao menu"
 align = 0
@@ -111,13 +113,18 @@ __meta__ = {
 }
 
 [node name="BtnQuit" type="Button" parent="."]
-margin_left = 320.0
+margin_left = 368.0
 margin_top = 296.0
 margin_right = 448.0
-margin_bottom = 328.0
+margin_bottom = 316.0
 theme = ExtResource( 3 )
 text = "Sair do jogo"
 align = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
+[connection signal="mouse_exited" from="EffectsSlider" to="." method="_on_EffectsSlider_mouse_exited"]
+[connection signal="value_changed" from="EffectsSlider" to="." method="_on_EffectsSlider_value_changed"]
+[connection signal="mouse_exited" from="MusicSlider" to="." method="_on_MusicSlider_mouse_exited"]
+[connection signal="value_changed" from="MusicSlider" to="." method="_on_MusicSlider_value_changed"]
+[connection signal="pressed" from="BtnQuit" to="." method="_on_BtnQuit_pressed"]

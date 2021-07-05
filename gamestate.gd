@@ -80,13 +80,15 @@ func unregister_player(id):
 	emit_signal("player_list_changed")
 
 
-remote func pre_start_game(id_class):
-	# Change scene.
-	var world = load("res://Scenes/Match.tscn").instance()
-	get_tree().get_root().add_child(world)
+remote func pre_start_game(id_class):	
+	SceneLoader.load_scene("res://Scenes/Match.tscn", get_tree().get_root().get_node("Main"), false)
+	yield(SceneLoader, "loaded")
+	yield(get_tree().create_timer(0.02), "timeout") # tempo extra
+	var world = get_tree().get_root().get_node("Match")
+	print(world.name)
 
-	get_tree().get_root().get_node("Lobby").hide()
-	get_tree().get_root().get_node("Lobby/MenuMusic").playing = false
+	get_tree().get_root().get_node("Main/Panel").hide()
+	get_tree().get_root().get_node("Main/MenuMusic").playing = false
 
 	# Preload  Maria and  Ghost
 	var maria = load("res://Scenes/Maria.tscn")
@@ -124,6 +126,7 @@ remote func pre_start_game(id_class):
 
 remote func post_start_game():
 	emit_signal("game_started")
+	SceneLoader.free_loading()
 	get_tree().set_pause(false) # Unpause and unleash the game!
 
 func instantiate_maria(world):
@@ -206,17 +209,19 @@ func _ready():
 	get_tree().connect("connected_to_server", self, "_connected_ok")
 	get_tree().connect("connection_failed", self, "_connected_fail")
 	get_tree().connect("server_disconnected", self, "_server_disconnected")
+	SceneLoader.connect("loaded", self, "_on_scene_loaded")
 	get_tree().set_auto_accept_quit(false)
 	
 
 func game_over(winner):			
-	var lobby = get_tree().get_root().get_node("Lobby")
-	lobby.show()
-	lobby.get_node("Connect").hide()
-	lobby.get_node("Players").hide()
-	lobby.get_node("GameOver").show()
-	lobby.get_node("GameOver/PlayAgain").disabled = !get_tree().is_network_server()
-	lobby.get_node("GameOver/WinnerLabel").text = winner + " venceu!"
+	var main_menu = get_tree().get_root().get_node("Main/Panel")
+	main_menu.show()
+	main_menu.get_node("CreateMatch").hide()
+	main_menu.get_node("JoinMatch").hide()
+	main_menu.get_node("AwaitingPlayers").hide()
+	main_menu.get_node("GameOver").show()
+	main_menu.get_node("GameOver/BtnReplay").disabled = !get_tree().is_network_server()
+	main_menu.get_node("GameOver/WinnerLabel").text = winner + " venceu!"
 	end_game()
 		
 func _notification(what):

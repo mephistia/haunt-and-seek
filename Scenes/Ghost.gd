@@ -143,7 +143,6 @@ func _on_RClickDuration_timeout():
 	rpc("toggle_invisible", false)
 	rpc("emit_stopped_haunting")
 	$HauntingAnim.emitting = false
-	
 
 	
 sync func emit_stopped_haunting():
@@ -178,7 +177,7 @@ func _on_DetectionArea_body_entered(body):
 	if is_network_master() and body.is_in_group("Objects"):
 		if can_haunt:
 			body.get_node("Tooltip").show_tooltip()
-			object_to_haunt = body
+			rpc("set_obj_to_haunt", body)
 		else:
 			body.get_node("Tooltip").show_tooltip_blocked()
 		pass
@@ -190,8 +189,12 @@ func _on_DetectionArea_body_exited(body):
 		if !can_haunt and $RClickTimer.time_left == 0:
 			can_haunt = true
 	if is_network_master() and body.is_in_group("Objects"):
-		object_to_haunt = null
+		rpc("set_obj_to_haunt", null)
 		body.get_node("Tooltip").hide_tooltip()
+
+
+sync func set_obj_to_haunt(object):
+	object_to_haunt = object
 
 
 sync func useItem(id):

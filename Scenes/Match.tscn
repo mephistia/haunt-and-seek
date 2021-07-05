@@ -304,55 +304,60 @@ playing = true
 [node name="Clock" type="AnimatedSprite" parent="AnimatedDecor"]
 position = Vector2( 759.785, 956.561 )
 frames = SubResource( 9 )
+frame = 3
 playing = true
 
 [node name="Clock2" type="AnimatedSprite" parent="AnimatedDecor"]
 position = Vector2( 1048, 181.029 )
 frames = SubResource( 9 )
+frame = 3
 playing = true
 
 [node name="WallCandle" type="AnimatedSprite" parent="AnimatedDecor"]
 position = Vector2( 113.017, 611.974 )
 frames = SubResource( 13 )
+frame = 2
 playing = true
 
 [node name="WallCandle2" type="AnimatedSprite" parent="AnimatedDecor"]
 position = Vector2( 692.876, 404.503 )
 frames = SubResource( 13 )
+frame = 2
 playing = true
 
 [node name="WallCandle3" type="AnimatedSprite" parent="AnimatedDecor"]
 position = Vector2( 1166.7, 451.697 )
 frames = SubResource( 13 )
-frame = 2
+frame = 1
 playing = true
 
 [node name="WallCandle4" type="AnimatedSprite" parent="AnimatedDecor"]
 position = Vector2( 1388.28, 210.759 )
 frames = SubResource( 13 )
-frame = 2
+frame = 1
 playing = true
 
 [node name="WallCandle5" type="AnimatedSprite" parent="AnimatedDecor"]
 position = Vector2( 1405.21, 391.611 )
 frames = SubResource( 13 )
-frame = 1
 playing = true
 
 [node name="WallCandle6" type="AnimatedSprite" parent="AnimatedDecor"]
 position = Vector2( 1667.42, 740.717 )
 frames = SubResource( 13 )
+frame = 2
 playing = true
 
 [node name="WallCandle7" type="AnimatedSprite" parent="AnimatedDecor"]
 position = Vector2( 1241.2, 884.376 )
 frames = SubResource( 13 )
+frame = 2
 playing = true
 
 [node name="Bathtub" type="AnimatedSprite" parent="AnimatedDecor"]
 position = Vector2( 1215.04, 1002.93 )
 frames = SubResource( 18 )
-frame = 1
+frame = 3
 playing = true
 
 [node name="SceneryLights" type="Node2D" parent="."]

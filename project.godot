@@ -21,13 +21,14 @@ _global_script_class_icons={
 [application]
 
 config/name="Haunt&Seek"
-run/main_scene="res://lobby.tscn"
+run/main_scene="res://Scenes/Main.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
 gamestate="*res://gamestate.gd"
 SceneLoader="*res://SceneLoader.gd"
+UiSoundsPlayer="*res://Scenes/UISoundsPlayer.tscn"
 
 [display]
 

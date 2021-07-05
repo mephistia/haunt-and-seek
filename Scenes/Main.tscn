@@ -1,9 +1,54 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Scenes/Main.gd" type="Script" id=1]
 [ext_resource path="res://ui-theme.tres" type="Theme" id=2]
 [ext_resource path="res://assets/GUI/title.png" type="Texture" id=3]
 [ext_resource path="res://Scenes/Options.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/audio/Music/Music_Menu.wav" type="AudioStream" id=5]
+[ext_resource path="res://assets/fonts/PlayfairDisplay-BoldItalic.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://assets/fonts/PlayfairDisplay-Bold.ttf" type="DynamicFontData" id=7]
+[ext_resource path="res://assets/GUI/slot.jpg" type="Texture" id=8]
+[ext_resource path="res://assets/GUI/select.png" type="Texture" id=9]
+[ext_resource path="res://PlayerSprites.tres" type="SpriteFrames" id=10]
+
+[sub_resource type="DynamicFont" id=1]
+size = 22
+outline_size = 1
+outline_color = Color( 0.203922, 0.156863, 0.109804, 1 )
+font_data = ExtResource( 6 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 14
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 12
+font_data = ExtResource( 7 )
+
+[sub_resource type="StyleBoxTexture" id=4]
+texture = ExtResource( 8 )
+region_rect = Rect2( 0, 0, 32, 32 )
+margin_left = 2.44688
+margin_right = 3.0586
+margin_top = 2.54813
+margin_bottom = 1.42735
+
+[sub_resource type="DynamicFont" id=5]
+size = 14
+font_data = ExtResource( 7 )
+
+[sub_resource type="ButtonGroup" id=6]
+
+[sub_resource type="DynamicFont" id=7]
+size = 13
+outline_size = 1
+outline_color = Color( 0.129412, 0.121569, 0.121569, 1 )
+extra_spacing_top = 2
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=8]
+size = 10
+font_data = ExtResource( 7 )
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 1 )
@@ -35,51 +80,1022 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel/MainMenu"]
-margin_left = 192.0
+margin_left = 262.0
 margin_top = 200.0
-margin_right = 448.0
+margin_right = 378.0
 margin_bottom = 344.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="BtnCreateMatch" type="Button" parent="Panel/MainMenu/VBoxContainer"]
-margin_right = 256.0
+[node name="BtnCreateMatchMenu" type="Button" parent="Panel/MainMenu/VBoxContainer"]
+margin_right = 116.0
 margin_bottom = 20.0
+mouse_default_cursor_shape = 2
 shortcut_in_tooltip = false
 text = "Criar partida"
 
-[node name="BtnJoinMatch" type="Button" parent="Panel/MainMenu/VBoxContainer"]
+[node name="BtnJoinMatchMenu" type="Button" parent="Panel/MainMenu/VBoxContainer"]
 margin_top = 24.0
-margin_right = 256.0
+margin_right = 116.0
 margin_bottom = 44.0
+mouse_default_cursor_shape = 2
 theme = ExtResource( 2 )
 shortcut_in_tooltip = false
 text = "Entrar em partida"
 
 [node name="BtnHowToPlay" type="Button" parent="Panel/MainMenu/VBoxContainer"]
 margin_top = 48.0
-margin_right = 256.0
+margin_right = 116.0
 margin_bottom = 68.0
+mouse_default_cursor_shape = 2
 theme = ExtResource( 2 )
 shortcut_in_tooltip = false
 text = "Como jogar"
 
 [node name="BtnOptions" type="Button" parent="Panel/MainMenu/VBoxContainer"]
 margin_top = 72.0
-margin_right = 256.0
+margin_right = 116.0
 margin_bottom = 92.0
+mouse_default_cursor_shape = 2
 theme = ExtResource( 2 )
 shortcut_in_tooltip = false
 text = "Opções"
 
 [node name="BtnCredits" type="Button" parent="Panel/MainMenu/VBoxContainer"]
 margin_top = 96.0
-margin_right = 256.0
+margin_right = 116.0
 margin_bottom = 116.0
+mouse_default_cursor_shape = 2
 theme = ExtResource( 2 )
 shortcut_in_tooltip = false
 text = "Créditos"
 
 [node name="Options" parent="Panel" instance=ExtResource( 4 )]
 visible = false
+
+[node name="EffectsSlider" parent="Panel/Options" index="3"]
+mouse_default_cursor_shape = 2
+max_value = 1.0
+step = 0.01
+
+[node name="MusicSlider" parent="Panel/Options" index="5"]
+mouse_default_cursor_shape = 2
+max_value = 1.0
+step = 0.01
+
+[node name="BtnReturn" parent="Panel/Options" index="6"]
+mouse_default_cursor_shape = 2
+
+[node name="BtnQuit" parent="Panel/Options" index="7"]
+mouse_default_cursor_shape = 2
+
+[node name="HowToPlay" type="Control" parent="Panel"]
+visible = false
+margin_right = 640.0
+margin_bottom = 360.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HowToPlayLabel" type="Label" parent="Panel/HowToPlay"]
+margin_left = 128.0
+margin_top = 48.0
+margin_right = 512.0
+margin_bottom = 78.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "Como jogar"
+align = 1
+valign = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="BtnReturn" type="Button" parent="Panel/HowToPlay"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -64.0
+margin_top = -64.0
+margin_right = 64.0
+margin_bottom = -32.0
+mouse_default_cursor_shape = 2
+theme = ExtResource( 2 )
+text = "Voltar ao menu"
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="TextureUp" type="TextureRect" parent="Panel/HowToPlay"]
+margin_left = 192.0
+margin_top = 86.0
+margin_right = 224.0
+margin_bottom = 118.0
+texture = ExtResource( 8 )
+expand = true
+stretch_mode = 6
+
+[node name="TextureLeft" type="TextureRect" parent="Panel/HowToPlay"]
+margin_left = 157.0
+margin_top = 121.0
+margin_right = 189.0
+margin_bottom = 153.0
+texture = ExtResource( 8 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRight" type="TextureRect" parent="Panel/HowToPlay"]
+margin_left = 227.0
+margin_top = 121.0
+margin_right = 259.0
+margin_bottom = 153.0
+texture = ExtResource( 8 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureDown" type="TextureRect" parent="Panel/HowToPlay"]
+margin_left = 192.0
+margin_top = 121.0
+margin_right = 224.0
+margin_bottom = 153.0
+texture = ExtResource( 8 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="UpLabel" type="Label" parent="Panel/HowToPlay"]
+margin_left = 196.0
+margin_top = 86.0
+margin_right = 220.0
+margin_bottom = 116.0
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "W"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="LeftLabel" type="Label" parent="Panel/HowToPlay"]
+margin_left = 161.0
+margin_top = 122.0
+margin_right = 185.0
+margin_bottom = 152.0
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "A"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="DownLabel" type="Label" parent="Panel/HowToPlay"]
+margin_left = 196.0
+margin_top = 122.0
+margin_right = 220.0
+margin_bottom = 152.0
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "S"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="RightLabel" type="Label" parent="Panel/HowToPlay"]
+margin_left = 231.0
+margin_top = 122.0
+margin_right = 255.0
+margin_bottom = 152.0
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "D"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="DirectionalLabel" type="Label" parent="Panel/HowToPlay"]
+margin_left = 304.0
+margin_top = 104.0
+margin_right = 504.0
+margin_bottom = 147.0
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "Teclas direcionais (andar)"
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="MainActionLabel" type="Label" parent="Panel/HowToPlay"]
+margin_left = 304.0
+margin_top = 185.0
+margin_right = 574.0
+margin_bottom = 209.0
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "Ação principal (capturar ou assombrar)"
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="TextureSpacebar" type="Panel" parent="Panel/HowToPlay"]
+margin_left = 146.0
+margin_top = 180.0
+margin_right = 270.0
+margin_bottom = 215.0
+custom_styles/panel = SubResource( 4 )
+
+[node name="SpacebarLabel" type="Label" parent="Panel/HowToPlay"]
+margin_left = 154.0
+margin_top = 180.0
+margin_right = 262.0
+margin_bottom = 215.0
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "(barra de espaço)"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Texture1" type="TextureRect" parent="Panel/HowToPlay"]
+margin_left = 210.0
+margin_top = 238.0
+margin_right = 242.0
+margin_bottom = 270.0
+texture = ExtResource( 8 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Texture2" type="TextureRect" parent="Panel/HowToPlay"]
+margin_left = 175.0
+margin_top = 238.0
+margin_right = 207.0
+margin_bottom = 270.0
+texture = ExtResource( 8 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="1Label" type="Label" parent="Panel/HowToPlay"]
+margin_left = 176.0
+margin_top = 238.0
+margin_right = 206.0
+margin_bottom = 270.0
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "1"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="2Label" type="Label" parent="Panel/HowToPlay"]
+margin_left = 210.0
+margin_top = 239.0
+margin_right = 242.0
+margin_bottom = 269.0
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "2"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="ItemLabel" type="Label" parent="Panel/HowToPlay"]
+margin_left = 304.0
+margin_top = 243.564
+margin_right = 576.0
+margin_bottom = 267.564
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "Usar item no espaço designado"
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Credits" type="Control" parent="Panel"]
+visible = false
+margin_right = 640.0
+margin_bottom = 360.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CreditsLabel" type="Label" parent="Panel/Credits"]
+margin_left = 128.0
+margin_top = 48.0
+margin_right = 512.0
+margin_bottom = 78.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "Créditos"
+align = 1
+valign = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="CreditsTitle1" type="Label" parent="Panel/Credits"]
+margin_left = 96.0
+margin_top = 88.0
+margin_right = 304.0
+margin_bottom = 112.0
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0.921569, 0.635294, 0.282353, 1 )
+text = "Programação, Direção e Design:"
+align = 2
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="CreditsTitle2" type="Label" parent="Panel/Credits"]
+margin_left = 96.0
+margin_top = 162.0
+margin_right = 304.0
+margin_bottom = 186.0
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0.921569, 0.635294, 0.282353, 1 )
+text = "Som e Música:"
+align = 2
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="CreditsTitle3" type="Label" parent="Panel/Credits"]
+margin_left = 336.0
+margin_top = 88.0
+margin_right = 432.0
+margin_bottom = 112.0
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0.921569, 0.635294, 0.282353, 1 )
+text = "Arte:"
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Credits1" type="Label" parent="Panel/Credits"]
+margin_left = 96.0
+margin_top = 106.0
+margin_right = 304.0
+margin_bottom = 155.0
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "Júlia Castro Stefanello
+Tomás Missiaggia"
+align = 2
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Credits3" type="Label" parent="Panel/Credits"]
+margin_left = 96.0
+margin_top = 185.0
+margin_right = 304.0
+margin_bottom = 282.0
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "Giovani Stimamilio (Giox)
+Isabelle da Silva Zambonin
+Andrei Souza
+Matheus Rodrigues de Freitas
+Eduardo Bitencourt (Dubi)"
+align = 2
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Credits2" type="Label" parent="Panel/Credits"]
+margin_left = 336.0
+margin_top = 112.0
+margin_right = 544.0
+margin_bottom = 229.0
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "LimeZu
+GrafxKid
+cheekyinkling
+GroovyMaster
+Tomás Missiaggia
+Júlia Castro Stefanello"
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="BtnReturn" type="Button" parent="Panel/Credits"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -64.0
+margin_top = -64.0
+margin_right = 64.0
+margin_bottom = -32.0
+mouse_default_cursor_shape = 2
+theme = ExtResource( 2 )
+text = "Voltar ao menu"
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="CreateMatch" type="Control" parent="Panel"]
+visible = false
+margin_right = 640.0
+margin_bottom = 360.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CreateMatchLabel" type="Label" parent="Panel/CreateMatch"]
+margin_left = 128.0
+margin_top = 48.0
+margin_right = 512.0
+margin_bottom = 78.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "Criar nova partida"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="NameLabel" type="Label" parent="Panel/CreateMatch"]
+margin_left = 221.0
+margin_top = 96.0
+margin_right = 259.0
+margin_bottom = 126.0
+custom_fonts/font = SubResource( 5 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "Nome:"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Name" type="LineEdit" parent="Panel/CreateMatch"]
+margin_left = 272.0
+margin_top = 96.0
+margin_right = 424.0
+margin_bottom = 128.331
+custom_fonts/font = SubResource( 5 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+placeholder_text = "Jogador 1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MariaDetail" type="TextureRect" parent="Panel/CreateMatch"]
+margin_left = 96.0
+margin_top = 148.0
+margin_right = 544.0
+margin_bottom = 212.0
+texture = ExtResource( 9 )
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MariaLabel" type="Label" parent="Panel/CreateMatch/MariaDetail"]
+margin_left = 67.0
+margin_top = 10.0
+margin_right = 109.0
+margin_bottom = 40.0
+custom_fonts/font = SubResource( 5 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "Maria"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="MariaDetailLabel" type="Label" parent="Panel/CreateMatch/MariaDetail"]
+margin_left = 67.0
+margin_top = 36.0
+margin_right = 435.0
+margin_bottom = 53.0
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "Deve capturar o fantasma | Não atravessa paredes | Velocidade alta"
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="MariaSprite" type="AnimatedSprite" parent="Panel/CreateMatch/MariaDetail"]
+position = Vector2( 32, 28 )
+scale = Vector2( 1.5, 1.5 )
+frames = ExtResource( 10 )
+animation = "maria_idle"
+frame = 7
+playing = true
+
+[node name="GhostDetail" type="TextureRect" parent="Panel/CreateMatch"]
+margin_left = 96.0
+margin_top = 220.0
+margin_right = 544.0
+margin_bottom = 284.0
+texture = ExtResource( 9 )
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GhostLabel" type="Label" parent="Panel/CreateMatch/GhostDetail"]
+margin_left = 67.0
+margin_top = 10.0
+margin_right = 109.0
+margin_bottom = 40.0
+custom_fonts/font = SubResource( 5 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "Fantasma"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="GhostDetailLabel" type="Label" parent="Panel/CreateMatch/GhostDetail"]
+margin_left = 67.0
+margin_top = 36.0
+margin_right = 448.0
+margin_bottom = 53.0
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "Deve assustar Maria | Atravessa paredes | Velocidade média"
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="GhostSprite" type="AnimatedSprite" parent="Panel/CreateMatch/GhostDetail"]
+position = Vector2( 32, 36 )
+scale = Vector2( 2, 2 )
+frames = ExtResource( 10 )
+animation = "ghost"
+playing = true
+
+[node name="MariaCheckButton" type="CheckButton" parent="Panel/CreateMatch"]
+margin_left = 96.0
+margin_top = 148.0
+margin_right = 544.0
+margin_bottom = 212.0
+mouse_default_cursor_shape = 2
+pressed = true
+group = SubResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GhostCheckButton" type="CheckButton" parent="Panel/CreateMatch"]
+margin_left = 96.0
+margin_top = 220.0
+margin_right = 544.0
+margin_bottom = 284.0
+mouse_default_cursor_shape = 2
+group = SubResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BtnReturn" type="Button" parent="Panel/CreateMatch"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -128.0
+margin_top = -64.0
+margin_right = -30.0
+margin_bottom = -32.0
+mouse_default_cursor_shape = 2
+theme = ExtResource( 2 )
+text = "Voltar ao menu"
+align = 0
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="BtnCreateMatch" type="Button" parent="Panel/CreateMatch"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = 44.0
+margin_top = -64.0
+margin_right = 128.0
+margin_bottom = -32.0
+mouse_default_cursor_shape = 2
+theme = ExtResource( 2 )
+text = "Criar partida"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="ErrorLabel" type="Label" parent="Panel/CreateMatch"]
+margin_left = 199.0
+margin_top = 125.0
+margin_right = 441.0
+margin_bottom = 146.0
+size_flags_horizontal = 2
+size_flags_vertical = 0
+custom_fonts/font = SubResource( 7 )
+custom_colors/font_color = Color( 0.972549, 0.290196, 0.290196, 1 )
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="JoinMatch" type="Control" parent="Panel"]
+visible = false
+margin_right = 640.0
+margin_bottom = 360.0
+
+[node name="JoinMatchLabel" type="Label" parent="Panel/JoinMatch"]
+margin_left = 128.0
+margin_top = 48.0
+margin_right = 512.0
+margin_bottom = 78.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "Entrar em partida"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="NameLabel" type="Label" parent="Panel/JoinMatch"]
+margin_left = 216.0
+margin_top = 128.0
+margin_right = 258.0
+margin_bottom = 158.0
+custom_fonts/font = SubResource( 5 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "Nome:"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Name" type="LineEdit" parent="Panel/JoinMatch"]
+margin_left = 270.0
+margin_top = 128.0
+margin_right = 422.0
+margin_bottom = 160.331
+custom_fonts/font = SubResource( 5 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+placeholder_text = "Jogador 1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="IPLabel" type="Label" parent="Panel/JoinMatch"]
+margin_left = 219.0
+margin_top = 192.0
+margin_right = 261.0
+margin_bottom = 222.0
+custom_fonts/font = SubResource( 5 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "IP:"
+align = 2
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="IP" type="LineEdit" parent="Panel/JoinMatch"]
+margin_left = 270.0
+margin_top = 192.0
+margin_right = 422.0
+margin_bottom = 224.331
+custom_fonts/font = SubResource( 5 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "127.0.0.1"
+placeholder_text = "127.0.0.1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BtnReturn" type="Button" parent="Panel/JoinMatch"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -128.0
+margin_top = -64.0
+margin_right = -30.0
+margin_bottom = -32.0
+mouse_default_cursor_shape = 2
+theme = ExtResource( 2 )
+text = "Voltar ao menu"
+align = 0
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="BtnJoinMatch" type="Button" parent="Panel/JoinMatch"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = 16.0
+margin_top = -64.0
+margin_right = 128.0
+margin_bottom = -32.0
+mouse_default_cursor_shape = 2
+theme = ExtResource( 2 )
+text = "Entrar na partida"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="ErrorLabel" type="Label" parent="Panel/JoinMatch"]
+margin_left = 199.0
+margin_top = 247.0
+margin_right = 441.0
+margin_bottom = 268.0
+size_flags_horizontal = 2
+size_flags_vertical = 0
+custom_fonts/font = SubResource( 7 )
+custom_colors/font_color = Color( 0.972549, 0.290196, 0.290196, 1 )
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="AwaitingPlayers" type="Control" parent="Panel"]
+visible = false
+margin_right = 640.0
+margin_bottom = 360.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AwaitingPlayersLabel" type="Label" parent="Panel/AwaitingPlayers"]
+margin_left = 128.0
+margin_top = 48.0
+margin_right = 512.0
+margin_bottom = 78.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "Aguardando jogadores..."
+align = 1
+valign = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Container" type="ItemList" parent="Panel/AwaitingPlayers"]
+margin_left = 218.0
+margin_top = 96.0
+margin_right = 422.0
+margin_bottom = 256.0
+mouse_filter = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+custom_fonts/font = SubResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="List" type="ItemList" parent="Panel/AwaitingPlayers"]
+margin_left = 228.0
+margin_top = 104.0
+margin_right = 412.0
+margin_bottom = 248.0
+mouse_filter = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+custom_fonts/font = SubResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="BtnPlay" type="Button" parent="Panel/AwaitingPlayers"]
+margin_left = 288.0
+margin_top = 272.0
+margin_right = 352.0
+margin_bottom = 292.0
+mouse_default_cursor_shape = 2
+text = "Jogar"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GameOver" type="Control" parent="Panel"]
+visible = false
+margin_right = 640.0
+margin_bottom = 360.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GameOverLabel" type="Label" parent="Panel/GameOver"]
+margin_left = 128.0
+margin_top = 60.0
+margin_right = 512.0
+margin_bottom = 90.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "Fim de jogo!"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="WinnerLabel" type="Label" parent="Panel/GameOver"]
+margin_left = 224.0
+margin_top = 111.0
+margin_right = 418.0
+margin_bottom = 141.0
+custom_fonts/font = SubResource( 5 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+text = "Personagem (jogador) venceu!"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="BtnReturnMenu" type="Button" parent="Panel/GameOver"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -128.0
+margin_top = -72.0
+margin_right = -30.0
+margin_bottom = -40.0
+mouse_default_cursor_shape = 2
+theme = ExtResource( 2 )
+text = "Voltar ao menu"
+align = 0
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="BtnReplay" type="Button" parent="Panel/GameOver"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = 16.0
+margin_top = -88.0
+margin_right = 126.0
+margin_bottom = -32.0
+mouse_default_cursor_shape = 2
+theme = ExtResource( 2 )
+disabled = true
+text = "Jogar novamente"
+align = 0
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="ReplayLabel" type="Label" parent="Panel/GameOver/BtnReplay"]
+margin_top = 32.0
+margin_right = 112.0
+margin_bottom = 55.0
+custom_fonts/font = SubResource( 8 )
+custom_colors/font_color = Color( 0.87451, 0.752941, 0.588235, 1 )
+custom_colors/font_color_shadow = Color( 0.152941, 0.117647, 0.0980392, 1 )
+text = "(trocar personagens)"
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Sprite" type="AnimatedSprite" parent="Panel/GameOver"]
+position = Vector2( 320, 200 )
+scale = Vector2( 5, 5 )
+frames = ExtResource( 10 )
+animation = "ghost"
+
+[node name="ErrorDialog" type="AcceptDialog" parent="Panel"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -120.0
+margin_top = -72.0
+margin_right = 120.0
+margin_bottom = 72.0
+size_flags_horizontal = 2
+size_flags_vertical = 2
+theme = ExtResource( 2 )
+window_title = "Ocorreu um erro"
+dialog_autowrap = true
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="MenuMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+autoplay = true
+bus = "Music"
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="ScreenFadeSound" type="AudioStreamPlayer" parent="."]
+[connection signal="pressed" from="Panel/MainMenu/VBoxContainer/BtnCreateMatchMenu" to="." method="_on_BtnCreateMatchMenu_pressed"]
+[connection signal="pressed" from="Panel/MainMenu/VBoxContainer/BtnJoinMatchMenu" to="." method="_on_BtnJoinMatchMenu_pressed"]
+[connection signal="pressed" from="Panel/MainMenu/VBoxContainer/BtnHowToPlay" to="." method="_on_BtnHowToPlay_pressed"]
+[connection signal="pressed" from="Panel/MainMenu/VBoxContainer/BtnOptions" to="." method="_on_BtnOptions_pressed"]
+[connection signal="pressed" from="Panel/MainMenu/VBoxContainer/BtnCredits" to="." method="_on_BtnCredits_pressed"]
+[connection signal="pressed" from="Panel/Options/BtnReturn" to="." method="_on_BtnReturn_pressed"]
+[connection signal="pressed" from="Panel/HowToPlay/BtnReturn" to="." method="_on_BtnReturn_pressed"]
+[connection signal="pressed" from="Panel/Credits/BtnReturn" to="." method="_on_BtnReturn_pressed"]
+[connection signal="pressed" from="Panel/CreateMatch/BtnReturn" to="." method="_on_BtnReturn_pressed"]
+[connection signal="pressed" from="Panel/CreateMatch/BtnCreateMatch" to="." method="_on_BtnCreateMatch_pressed"]
+[connection signal="pressed" from="Panel/JoinMatch/BtnReturn" to="." method="_on_BtnReturn_pressed"]
+[connection signal="pressed" from="Panel/JoinMatch/BtnJoinMatch" to="." method="_on_BtnJoinMatch_pressed"]
+[connection signal="pressed" from="Panel/AwaitingPlayers/BtnPlay" to="." method="_on_BtnPlay_pressed"]
+[connection signal="pressed" from="Panel/GameOver/BtnReturnMenu" to="." method="_on_BtnReturnMenu_pressed"]
+[connection signal="mouse_entered" from="Panel/GameOver/BtnReplay" to="." method="_on_BtnReplay_mouse_entered"]
+[connection signal="mouse_exited" from="Panel/GameOver/BtnReplay" to="." method="_on_BtnReplay_mouse_exited"]
+[connection signal="pressed" from="Panel/GameOver/BtnReplay" to="." method="_on_BtnReplay_pressed"]
+
+[editable path="Panel/Options"]
